@@ -1,0 +1,2 @@
+add_library(chocolate_aac_loopfunc SHARED ChocolateAACLoopFunc.h ChocolateAACLoopFunc.cpp ${LOOP_HEADERS} ${LOOP_SOURCES})
+target_link_libraries(chocolate_aac_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)
