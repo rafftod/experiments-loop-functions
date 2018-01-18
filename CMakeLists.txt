@@ -26,9 +26,10 @@ include(${CMAKE_SOURCE_DIR}/src/cmake/ARGoSBuildFlags.cmake)
 include(${CMAKE_SOURCE_DIR}/src/cmake/ARGoSBuildChecks.cmake)
 
 #
-# Compile stuff
+# Set base source files
 #
 add_subdirectory(src)
+
 
 if(ARGOS_BUILD_FOR_SIMULATOR)
 	add_subdirectory(loop-functions)

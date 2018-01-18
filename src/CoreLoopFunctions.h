@@ -49,7 +49,7 @@ class CoreLoopFunctions: public CLoopFunctions {
      * The position is given by the method GetRandomPosition().
      * NOT USED ANYMORE (see note in Cpp file)
      */
-    //void PositionRobots();
+    void PositionRobots();
 
     /*
      * The number of robots to be placed for the experiment.

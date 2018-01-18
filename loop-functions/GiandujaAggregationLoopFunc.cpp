@@ -31,6 +31,8 @@ void GiandujaAggregationLoopFunction::Destroy() {}
 
 void GiandujaAggregationLoopFunction::Reset() {
     CoreLoopFunctions::Reset();
+    m_unCostSpot1 = 0;
+    m_fObjectiveFunction = 0;
     //PlaceLight();
 }
 
@@ -95,6 +97,7 @@ CVector3 GiandujaAggregationLoopFunction::GetRandomPosition() {
 void GiandujaAggregationLoopFunction::PostStep() {
     CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
     CVector2 cEpuckPosition(0,0);
+
     for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
         CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
         cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),

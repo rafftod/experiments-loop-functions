@@ -14,11 +14,3 @@ elseif(ARGOS_BUILD_FOR_LOCALEPUCK)
   include_directories(${ARGOS_INCLUDE_DIRS})
   link_directories(${ARGOS_LIBRARY_DIRS})
 endif()
-
-
-#
-# Check for Qt and OpenGL when compiling for the simulator
-#
-if(ARGOS_BUILD_FOR_SIMULATOR)
-  include(ARGoSCheckQTOpenGL)
-endif(ARGOS_BUILD_FOR_SIMULATOR)
