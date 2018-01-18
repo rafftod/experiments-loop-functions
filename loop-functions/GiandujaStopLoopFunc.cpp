@@ -146,13 +146,13 @@ void GiandujaStopLoopFunction::PostStep() {
 
 void GiandujaStopLoopFunction::PostExperiment() {
     LOG<< "CostI :" << m_unCostI << " / CostO :" << m_unCostO << " / Tbar:" << m_unTbar << std::endl;
-    LOG<< 48000 - m_unCostI + m_unCostO + m_unTbar << std::endl;
-    m_fObjectiveFunction = (Real) m_unCostI + m_unCostO + m_unTbar;
+    LOG<< 48000 - (m_unCostI + m_unCostO + m_unTbar) << std::endl;
+    m_fObjectiveFunction = (Real) 48000 - (m_unCostI + m_unCostO + m_unTbar);
 
 }
 
 Real GiandujaStopLoopFunction::GetObjectiveFunction() {
-  return (48000-m_fObjectiveFunction);
+  return (m_fObjectiveFunction);
 }
 
 REGISTER_LOOP_FUNCTIONS(GiandujaStopLoopFunction, "gianduja_stop_loop_functions");
