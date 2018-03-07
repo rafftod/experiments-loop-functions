@@ -8,11 +8,10 @@ GiandujaDecisionLoopFunction::GiandujaDecisionLoopFunction() {
   m_cCoordSpot1 = CVector2(0,0);
 
   m_CCoordRect1Pos = CVector2(0.8,1);
-  m_CCoordRect1 = CVector2(1.25,-0.6);
+  m_CCoordRect1 = CVector2(1.25,0);
 
   m_CCoordRect2Pos = CVector2(-0.8,-1);
-  m_CCoordRect2 = CVector2(-1.25,0.6);
-
+  m_CCoordRect2 = CVector2(-1.25,0);
 
   m_unCostI = 0;
   m_unCostO = 0;
@@ -48,9 +47,7 @@ void GiandujaDecisionLoopFunction::Reset() {
     m_unState = 0;
     m_unTbar = 0;
     m_fObjectiveFunction = 0;
-    //Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-    //Real b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-    m_unDecision = m_pcRng->Uniform(CRange<UInt32>(0,2));
+    //m_unDecision = m_pcRng->Uniform(CRange<UInt32>(0,2));
 }
 
 /****************************************/
@@ -58,9 +55,14 @@ void GiandujaDecisionLoopFunction::Reset() {
 
 void GiandujaDecisionLoopFunction::Init(TConfigurationNode& t_tree) {
     CoreLoopFunctions::Init(t_tree);
-    //Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-    //Real b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-    m_unDecision = m_pcRng->Uniform(CRange<UInt32>(0,2));
+    TConfigurationNode cParametersNode;
+    try {
+      cParametersNode = GetNode(t_tree, "params");
+      GetNodeAttributeOrDefault(cParametersNode, "patch", m_unDecision, (UInt32) 1);
+    } catch(std::exception e) {
+      LOGERR << e.what() << std::endl;
+    }
+    //m_unDecision = m_pcRng->Uniform(CRange<UInt32>(0,2));
 
 }
 
@@ -77,18 +79,6 @@ argos::CColor GiandujaDecisionLoopFunction::GetFloorColor(const argos::CVector2&
         return CColor::WHITE;
     }
   }
-  // if (d <= m_fRadius+0.01) {
-  //   return CColor::GREEN;
-  // }
-  //
-  // if ( (vCurrentPoint.GetX()<=m_CCoordRect1Pos.GetX()) && (vCurrentPoint.GetX()>=m_CCoordRect2Pos.GetX()) && (vCurrentPoint.GetY()>=m_CCoordRect2Pos.GetY()) && (vCurrentPoint.GetY()<=m_CCoordRect1Pos.GetY()) ) {
-  //   return CColor::GREEN;
-  // }
-
-  // if ( vCurrentPoint.GetY()<=m_CCoordRect1.GetY() || vCurrentPoint.GetY()>=m_CCoordRect2.GetY()) {
-  //   return CColor::WHITE;
-  // }
-
   return CColor::GRAY50;
 }
 
@@ -141,6 +131,12 @@ void GiandujaDecisionLoopFunction::PostStep() {
 
 void GiandujaDecisionLoopFunction::PostExperiment() {
     LOG<< "CostI :" << m_unCostI << " / CostO :" << m_unCostO << std::endl;
+    if (m_unDecision == 0) {
+        LOG<< "CCBLACK" << std::endl;
+    }
+    else if (m_unDecision == 1) {
+        LOG<< "CCWHITE" << std::endl;
+    }
     LOG<< (24000-m_unCostI) << std::endl;
     m_fObjectiveFunction = (Real) m_unCostI;
 
