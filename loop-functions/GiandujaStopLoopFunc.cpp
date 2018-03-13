@@ -45,9 +45,9 @@ void GiandujaStopLoopFunction::Reset() {
     m_unState = 0;
     m_unTbar = 0;
     m_fObjectiveFunction = 0;
-    Real a =m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-    Real b =m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-    m_cCoordSpot1 = CVector2(-0.7+a*1.4,0.6+b*0.4);
+    //Real a =m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    //Real b =m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    //m_cCoordSpot1 = CVector2(-0.7+a*1.4,0.6+b*0.4);
 }
 
 /****************************************/
@@ -55,10 +55,10 @@ void GiandujaStopLoopFunction::Reset() {
 
 void GiandujaStopLoopFunction::Init(TConfigurationNode& t_tree) {
     CoreLoopFunctions::Init(t_tree);
-    Real a =m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-    Real b =m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-    m_cCoordSpot1 = CVector2(-0.7+a*1.4,0.6+b*0.4);
-    LOG << "Spot is at :" << -0.7+a*1.4 << "," << 0.6+b*0.4 << std::endl;
+    //Real a =m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    //Real b =m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    //m_cCoordSpot1 = CVector2(-0.7+a*1.4,0.6+b*0.4);
+    LOG << "Spot is at :" << m_cCoordSpot1 << std::endl;
 }
 
 argos::CColor GiandujaStopLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
