@@ -8,11 +8,10 @@ GiandujaDecisionLoopFunction::GiandujaDecisionLoopFunction() {
   m_cCoordSpot1 = CVector2(0,0);
 
   m_CCoordRect1Pos = CVector2(0.8,1);
-  m_CCoordRect1 = CVector2(1.25,-0.6);
+  m_CCoordRect1 = CVector2(1.25,0);
 
   m_CCoordRect2Pos = CVector2(-0.8,-1);
-  m_CCoordRect2 = CVector2(-1.25,0.6);
-
+  m_CCoordRect2 = CVector2(-1.25,0);
 
   m_unCostI = 0;
   m_unCostO = 0;
