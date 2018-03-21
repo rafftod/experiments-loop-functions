@@ -47,7 +47,12 @@ void GiandujaDecisionLoopFunction::Reset() {
     m_unState = 0;
     m_unTbar = 0;
     m_fObjectiveFunction = 0;
-    //m_unDecision = m_pcRng->Uniform(CRange<UInt32>(0,2));
+    if (m_unPatchParam == 0 || m_unPatchParam == 1) {
+      m_unDecision = m_unPatchParam;
+    }
+    else {
+      m_unDecision = m_pcRng->Uniform(CRange<UInt32>(0,2));
+    }
 }
 
 /****************************************/
@@ -58,12 +63,17 @@ void GiandujaDecisionLoopFunction::Init(TConfigurationNode& t_tree) {
     TConfigurationNode cParametersNode;
     try {
       cParametersNode = GetNode(t_tree, "params");
-      GetNodeAttributeOrDefault(cParametersNode, "patch", m_unDecision, (UInt32) 1);
+      GetNodeAttributeOrDefault(cParametersNode, "patch", m_unPatchParam, (UInt32) 3);
     } catch(std::exception e) {
       LOGERR << e.what() << std::endl;
     }
-    //m_unDecision = m_pcRng->Uniform(CRange<UInt32>(0,2));
 
+    if (m_unPatchParam == 0 || m_unPatchParam == 1) {
+      m_unDecision = m_unPatchParam;
+    }
+    else {
+      m_unDecision = m_pcRng->Uniform(CRange<UInt32>(0,2));
+    }
 }
 
 argos::CColor GiandujaDecisionLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {

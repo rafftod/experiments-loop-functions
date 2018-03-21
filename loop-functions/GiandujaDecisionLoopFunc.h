@@ -37,6 +37,7 @@ class GiandujaDecisionLoopFunction: public CoreLoopFunctions {
     UInt32 m_unCostO;
     UInt32 m_unTbar;
     UInt32 m_unDecision;
+    UInt32 m_unPatchParam;
     Real m_fObjectiveFunction;
 };
 
