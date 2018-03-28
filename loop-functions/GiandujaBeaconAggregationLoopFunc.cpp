@@ -1,35 +1,36 @@
-#include "GiandujaAggregationLoopFunc.h"
+#include "GiandujaBeaconAggregationLoopFunc.h"
 
 /****************************************/
 /****************************************/
 
-GiandujaAggregationLoopFunction::GiandujaAggregationLoopFunction() {
+GiandujaBeaconAggregationLoopFunction::GiandujaBeaconAggregationLoopFunction() {
   m_fRadius = 0.3;
   m_cCoordSpot1 = CVector2(0.5,0.5);
   m_cCoordSpot2 = CVector2(-0.5,0.5);
   m_unCostSpot1 = 0;
   m_fObjectiveFunction = 0;
+  m_Tbar = 0;
 }
 
 /****************************************/
 /****************************************/
 
-GiandujaAggregationLoopFunction::GiandujaAggregationLoopFunction(const GiandujaAggregationLoopFunction& orig) {}
+GiandujaBeaconAggregationLoopFunction::GiandujaBeaconAggregationLoopFunction(const GiandujaBeaconAggregationLoopFunction& orig) {}
 
 /****************************************/
 /****************************************/
 
-GiandujaAggregationLoopFunction::~GiandujaAggregationLoopFunction() {}
+GiandujaBeaconAggregationLoopFunction::~GiandujaBeaconAggregationLoopFunction() {}
 
 /****************************************/
 /****************************************/
 
-void GiandujaAggregationLoopFunction::Destroy() {}
+void GiandujaBeaconAggregationLoopFunction::Destroy() {}
 
 /****************************************/
 /****************************************/
 
-void GiandujaAggregationLoopFunction::Reset() {
+void GiandujaBeaconAggregationLoopFunction::Reset() {
     CoreLoopFunctions::Reset();
     m_unCostSpot1 = 0;
     m_fObjectiveFunction = 0;
@@ -37,16 +38,17 @@ void GiandujaAggregationLoopFunction::Reset() {
 }
 
 
-void GiandujaAggregationLoopFunction::Init(TConfigurationNode& t_tree) {
+void GiandujaBeaconAggregationLoopFunction::Init(TConfigurationNode& t_tree) {
     CoreLoopFunctions::Init(t_tree);
     //PlaceLight();
+    ExtractTime();
 }
 
 
 /****************************************/
 /****************************************/
 
-argos::CColor GiandujaAggregationLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
+argos::CColor GiandujaBeaconAggregationLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
   CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
   Real d = (m_cCoordSpot1 - vCurrentPoint).Length();
   if (d <= m_fRadius) {
@@ -61,7 +63,21 @@ argos::CColor GiandujaAggregationLoopFunction::GetFloorColor(const argos::CVecto
   return CColor::GRAY50;
 }
 
-void GiandujaAggregationLoopFunction::PlaceLight() {
+
+void GiandujaBeaconAggregationLoopFunction::ExtractTime() {
+    CSpace::TMapPerType cEntities = GetSpace().GetEntitiesByType("controller");
+    for (CSpace::TMapPerType::iterator it = cEntities.begin(); it != cEntities.end(); ++it) {
+        CControllableEntity* pcEntity = any_cast<CControllableEntity*>(it->second);
+        try {
+            CEPuckBeacon& cController = dynamic_cast<CEPuckBeacon&> (pcEntity->GetController());
+            m_Tbar = cController.getTBar();
+        } catch (std::exception& ex) {
+            LOGERR << "Error while casting: " << ex.what() << std::endl;
+        }
+    }
+}
+
+void GiandujaBeaconAggregationLoopFunction::PlaceLight() {
     // /* Place a light at a random spot to prevent robots to exploit (anti)phototaxis behaviours as RW */
     CLightEntity& cLight = dynamic_cast<CLightEntity&>(GetSpace().GetEntity("light0"));
     /* Consider the light only if it has non zero intensity */
@@ -78,7 +94,7 @@ void GiandujaAggregationLoopFunction::PlaceLight() {
     CRadians::ZERO,CRadians::ZERO));
 }
 
-CVector3 GiandujaAggregationLoopFunction::GetRandomPosition() {
+CVector3 GiandujaBeaconAggregationLoopFunction::GetRandomPosition() {
     Real a;
     Real b;
 
@@ -94,7 +110,7 @@ CVector3 GiandujaAggregationLoopFunction::GetRandomPosition() {
 /****************************************/
 /****************************************/
 
-void GiandujaAggregationLoopFunction::PostStep() {
+void GiandujaBeaconAggregationLoopFunction::PostStep() {
     CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
     CVector2 cEpuckPosition(0,0);
 
@@ -114,12 +130,12 @@ void GiandujaAggregationLoopFunction::PostStep() {
 /****************************************/
 /****************************************/
 
-void GiandujaAggregationLoopFunction::PostExperiment() {
+void GiandujaBeaconAggregationLoopFunction::PostExperiment() {
     LOG<< "fit :" << 24000-m_fObjectiveFunction << std::endl;
 }
 
-Real GiandujaAggregationLoopFunction::GetObjectiveFunction() {
+Real GiandujaBeaconAggregationLoopFunction::GetObjectiveFunction() {
   return (24000-m_fObjectiveFunction);
 }
 
-REGISTER_LOOP_FUNCTIONS(GiandujaAggregationLoopFunction, "gianduja_aggregation_loop_functions");
+REGISTER_LOOP_FUNCTIONS(GiandujaBeaconAggregationLoopFunction, "gianduja_beacon_aggregation_loop_functions");
