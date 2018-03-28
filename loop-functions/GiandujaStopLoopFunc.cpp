@@ -67,10 +67,10 @@ argos::CColor GiandujaStopLoopFunction::GetFloorColor(const argos::CVector2& c_p
   Real d = (m_cCoordSpot1 - vCurrentPoint).Length();
 
   if (d <= m_fRadius) {
-    return CColor::BLACK;
+    return CColor::WHITE;
   }
   if (d <= m_fRadius+0.02) {
-    return CColor::GREEN;
+    return CColor::GRAY50;
   }
 
   // if ( (vCurrentPoint.GetX()<=m_CCoordRect1Pos.GetX()) && (vCurrentPoint.GetX()>=m_CCoordRect2Pos.GetX()) && (vCurrentPoint.GetY()>=m_CCoordRect2Pos.GetY()) && (vCurrentPoint.GetY()<=m_CCoordRect1Pos.GetY()) ) {

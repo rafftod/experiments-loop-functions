@@ -50,12 +50,12 @@ argos::CColor GiandujaAggregationLoopFunction::GetFloorColor(const argos::CVecto
   CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
   Real d = (m_cCoordSpot1 - vCurrentPoint).Length();
   if (d <= m_fRadius) {
-    return CColor::BLACK;
+    return CColor::WHITE;
   }
 
   d = (m_cCoordSpot2 - vCurrentPoint).Length();
   if (d <= m_fRadius) {
-    return CColor::WHITE;
+    return CColor::BLACK;
   }
 
   return CColor::GRAY50;
