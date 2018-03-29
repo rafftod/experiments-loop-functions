@@ -69,9 +69,6 @@ argos::CColor GiandujaStopLoopFunction::GetFloorColor(const argos::CVector2& c_p
   if (d <= m_fRadius) {
     return CColor::WHITE;
   }
-  if (d <= m_fRadius+0.02) {
-    return CColor::GRAY50;
-  }
 
   // if ( (vCurrentPoint.GetX()<=m_CCoordRect1Pos.GetX()) && (vCurrentPoint.GetX()>=m_CCoordRect2Pos.GetX()) && (vCurrentPoint.GetY()>=m_CCoordRect2Pos.GetY()) && (vCurrentPoint.GetY()<=m_CCoordRect1Pos.GetY()) ) {
   //   return CColor::GREEN;
@@ -119,7 +116,7 @@ void GiandujaStopLoopFunction::PostStep() {
         Real fDistanceSpot1 = (m_cCoordSpot1 - cEpuckPosition).Length();
 
         if (m_unState == 0) {
-            if (fDistanceSpot1 <= m_fRadius+0.02) {
+            if (fDistanceSpot1 <= m_fRadius) {
                 un_trigger = 1;
             }
             else if ( fabs(m_tOldPosPoints[pcEpuck].GetX() - cEpuckPosition.GetX()) < 0.0005 && fabs(m_tOldPosPoints[pcEpuck].GetY() - cEpuckPosition.GetY()) < 0.0005) {
