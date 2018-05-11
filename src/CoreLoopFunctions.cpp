@@ -22,6 +22,7 @@ void CoreLoopFunctions::Init(argos::TConfigurationNode& t_tree) {
     cParametersNode = GetNode(t_tree, "params");
     GetNodeAttributeOrDefault(cParametersNode, "number_robots", m_unNumberRobots, (UInt32) 1);
     GetNodeAttributeOrDefault(cParametersNode, "dist_radius", m_fDistributionRadius, (Real) 0);
+    GetNodeAttributeOrDefault(cParametersNode, "controller", m_strController, std::string("automode"));
   } catch(std::exception e) {
     LOGERR << e.what() << std::endl;
   }
@@ -45,15 +46,15 @@ CoreLoopFunctions::~CoreLoopFunctions() {}
 /****************************************/
 
 void CoreLoopFunctions::PositionRobots() {
-  LOG << "PositionRobots " << std::endl;
   CEPuckEntity* pcEpuck;
   bool bPlaced = false;
   UInt32 unTrials;
+  LOG << "[LF INFO] Launching control software \"" << m_strController << "\"" << std::endl;
   for(UInt32 i = 1; i < m_unNumberRobots + 1; ++i) {
     std::ostringstream id;
     id << "epuck" << i;
     pcEpuck = new CEPuckEntity(id.str().c_str(),
-                               "automode",
+                               m_strController,
                                CVector3(0,0,0),
                                CQuaternion().FromEulerAngles(CRadians::ZERO,CRadians::ZERO,CRadians::ZERO));
     AddEntity(*pcEpuck);
@@ -80,7 +81,6 @@ void CoreLoopFunctions::MoveRobots() {
   CEPuckEntity* pcEpuck;
   bool bPlaced = false;
   UInt32 unTrials;
-  LOG << "MoveRobots" << std::endl;
   CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
     pcEpuck = any_cast<CEPuckEntity*>(it->second);

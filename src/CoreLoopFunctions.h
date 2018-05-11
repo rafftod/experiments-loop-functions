@@ -74,6 +74,9 @@ class CoreLoopFunctions: public CLoopFunctions {
      */
     virtual CVector3 GetRandomPosition() = 0;
 
+
+    std::string m_strController;
+
 };
 
 #endif
