@@ -83,7 +83,7 @@ void ForagingTwoSpotsLoopFunction::Reset() {
 /****************************************/
 
 void ForagingTwoSpotsLoopFunction::PostStep() {
-  m_unNumberRobots = 70;
+  m_unNumberRobots = 20;
   if (m_bInitializationStep) {
     m_punFoodData = new UInt32[m_unNumberRobots+1];
     for (UInt32 i = 0; i <= m_unNumberRobots; i++) {
@@ -96,10 +96,7 @@ void ForagingTwoSpotsLoopFunction::PostStep() {
   UInt32 unId;
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
     CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
-    //unId = atoi(pcEpuck->GetId().substr(8, 2).c_str());
-    std::string tmp = pcEpuck->GetId().substr(pcEpuck->GetId().find("_") + 1);
-    //LOG << tmp.substr(tmp.find("_") + 1) << std::endl;
-    unId = atoi(tmp.substr(tmp.find("_") + 1).c_str());
+    unId = atoi(pcEpuck->GetId().substr(5, 2).c_str());
     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                        pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
@@ -109,7 +106,7 @@ void ForagingTwoSpotsLoopFunction::PostStep() {
       m_punFoodData[unId] = 1;
     } else if (fDistanceSpot2 <= m_fRadius){
       m_punFoodData[unId] = 1;
-    } else if (cEpuckPosition.GetY() <= m_fNestLimit) {
+    } else if (cEpuckPosition.GetY() >= m_fNestLimit) {
       m_fObjectiveFunction = m_fObjectiveFunction + m_punFoodData[unId];
       m_punFoodData[unId] = 0;
     }
