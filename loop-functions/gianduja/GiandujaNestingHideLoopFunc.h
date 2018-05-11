@@ -1,7 +1,7 @@
 #ifndef GIANDUJA_NESTING_HIDE_LOOP_FUNC
 #define GIANDUJA_NESTING_HIDE_LOOP_FUNC
 
-#include "../src/CoreLoopFunctions.h"
+#include "../../src/CoreLoopFunctions.h"
 #include <argos3/core/simulator/space/space.h>
 #include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
 #include <argos3/plugins/simulator/entities/box_entity.h>

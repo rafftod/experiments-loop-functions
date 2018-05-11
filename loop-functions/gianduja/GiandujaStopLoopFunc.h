@@ -1,17 +1,17 @@
-#ifndef GIANDUJA_NESTING_LOOP_FUNC
-#define GIANDUJA_NESTING_LOOP_FUNC
+#ifndef GIANDUJA_STOP_LOOP_FUNC
+#define GIANDUJA_STOP_LOOP_FUNC
 
-#include "../src/CoreLoopFunctions.h"
+#include "../../src/CoreLoopFunctions.h"
 #include <argos3/core/simulator/space/space.h>
 #include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
 
 using namespace argos;
 
-class GiandujaNestingLoopFunction: public CoreLoopFunctions {
+class GiandujaStopLoopFunction: public CoreLoopFunctions {
   public:
-    GiandujaNestingLoopFunction();
-    GiandujaNestingLoopFunction(const GiandujaNestingLoopFunction& orig);
-    virtual ~GiandujaNestingLoopFunction();
+    GiandujaStopLoopFunction();
+    GiandujaStopLoopFunction(const GiandujaStopLoopFunction& orig);
+    virtual ~GiandujaStopLoopFunction();
 
     virtual void Destroy();
 
@@ -20,18 +20,20 @@ class GiandujaNestingLoopFunction: public CoreLoopFunctions {
     virtual void PostStep();
     virtual void Init(TConfigurationNode& t_tree);
     virtual void Reset();
-
     virtual CVector3 GetRandomPosition();
 
     Real GetObjectiveFunction();
+
   private:
     Real m_fRadius;
     CVector2 m_cCoordSpot1;
-    CVector2 m_cCoordSpot2;
-    CVector2 m_CCoordRect1;
-    CVector2 m_CCoordRect2;
+    //CVector2 m_CCoordRect1;
+    //CVector2 m_CCoordRect2;
     CVector2 m_CCoordRect2Pos;
     CVector2 m_CCoordRect1Pos;
+
+    typedef std::map<CEPuckEntity*, CVector2 > TOldPosMap;
+    TOldPosMap m_tOldPosPoints;
 
     UInt8 m_unState;
     UInt32 m_unCostI;
