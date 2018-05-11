@@ -1,17 +1,17 @@
-#ifndef GIANDUJA_DECISION_LOOP_FUNC
-#define GIANDUJA_DECISION_LOOP_FUNC
+#ifndef GIANDUJA_NESTING_LOOP_FUNC
+#define GIANDUJA_NESTING_LOOP_FUNC
 
-#include "../src/CoreLoopFunctions.h"
+#include "../../src/CoreLoopFunctions.h"
 #include <argos3/core/simulator/space/space.h>
 #include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
 
 using namespace argos;
 
-class GiandujaDecisionLoopFunction: public CoreLoopFunctions {
+class GiandujaNestingLoopFunction: public CoreLoopFunctions {
   public:
-    GiandujaDecisionLoopFunction();
-    GiandujaDecisionLoopFunction(const GiandujaDecisionLoopFunction& orig);
-    virtual ~GiandujaDecisionLoopFunction();
+    GiandujaNestingLoopFunction();
+    GiandujaNestingLoopFunction(const GiandujaNestingLoopFunction& orig);
+    virtual ~GiandujaNestingLoopFunction();
 
     virtual void Destroy();
 
@@ -27,6 +27,7 @@ class GiandujaDecisionLoopFunction: public CoreLoopFunctions {
   private:
     Real m_fRadius;
     CVector2 m_cCoordSpot1;
+    CVector2 m_cCoordSpot2;
     CVector2 m_CCoordRect1;
     CVector2 m_CCoordRect2;
     CVector2 m_CCoordRect2Pos;
@@ -36,8 +37,6 @@ class GiandujaDecisionLoopFunction: public CoreLoopFunctions {
     UInt32 m_unCostI;
     UInt32 m_unCostO;
     UInt32 m_unTbar;
-    UInt32 m_unDecision;
-    UInt32 m_unPatchParam;
     Real m_fObjectiveFunction;
 };
 
