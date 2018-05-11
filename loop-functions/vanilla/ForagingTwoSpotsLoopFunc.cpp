@@ -29,6 +29,13 @@ ForagingTwoSpotsLoopFunction::ForagingTwoSpotsLoopFunction(const ForagingTwoSpot
 /****************************************/
 /****************************************/
 
+void ForagingTwoSpotsLoopFunction::Init(TConfigurationNode& t_tree) {
+    CoreLoopFunctions::Init(t_tree);
+}
+
+/****************************************/
+/****************************************/
+
 ForagingTwoSpotsLoopFunction::~ForagingTwoSpotsLoopFunction() {}
 
 /****************************************/
