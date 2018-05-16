@@ -74,8 +74,11 @@ class CoreLoopFunctions: public CLoopFunctions {
      */
     virtual CVector3 GetRandomPosition() = 0;
 
-
-    std::string m_strController;
+    /*
+     * Id of controller to be specified in the parameters of the definition
+     * of the loop function in the .argos file.
+     */
+    std::string m_strControllerId;
 
 };
 
