@@ -83,7 +83,7 @@ void ForagingTwoSpotsLoopFunction::Reset() {
 /****************************************/
 
 void ForagingTwoSpotsLoopFunction::PostStep() {
-  m_unNumberRobots = 20;
+  m_unNumberRobots = m_unNumberRobots;
   if (m_bInitializationStep) {
     m_punFoodData = new UInt32[m_unNumberRobots+1];
     for (UInt32 i = 0; i <= m_unNumberRobots; i++) {
@@ -111,7 +111,7 @@ void ForagingTwoSpotsLoopFunction::PostStep() {
       m_punFoodData[unId] = 0;
     }
   }
-  LOG << "Obj " << m_fObjectiveFunction << std::endl;
+  //LOG << "Obj " << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/
@@ -127,7 +127,7 @@ Real ForagingTwoSpotsLoopFunction::GetObjectiveFunction() {
 CVector3 ForagingTwoSpotsLoopFunction::GetRandomPosition() {
   Real temp;
   Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-  Real  b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+  Real b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
   // If b < a, swap them
   if (b < a) {
     temp = a;
