@@ -71,16 +71,13 @@ argos::CColor ForagingTwoSpotsLoopFunction::GetFloorColor(const argos::CVector2&
 /****************************************/
 
 void ForagingTwoSpotsLoopFunction::Reset() {
-  //m_unNumberRobots = 70;
-  CoreLoopFunctions::Reset();
+  std::ios::sync_with_stdio(false);
   m_fObjectiveFunction = 0;
-  if (m_punFoodData != NULL) {
-    for (UInt32 i = 0; i <= m_unNumberRobots; i++) {
-      m_punFoodData[i] = 0;
-    }
-  } else {
-    m_punFoodData = new UInt32[m_unNumberRobots+1];
+  m_punFoodData = new UInt32[m_unNumberRobots+1];
+  for (UInt32 i = m_unNumberRobots; i <= m_unNumberRobots; i++) {
+    m_punFoodData[i] = 0;
   }
+  m_bInitializationStep = true;
 }
 
 /****************************************/
@@ -110,7 +107,7 @@ void ForagingTwoSpotsLoopFunction::PostStep() {
       m_punFoodData[unId] = 1;
     } else if (fDistanceSpot2 <= m_fRadius){
       m_punFoodData[unId] = 1;
-    } else if (cEpuckPosition.GetY() >= m_fNestLimit) {
+    } else if (cEpuckPosition.GetY() <= m_fNestLimit) {
       m_fObjectiveFunction = m_fObjectiveFunction + m_punFoodData[unId];
       m_punFoodData[unId] = 0;
     }
