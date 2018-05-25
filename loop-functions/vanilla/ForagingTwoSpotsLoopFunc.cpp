@@ -18,6 +18,7 @@ ForagingTwoSpotsLoopFunction::ForagingTwoSpotsLoopFunction() {
   m_cCoordSpot2 = CVector2(-0.75,0);
   m_fObjectiveFunction = 0;
   m_bInitializationStep = true;
+  m_punFoodData  = NULL;
 }
 
 /****************************************/
@@ -36,14 +37,14 @@ void ForagingTwoSpotsLoopFunction::Init(TConfigurationNode& t_tree) {
 /****************************************/
 /****************************************/
 
-ForagingTwoSpotsLoopFunction::~ForagingTwoSpotsLoopFunction() {}
-
-/****************************************/
-/****************************************/
-
-void ForagingTwoSpotsLoopFunction::Destroy() {
+ForagingTwoSpotsLoopFunction::~ForagingTwoSpotsLoopFunction() {
   delete[] m_punFoodData;
 }
+
+/****************************************/
+/****************************************/
+
+void ForagingTwoSpotsLoopFunction::Destroy() {}
 
 /****************************************/
 /****************************************/
@@ -72,12 +73,15 @@ argos::CColor ForagingTwoSpotsLoopFunction::GetFloorColor(const argos::CVector2&
 
 void ForagingTwoSpotsLoopFunction::Reset() {
   std::ios::sync_with_stdio(false);
-  m_fObjectiveFunction = 0;
-  m_punFoodData = new UInt32[m_unNumberRobots+1];
+  if (m_punFoodData == NULL) {
+    m_punFoodData = new UInt32[m_unNumberRobots+1];
+  }
   for (UInt32 i = m_unNumberRobots; i <= m_unNumberRobots; i++) {
     m_punFoodData[i] = 0;
   }
-  m_bInitializationStep = true;
+
+  m_fObjectiveFunction = 0;
+  m_bInitializationStep = false;
 }
 
 /****************************************/
