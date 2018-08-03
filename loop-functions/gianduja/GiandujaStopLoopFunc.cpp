@@ -119,13 +119,13 @@ void GiandujaStopLoopFunction::PostStep() {
             if (fDistanceSpot1 <= m_fRadius) {
                 un_trigger = 1;
             }
-            else if ( fabs(m_tOldPosPoints[pcEpuck].GetX() - cEpuckPosition.GetX()) < 0.0005 && fabs(m_tOldPosPoints[pcEpuck].GetY() - cEpuckPosition.GetY()) < 0.0005) {
+            else if ( fabs(m_tOldPosPoints[pcEpuck].GetX() - cEpuckPosition.GetX()) < 0.005 && fabs(m_tOldPosPoints[pcEpuck].GetY() - cEpuckPosition.GetY()) < 0.005) {
                 m_unCostI+=1;
             }
             m_unTbar +=1;
         }
         else if (m_unState == 1) {
-            if ( fabs(m_tOldPosPoints[pcEpuck].GetX() - cEpuckPosition.GetX()) > 0.0005 && fabs(m_tOldPosPoints[pcEpuck].GetY() - cEpuckPosition.GetY()) > 0.0005) {
+            if ( fabs(m_tOldPosPoints[pcEpuck].GetX() - cEpuckPosition.GetX()) > 0.005 && fabs(m_tOldPosPoints[pcEpuck].GetY() - cEpuckPosition.GetY()) > 0.005) {
                 m_unCostO+=1;
             }
         }
