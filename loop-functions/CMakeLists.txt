@@ -23,5 +23,8 @@ target_link_libraries(gianduja_aggregation_loopfunc argos3_demiurge_loop_functio
 add_library(gianduja_stop_loopfunc SHARED GiandujaStopLoopFunc.h GiandujaStopLoopFunc.cpp )
 target_link_libraries(gianduja_aggregation_loopfunc argos3_demiurge_loop_functions)
 
+add_library(gianduja_beacon_aggregation_loopfunc SHARED GiandujaBeaconAggregationLoopFunc.h GiandujaBeaconAggregationLoopFunc.cpp )
+target_link_libraries(gianduja_beacon_aggregation_loopfunc argos3_demiurge_loop_functions)
+
 #add_subdirectory(example)
 #add_subdirectory(chocolate)
