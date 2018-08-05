@@ -9,4 +9,4 @@ link_directories(
 #add_subdirectory(chocolate)
 #add_subdirectory(example)
 add_subdirectory(gianduja)
-add_subdirectory(vanilla)
+#add_subdirectory(vanilla)

@@ -93,20 +93,20 @@ CVector3 GiandujaAggregationLoopFunction::GetRandomPosition() {
 /****************************************/
 
 void GiandujaAggregationLoopFunction::PostStep() {
-    CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
-    CVector2 cEpuckPosition(0,0);
-    for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
-        CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
-        cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
-                         pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
-
-        Real fDistanceSpot1 = (m_cCoordSpot1 - cEpuckPosition).Length();
-        Real fDistanceSpot2 = (m_cCoordSpot2 - cEpuckPosition).Length();
-        if (fDistanceSpot1 >= m_fRadius && fDistanceSpot2 >= m_fRadius) {
-            m_unCostSpot1 += 1;
-        }
-    }
-    m_fObjectiveFunction = (Real) m_unCostSpot1;
+    // CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
+    // CVector2 cEpuckPosition(0,0);
+    // for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
+    //     CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
+    //     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
+    //                      pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+    //
+    //     Real fDistanceSpot1 = (m_cCoordSpot1 - cEpuckPosition).Length();
+    //     Real fDistanceSpot2 = (m_cCoordSpot2 - cEpuckPosition).Length();
+    //     if (fDistanceSpot1 >= m_fRadius && fDistanceSpot2 >= m_fRadius) {
+    //         m_unCostSpot1 += 1;
+    //     }
+    // }
+    // m_fObjectiveFunction = (Real) m_unCostSpot1;
 }
 
 /****************************************/
@@ -131,12 +131,13 @@ void GiandujaAggregationLoopFunction::PostExperiment() {
             unCostPostExp2 += 1;
         }
     }
-    LOG << unCostPostExp1 << ":" << unCostPostExp2 << "::" << m_fObjectiveFunction << ":::" << (m_unNumberRobots - Max(unCostPostExp1,unCostPostExp2))*2400 << std::endl;
-    m_fObjectiveFunction += (m_unNumberRobots - Max(unCostPostExp1,unCostPostExp2))*2400; //(24000/10)
+    //LOG << unCostPostExp1 << ":" << unCostPostExp2 << "::" << m_fObjectiveFunction << ":::" << (m_unNumberRobots - Max(unCostPostExp1,unCostPostExp2))*2400 << std::endl;
+    m_fObjectiveFunction = Max(unCostPostExp1,unCostPostExp2);
+    LOG<< "fit: " << m_fObjectiveFunction << std::endl;
 }
 
 Real GiandujaAggregationLoopFunction::GetObjectiveFunction() {
-  return (72000-m_fObjectiveFunction);
+  return (m_fObjectiveFunction);
 }
 
 REGISTER_LOOP_FUNCTIONS(GiandujaAggregationLoopFunction, "gianduja_aggregation_2spots_loop_functions");
