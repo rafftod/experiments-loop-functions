@@ -77,7 +77,7 @@ void GiandujaBeaconAggregationLoopFunction::ExtractTime() {
         CEPuckEntity& cEntity = dynamic_cast<CEPuckEntity&>(GetSpace().GetEntity("beacon0"));
         CEPuckBeacon& cController = dynamic_cast<CEPuckBeacon&>(cEntity.GetControllableEntity().GetController());
         m_Tbar = cController.getTBar();
-        LOGERR << "Time is: " << m_Tbar << std::endl;
+        LOG << "Time=" << m_Tbar << std::endl;
     } catch (std::exception& ex) {
         LOGERR << "Error while casting ExtractTime: " << ex.what() << std::endl;
     }
@@ -146,10 +146,10 @@ void GiandujaBeaconAggregationLoopFunction::PostStep() {
         Real fDistanceSpot1 = (m_cCoordSpot1 - cEpuckPosition).Length();
 
         if (m_State == 0 && fDistanceSpot1 <= m_fRadius) {
-            m_unCostSpot1 += 1;
+            m_unCostSpot1 += 2;
         }
         else if (m_State == 1 && fDistanceSpot1 >= m_fRadius) {
-            m_unCostSpot1 += 1;
+            m_unCostSpot1 += 2;
         }
     }
     m_fObjectiveFunction = (Real) m_unCostSpot1;
@@ -164,7 +164,11 @@ void GiandujaBeaconAggregationLoopFunction::PostExperiment() {
 }
 
 Real GiandujaBeaconAggregationLoopFunction::GetObjectiveFunction() {
-  return (24000-m_fObjectiveFunction);
+    SInt32 score = 24000-m_fObjectiveFunction;
+    if (score < 0) {
+        score = 0;
+    }
+    return (score);
 }
 
 REGISTER_LOOP_FUNCTIONS(GiandujaBeaconAggregationLoopFunction, "gianduja_beacon_aggregation_loop_functions");
