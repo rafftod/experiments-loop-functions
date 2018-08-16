@@ -77,7 +77,7 @@ void GiandujaBeaconAggregationLoopFunction::ExtractTime() {
         CEPuckEntity& cEntity = dynamic_cast<CEPuckEntity&>(GetSpace().GetEntity("beacon0"));
         CEPuckBeacon& cController = dynamic_cast<CEPuckBeacon&>(cEntity.GetControllableEntity().GetController());
         m_Tbar = cController.getTBar();
-        LOG << "Time=" << m_Tbar << std::endl;
+        //LOG << "Time=" << m_Tbar << std::endl;
     } catch (std::exception& ex) {
         LOGERR << "Error while casting ExtractTime: " << ex.what() << std::endl;
     }
