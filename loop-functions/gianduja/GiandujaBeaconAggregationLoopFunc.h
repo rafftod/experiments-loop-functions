@@ -24,9 +24,8 @@ class GiandujaBeaconAggregationLoopFunction: public CoreLoopFunctions {
     virtual void PostStep();
 
     Real GetObjectiveFunction();
-    void PlaceLight();
-    void ExtractTime();
     void PlaceBeacon();
+    void SetMessageBeacon();
 
     virtual CVector3 GetRandomPosition();
 
@@ -36,9 +35,9 @@ class GiandujaBeaconAggregationLoopFunction: public CoreLoopFunctions {
     CVector2 m_cCoordSpot2;
 
     UInt32 m_unCostSpot1;
-    UInt32 m_Tbar;
-    UInt8 m_State;
     Real m_fObjectiveFunction;
+    UInt32 m_unMesParam;
+    UInt8 m_unMes;
     UInt32 m_unTime;
 };
 
