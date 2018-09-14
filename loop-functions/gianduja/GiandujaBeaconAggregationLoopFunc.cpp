@@ -103,7 +103,12 @@ void GiandujaBeaconAggregationLoopFunction::SetMessageBeacon() {
         CEPuckEntity& cEntity = dynamic_cast<CEPuckEntity&>(GetSpace().GetEntity("beacon0"));
         CEPuckBeacon& cController = dynamic_cast<CEPuckBeacon&>(cEntity.GetControllableEntity().GetController());
         cController.setMessage(m_unMes);
-        //LOG << "Time=" << m_Tbar << std::endl;
+        if (m_unMes==0) {
+            LOG << "Message=" << m_unMes << "blanc" << std::endl;
+        }
+        else if (m_unMes==1) {
+            LOG << "Message=" << m_unMes << "noir"<< std::endl;
+        }
     } catch (std::exception& ex) {
         LOGERR << "Error while casting SetMessageBeacon: " << ex.what() << std::endl;
     }
@@ -154,11 +159,11 @@ void GiandujaBeaconAggregationLoopFunction::PostStep() {
 /****************************************/
 
 void GiandujaBeaconAggregationLoopFunction::PostExperiment() {
-    LOG<< "fit: " << 24000-m_fObjectiveFunction << std::endl;
+    LOG<< "fit: " << 25200-m_fObjectiveFunction << std::endl;
 }
 
 Real GiandujaBeaconAggregationLoopFunction::GetObjectiveFunction() {
-    SInt32 score = 24000-m_fObjectiveFunction;
+    SInt32 score = 25200-m_fObjectiveFunction;
     return (score);
 }
 

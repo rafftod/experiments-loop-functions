@@ -10,7 +10,7 @@ GiandujaBeaconStopLoopFunction::GiandujaBeaconStopLoopFunction() {
   m_CCoordRect1 = CVector2(1.25,-0.5);
 
   m_CCoordRect2Pos = CVector2(-0.8,-1);
-  //m_CCoordRect2 = CVector2(-1.25,-1.25);
+  m_CCoordRect2 = CVector2(-1.25,-1.25);
 
   m_unCostI = 0;
   m_unCostO = 0;
@@ -87,11 +87,11 @@ argos::CColor GiandujaBeaconStopLoopFunction::GetFloorColor(const argos::CVector
 }
 
 
-void GiandujaBeaconAggregationLoopFunction::ExtractTime() {
+void GiandujaBeaconStopLoopFunction::ExtractTime() {
     try {
         CEPuckEntity& cEntity = dynamic_cast<CEPuckEntity&>(GetSpace().GetEntity("beacon0"));
         CEPuckBeacon& cController = dynamic_cast<CEPuckBeacon&>(cEntity.GetControllableEntity().GetController());
-        m_Tbar = cController.getTBar();
+        m_unTbar = cController.getTBar();
         //LOG << "Time=" << m_Tbar << std::endl;
     } catch (std::exception& ex) {
         LOGERR << "Error while casting ExtractTime: " << ex.what() << std::endl;
@@ -159,7 +159,7 @@ void GiandujaBeaconStopLoopFunction::PostStep() {
         }
         else {
             if ( (cEpuckPosition.GetX()<=m_CCoordRect1.GetX()) && (cEpuckPosition.GetX()>=m_CCoordRect2.GetX()) && (cEpuckPosition.GetY()>=m_CCoordRect2.GetY()) && (cEpuckPosition.GetY()<=m_CCoordRect1.GetY()) ) {
-                m_unCostI+=1
+                m_unCostI+=1;
             }
         }
     }
@@ -185,4 +185,4 @@ Real GiandujaBeaconStopLoopFunction::GetObjectiveFunction() {
   return (m_fObjectiveFunction);
 }
 
-REGISTER_LOOP_FUNCTIONS(GiandujaBeaconStopLoopFunction, "gianduja_stop_loop_functions");
+REGISTER_LOOP_FUNCTIONS(GiandujaBeaconStopLoopFunction, "gianduja_beacon_stop_loop_functions");

@@ -5,13 +5,16 @@
 #include <argos3/core/simulator/space/space.h>
 #include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
 
+
+#include "../../../robots-thesis/src/beacon_epuck/epuck_beacon.h"
+
 using namespace argos;
 
 class GiandujaBeaconStopLoopFunction: public CoreLoopFunctions {
   public:
-    GiandujaStopLoopFunction();
-    GiandujaStopLoopFunction(const GiandujaStopLoopFunction& orig);
-    virtual ~GiandujaStopLoopFunction();
+    GiandujaBeaconStopLoopFunction();
+    GiandujaBeaconStopLoopFunction(const GiandujaBeaconStopLoopFunction& orig);
+    virtual ~GiandujaBeaconStopLoopFunction();
 
     virtual void Destroy();
 
@@ -23,12 +26,14 @@ class GiandujaBeaconStopLoopFunction: public CoreLoopFunctions {
     virtual CVector3 GetRandomPosition();
 
     Real GetObjectiveFunction();
+    void PlaceBeacon();
+    void ExtractTime();
 
   private:
     Real m_fRadius;
     CVector2 m_cCoordSpot1;
     CVector2 m_CCoordRect1;
-    //CVector2 m_CCoordRect2;
+    CVector2 m_CCoordRect2;
     CVector2 m_CCoordRect2Pos;
     CVector2 m_CCoordRect1Pos;
 
