@@ -1,55 +1,52 @@
 /**
-  * @file <loop-functions/ForagingTwoSpotsLoopFunc.cpp>
+  * @file <loop-functions/AggregationTwoSpotsLoopFunc.cpp>
   *
   * @author Antoine Ligot - <aligot@ulb.ac.be>
   *
   * @license MIT License
   */
 
-#include "ForagingTwoSpotsLoopFunc.h"
+#include "AggregationTwoSpotsXOR.h"
 
 /****************************************/
 /****************************************/
 
-ForagingTwoSpotsLoopFunction::ForagingTwoSpotsLoopFunction() {
-  m_fRadius = 0.15;
-  m_fNestLimit = -0.6;
-  m_cCoordSpot1 = CVector2(0.75,0);
-  m_cCoordSpot2 = CVector2(-0.75,0);
+AggregationTwoSpotsXOR::AggregationTwoSpotsXOR() {
+  m_fRadius = 0.3;
+  m_cCoordSpot1 = CVector2(0.5,0);
+  m_cCoordSpot2 = CVector2(-0.5,0);
+  m_unScoreSpot1 = 0;
+  m_unScoreSpot2 = 0;
   m_fObjectiveFunction = 0;
-  m_bInitializationStep = true;
-  m_punFoodData  = NULL;
 }
 
 /****************************************/
 /****************************************/
 
-ForagingTwoSpotsLoopFunction::ForagingTwoSpotsLoopFunction(const ForagingTwoSpotsLoopFunction& orig) {
-}
+AggregationTwoSpotsXOR::AggregationTwoSpotsXOR(const AggregationTwoSpotsXOR& orig) {}
 
 /****************************************/
 /****************************************/
 
-void ForagingTwoSpotsLoopFunction::Init(TConfigurationNode& t_tree) {
+void AggregationTwoSpotsXOR::Init(TConfigurationNode& t_tree) {
     CoreLoopFunctions::Init(t_tree);
 }
 
 /****************************************/
 /****************************************/
 
-ForagingTwoSpotsLoopFunction::~ForagingTwoSpotsLoopFunction() {
-  delete[] m_punFoodData;
-}
+
+AggregationTwoSpotsXOR::~AggregationTwoSpotsXOR() {}
 
 /****************************************/
 /****************************************/
 
-void ForagingTwoSpotsLoopFunction::Destroy() {}
+void AggregationTwoSpotsXOR::Destroy() {}
 
 /****************************************/
 /****************************************/
 
-argos::CColor ForagingTwoSpotsLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
+argos::CColor AggregationTwoSpotsXOR::GetFloorColor(const argos::CVector2& c_position_on_plane) {
   CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
   Real d = (m_cCoordSpot1 - vCurrentPoint).Length();
   if (d <= m_fRadius) {
@@ -61,83 +58,58 @@ argos::CColor ForagingTwoSpotsLoopFunction::GetFloorColor(const argos::CVector2&
     return CColor::BLACK;
   }
 
-  if (vCurrentPoint.GetY() > m_fNestLimit)
-    return CColor::GRAY50;
-  else
-    return CColor::WHITE;
+  return CColor::GRAY50;
 }
 
 
 /****************************************/
 /****************************************/
 
-void ForagingTwoSpotsLoopFunction::Reset() {
-  std::ios::sync_with_stdio(false);
-  if (m_punFoodData == NULL) {
-    m_punFoodData = new UInt32[m_unNumberRobots+1];
-  }
-  for (UInt32 i = m_unNumberRobots; i <= m_unNumberRobots; i++) {
-    m_punFoodData[i] = 0;
-  }
-
+void AggregationTwoSpotsXOR::Reset() {
   m_fObjectiveFunction = 0;
-  m_bInitializationStep = false;
+  m_unScoreSpot1 = 0;
+  m_unScoreSpot2 = 0;
+  CoreLoopFunctions::Reset();
 }
 
 /****************************************/
 /****************************************/
 
-void ForagingTwoSpotsLoopFunction::PostStep() {
-  //m_unNumberRobots = 70;
-
-  UInt32 score_temp = m_fObjectiveFunction;
-
-  if (m_bInitializationStep) {
-    m_punFoodData = new UInt32[m_unNumberRobots+1];
-    for (UInt32 i = 0; i <= m_unNumberRobots; i++) {
-      m_punFoodData[i] = 0;
-    }
-    m_bInitializationStep = false;
-  }
+void AggregationTwoSpotsXOR::PostExperiment() {
   CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   CVector2 cEpuckPosition(0,0);
-  UInt32 unId;
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
     CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
-    unId = atoi(pcEpuck->GetId().substr(5, 2).c_str());
     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                        pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
     Real fDistanceSpot1 = (m_cCoordSpot1 - cEpuckPosition).Length();
     Real fDistanceSpot2 = (m_cCoordSpot2 - cEpuckPosition).Length();
     if (fDistanceSpot1 <= m_fRadius) {
-      m_punFoodData[unId] = 1;
+      m_unScoreSpot1 += 1;
     } else if (fDistanceSpot2 <= m_fRadius){
-      m_punFoodData[unId] = 1;
-    } else if (cEpuckPosition.GetY() <= m_fNestLimit) {
-      m_fObjectiveFunction = m_fObjectiveFunction + m_punFoodData[unId];
-      m_punFoodData[unId] = 0;
+      m_unScoreSpot2 += 1;
     }
   }
-  if (score_temp != m_fObjectiveFunction) {
-    LOGERR << "Obj " << m_fObjectiveFunction << std::endl;
-  }
+
+  m_fObjectiveFunction = Max(m_unScoreSpot1, m_unScoreSpot2)/(Real) m_unNumberRobots;
+  LOG << "Score = " << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/
 /****************************************/
 
-Real ForagingTwoSpotsLoopFunction::GetObjectiveFunction() {
+Real AggregationTwoSpotsXOR::GetObjectiveFunction() {
   return m_fObjectiveFunction;
 }
 
 /****************************************/
 /****************************************/
 
-CVector3 ForagingTwoSpotsLoopFunction::GetRandomPosition() {
+CVector3 AggregationTwoSpotsXOR::GetRandomPosition() {
   Real temp;
   Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-  Real b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+  Real  b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
   // If b < a, swap them
   if (b < a) {
     temp = a;
@@ -150,4 +122,4 @@ CVector3 ForagingTwoSpotsLoopFunction::GetRandomPosition() {
   return CVector3(fPosX, fPosY, 0);
 }
 
-REGISTER_LOOP_FUNCTIONS(ForagingTwoSpotsLoopFunction, "foraging_loop_functions");
+REGISTER_LOOP_FUNCTIONS(AggregationTwoSpotsXOR, "aggregation_xor");
