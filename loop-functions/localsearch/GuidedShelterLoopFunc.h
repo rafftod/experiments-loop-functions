@@ -14,6 +14,10 @@
 #include "../../src/CoreLoopFunctions.h"
 #include <argos3/core/simulator/space/space.h>
 #include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
+#include <argos3/plugins/simulator/entities/light_entity.h>
+#include <argos3/plugins/simulator/entities/box_entity.h>
+#include <argos3/core/simulator/entity/entity.h>
+#include <argos3/core/utility/string_utilities.h>
 
 using namespace argos;
 
@@ -27,6 +31,7 @@ class GuidedShelterLoopFunc: public CoreLoopFunctions {
     virtual void Reset();
 
     virtual argos::CColor GetFloorColor(const argos::CVector2& c_position_on_plane);
+    virtual void Init(TConfigurationNode& t_tree);
     virtual void PostStep();
     virtual void PostExperiment();
 
@@ -39,6 +44,13 @@ class GuidedShelterLoopFunc: public CoreLoopFunctions {
     virtual CVector3 GetRandomPosition();
 
   private:
+
+    void GetLightPosition();
+
+    Real m_fDepth;
+    Real m_fWidth;
+    CVector2 m_cLightPosition;
+
     Real m_fRadius;
     CVector2 m_cCoordBlackSpot;
     CVector2 m_cCoordWhiteSpot;
