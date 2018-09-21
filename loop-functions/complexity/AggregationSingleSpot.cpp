@@ -64,6 +64,7 @@ void AggregationSingleSpot::Reset() {
   CoreLoopFunctions::Reset();
 }
 
+
 /****************************************/
 /****************************************/
 
