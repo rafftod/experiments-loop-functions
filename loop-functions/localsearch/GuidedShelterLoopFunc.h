@@ -1,5 +1,5 @@
 /**
-  * @file <loop-functions/example/AggregationWhiteAndBlackLoopFunc.h>
+  * @file <loop-functions/example/GuidedShelter.h>
   *
   * @author Jonas Kuckling - <jonas.kuckling@ulb.ac.be>
   *
@@ -17,11 +17,11 @@
 
 using namespace argos;
 
-class AggregationWhiteAndBlackLoopFunc: public CoreLoopFunctions {
+class GuidedShelterLoopFunc: public CoreLoopFunctions {
   public:
-    AggregationWhiteAndBlackLoopFunc();
-    AggregationWhiteAndBlackLoopFunc(const AggregationWhiteAndBlackLoopFunc& orig);
-    virtual ~AggregationWhiteAndBlackLoopFunc();
+    GuidedShelterLoopFunc();
+    GuidedShelterLoopFunc(const GuidedShelterLoopFunc& orig);
+    virtual ~GuidedShelterLoopFunc();
 
     virtual void Destroy();
     virtual void Reset();

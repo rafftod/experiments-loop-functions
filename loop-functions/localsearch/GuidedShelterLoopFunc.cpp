@@ -1,5 +1,5 @@
 /**
-  * @file <loop-functions/example/AggregationWhiteAndBlackLoopFunc.cpp>
+  * @file <loop-functions/example/GuidedShelter.cpp>
   *
   * @author Jonas Kuckling - <jonas.kuckling@ulb.ac.be>
   *
@@ -8,12 +8,12 @@
   * @license MIT License
   */
 
-#include "AggregationWhiteAndBlackLoopFunc.h"
+#include "GuidedShelterLoopFunc.h"
 
 /****************************************/
 /****************************************/
 
-AggregationWhiteAndBlackLoopFunc::AggregationWhiteAndBlackLoopFunc() {
+GuidedShelterLoopFunc::GuidedShelterLoopFunc() {
   m_fRadius = 0.3;
   m_cCoordBlackSpot = CVector2(0.5,0);
   m_cCoordWhiteSpot = CVector2(-0.5, 0);
@@ -24,22 +24,22 @@ AggregationWhiteAndBlackLoopFunc::AggregationWhiteAndBlackLoopFunc() {
 /****************************************/
 /****************************************/
 
-AggregationWhiteAndBlackLoopFunc::AggregationWhiteAndBlackLoopFunc(const AggregationWhiteAndBlackLoopFunc& orig) {}
+GuidedShelterLoopFunc::GuidedShelterLoopFunc(const GuidedShelterLoopFunc& orig) {}
 
 /****************************************/
 /****************************************/
 
-AggregationWhiteAndBlackLoopFunc::~AggregationWhiteAndBlackLoopFunc() {}
+GuidedShelterLoopFunc::~GuidedShelterLoopFunc() {}
 
 /****************************************/
 /****************************************/
 
-void AggregationWhiteAndBlackLoopFunc::Destroy() {}
+void GuidedShelterLoopFunc::Destroy() {}
 
 /****************************************/
 /****************************************/
 
-void AggregationWhiteAndBlackLoopFunc::Reset() {
+void GuidedShelterLoopFunc::Reset() {
   m_fObjectiveFunction = 0;
   m_unScoreSpot = 0;
   CoreLoopFunctions::Reset();
@@ -49,7 +49,7 @@ void AggregationWhiteAndBlackLoopFunc::Reset() {
 /****************************************/
 /****************************************/
 
-argos::CColor AggregationWhiteAndBlackLoopFunc::GetFloorColor(const argos::CVector2& c_position_on_plane) {
+argos::CColor GuidedShelterLoopFunc::GetFloorColor(const argos::CVector2& c_position_on_plane) {
   CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
   Real d = (m_cCoordBlackSpot - vCurrentPoint).Length();
   if (d <= m_fRadius) {
@@ -66,7 +66,7 @@ argos::CColor AggregationWhiteAndBlackLoopFunc::GetFloorColor(const argos::CVect
 /****************************************/
 /****************************************/
 
-void AggregationWhiteAndBlackLoopFunc::PostStep() {
+void GuidedShelterLoopFunc::PostStep() {
     m_unScoreSpot = 0;
     CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
     CVector2 cEpuckPosition(0,0);
@@ -86,7 +86,7 @@ void AggregationWhiteAndBlackLoopFunc::PostStep() {
 /****************************************/
 /****************************************/
 
-void AggregationWhiteAndBlackLoopFunc::PostExperiment() {
+void GuidedShelterLoopFunc::PostExperiment() {
   // TODO: Maybe normalize by the execution time?
   LOG << m_fObjectiveFunction << std::endl;
 }
@@ -95,14 +95,14 @@ void AggregationWhiteAndBlackLoopFunc::PostExperiment() {
 /****************************************/
 /****************************************/
 
-Real AggregationWhiteAndBlackLoopFunc::GetObjectiveFunction() {
+Real GuidedShelterLoopFunc::GetObjectiveFunction() {
   return m_fObjectiveFunction;
 }
 
 /****************************************/
 /****************************************/
 
-CVector3 AggregationWhiteAndBlackLoopFunc::GetRandomPosition() {
+CVector3 GuidedShelterLoopFunc::GetRandomPosition() {
   Real a;
   Real b;
   Real temp;
@@ -120,4 +120,4 @@ CVector3 AggregationWhiteAndBlackLoopFunc::GetRandomPosition() {
   return CVector3(fPosX, fPosY, 0);
 }
 
-REGISTER_LOOP_FUNCTIONS(AggregationWhiteAndBlackLoopFunc, "aggregation_white_and_black_loopfunc");
+REGISTER_LOOP_FUNCTIONS(GuidedShelterLoopFunc, "guided_shelter_loopfunc");
