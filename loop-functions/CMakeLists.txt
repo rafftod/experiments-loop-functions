@@ -10,6 +10,7 @@ link_directories(
 #add_subdirectory(gianduja)
 add_subdirectory(complexity)
 add_subdirectory(vanilla)
-add_subdirectory(extra)
+# add_subdirectory(extra)
 add_subdirectory(visual-add-ons)
 #add_subdirectory(debug)
+add_subdirectory(localsearch)
