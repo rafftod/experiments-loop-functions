@@ -63,8 +63,6 @@ void GuidedShelterLoopFunc::Init(TConfigurationNode& t_tree) {
             else {
                 newBoxPosition.Set(-m_fWidth/2, yPos, 0);
             }
-            LOG << pcBox->GetId() << std::endl;
-            LOG << newBoxPosition.GetX() << " " << newBoxPosition.GetY() << " " << newBoxPosition.GetZ() << " " << std::endl;
             MoveEntity((*pcBox).GetEmbodiedEntity(), newBoxPosition, pcBox->GetEmbodiedEntity().GetOriginAnchor().Orientation);
         }
     }
@@ -133,9 +131,14 @@ void GuidedShelterLoopFunc::PostStep() {
         cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                            pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
-        Real fDistanceSpot = (m_cCoordBlackSpot - cEpuckPosition).Length();
-        if (fDistanceSpot <= m_fRadius) {
-            m_unScoreSpot += 1;
+        Real shelter_y_limit = -(1.231 - m_fDepth);
+        Real shelter_x_limit = m_fWidth/2;
+        //calculate the black area
+        if (cEpuckPosition.GetY() < shelter_y_limit) {
+            if ((cEpuckPosition.GetX() > -shelter_x_limit) && (cEpuckPosition.GetX() < shelter_x_limit)) {
+                m_unScoreSpot++;
+                // LOG << "Robot is in goal" << std::endl;
+            }
         }
     }
     m_fObjectiveFunction += m_unScoreSpot / (Real) m_unNumberRobots;
