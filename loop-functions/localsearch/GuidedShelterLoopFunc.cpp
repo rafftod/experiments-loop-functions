@@ -56,7 +56,7 @@ void GuidedShelterLoopFunc::Init(TConfigurationNode& t_tree) {
             //TODO: At the moment the box occupies half of its width in the target zone. Maybe we need to change that.
             //TODO: For that, change the yPos to also respect the size of the pcBox
             CVector3 newBoxPosition(0,0,0);
-            Real yPos = -(1.231 - m_fDepth/2);
+            Real yPos = -(ARENA_DEPTH - m_fDepth/2);
             if(MatchPattern(pcBox->GetId(), "shelter_wall_1")) {
                 newBoxPosition.Set(m_fWidth/2, yPos, 0);
             }
@@ -79,9 +79,56 @@ void GuidedShelterLoopFunc::GetLightPosition() {
         CLightEntity *pcLight = any_cast<CLightEntity*>(it->second);
         m_cLightPosition.Set(pcLight->GetPosition().GetX(),
                            pcLight->GetPosition().GetY());
-        // LOG << "Light is at " << m_cLightPosition.GetX() << " " << m_cLightPosition.GetY() << std::endl;
+        LOG << "Light is at " << m_cLightPosition.GetX() << " " << m_cLightPosition.GetY() << std::endl;
     }
 }
+
+bool GuidedShelterLoopFunc::PointIsInBlackArea(CVector2 point) {
+    Real shelter_y_limit = -(ARENA_DEPTH - m_fDepth);
+    Real shelter_x_limit = m_fWidth/2;
+
+    if (point.GetY() < shelter_y_limit) {
+        if ((point.GetX() > -shelter_x_limit) && (point.GetX() < shelter_x_limit)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    return false;
+}
+
+bool GuidedShelterLoopFunc::PointIsInWhiteArea(CVector2 point) {
+    Real shelter_y_limit = -(ARENA_DEPTH - m_fDepth);
+    Real shelter_x_limit = m_fWidth/2;
+    //TODO: Get the real light position here. For some reason it is broken though.
+    Real lX = 0; // m_cLightPosition.GetX();
+    Real lY = -1.25; // m_cLightPosition.GetY();
+    Real p1X = -m_fWidth/2;
+    Real p1Y = shelter_y_limit;
+    Real p2X = m_fWidth/2;
+    Real p2Y = shelter_y_limit;
+
+    if (point.GetY() >= shelter_y_limit) {
+        if (
+            (point.GetY() > // point.GetY() > g1(point.X())
+                            ((p1Y-lY)/(p1X-lX))*point.GetX() // slope * x
+                            + ((p1X*lY)-(p1Y*lX))/(p1X-lX) // x-intercept
+            )
+            &&
+            (point.GetY() > // point.GetY() > g2(point.X())
+                            ((lY-p2Y)/(lX-p2X))*point.GetX() // slope * x
+                            + ((lX*p2Y)-(lY*p2X))/(lX-p2X) // x-intercept
+            )
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    return false;
+}
+
+
 
 /****************************************/
 /****************************************/
@@ -100,23 +147,15 @@ argos::CColor GuidedShelterLoopFunc::GetFloorColor(const argos::CVector2& c_posi
 
   //TODO: Check it's in the arena bounds
 
-  Real shelter_y_limit = -(1.231 - m_fDepth);
-  Real shelter_x_limit = m_fWidth/2;
   //calculate the black area
-  if (vCurrentPoint.GetY() < shelter_y_limit) {
-      if ((vCurrentPoint.GetX() > -shelter_x_limit) && (vCurrentPoint.GetX() < shelter_x_limit)) {
-        return CColor::BLACK;
-      } else {
-        return CColor::GRAY50;
-      }
+  if (PointIsInBlackArea(vCurrentPoint)) {
+      return CColor::BLACK;
   }
   //calculate the white area
-  //TODO: Projection towards the light
-  if ((vCurrentPoint.GetX() > -shelter_x_limit) && (vCurrentPoint.GetX() < shelter_x_limit)) {
+  if (PointIsInWhiteArea(vCurrentPoint)) {
       return CColor::WHITE;
-  } else {
-      return CColor::GRAY50;
   }
+  return CColor::GRAY50;
 }
 
 /****************************************/

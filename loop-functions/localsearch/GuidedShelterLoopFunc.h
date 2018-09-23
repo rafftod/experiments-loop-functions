@@ -46,10 +46,13 @@ class GuidedShelterLoopFunc: public CoreLoopFunctions {
   private:
 
     void GetLightPosition();
+    bool PointIsInBlackArea(CVector2 point);
+    bool PointIsInWhiteArea(CVector2 point);
 
     Real m_fDepth;
     Real m_fWidth;
     CVector2 m_cLightPosition;
+    const Real ARENA_DEPTH = 1.231;
 
     Real m_fRadius;
     CVector2 m_cCoordBlackSpot;
