@@ -13,7 +13,8 @@
   <!-- ****************** -->
   <loop_functions library="/home/jkuckling/AutoMoDe-loopfunctions/build/loop-functions/localsearch/libguided_shelter_loopfunc.so"
    label="guided_shelter_loopfunc">
-   <params dist_radius="1.2" number_robots="20" w="0.5" d="0.3"/>
+   <!-- The params need to match the position of the shelter walls -->
+   <params dist_radius="1.2" number_robots="20" w="0.6" d="0.3"/>
   </loop_functions>
 
   <!-- *************** -->
@@ -53,12 +54,12 @@
   <!-- ARGoS requires at least one light when using the light sensor -->
   <light id="light" position="0,-1.25,0.75" orientation="0,0,0" color="yellow" intensity="5.0" medium="leds"/>
 
-  <!--Walls for the shelter. Will be adjusted by the loopfunction but need to be declared here-->
-  <box id="shelter_wall_1" size="0,0,0" movable="false">
-    <body position="-0.5,-1,0" orientation="0,0,0"/>
+  <!--Walls for the shelter. Need to match the param values from the controller -->
+  <box id="shelter_wall_1" size="0.01,0.3,0.08" movable="false">
+    <body position="-0.3,-11.081,0" orientation="0,0,0"/>
   </box>
-  <box id="shelter_wall_2" size="0,0,0" movable="false">
-    <body position="0.5,-1,0" orientation="0,0,0"/>
+  <box id="shelter_wall_2" size="0.01,0.3,0.08" movable="false">
+    <body position="0.3,-1.081,0" orientation="0,0,0"/>
   </box>
 
   <!--Dodecagonal arena with side of length .66-->

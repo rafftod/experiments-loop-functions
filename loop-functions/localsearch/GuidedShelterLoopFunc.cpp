@@ -46,12 +46,13 @@ void GuidedShelterLoopFunc::Init(TConfigurationNode& t_tree) {
     } catch(std::exception e) {
         LOGERR << e.what() << std::endl;
     }
-    CSpace::TMapPerType& tBoxMap = GetSpace().GetEntitiesByType("box");
+    /*CSpace::TMapPerType& tBoxMap = GetSpace().GetEntitiesByType("box");
     for (CSpace::TMapPerType::iterator it = tBoxMap.begin(); it != tBoxMap.end(); ++it) {
         CBoxEntity *pcBox = any_cast<CBoxEntity *>(it->second);
         if(MatchPattern(pcBox->GetId(), "shelter_wall")) {
             CVector3 newBoxSize(0.01, m_fDepth, 0.08);
             pcBox->SetSize(newBoxSize); // TODO: Check if this breaks the bounding box
+            pcBox->GetEmbodiedEntity().CalculateBoundingBox();
 
             //TODO: At the moment the box occupies half of its width in the target zone. Maybe we need to change that.
             //TODO: For that, change the yPos to also respect the size of the pcBox
@@ -66,6 +67,7 @@ void GuidedShelterLoopFunc::Init(TConfigurationNode& t_tree) {
             MoveEntity((*pcBox).GetEmbodiedEntity(), newBoxPosition, pcBox->GetEmbodiedEntity().GetOriginAnchor().Orientation);
         }
     }
+    */
     // Get the light position once
     GetLightPosition();
     CoreLoopFunctions::Init(t_tree);
@@ -100,6 +102,7 @@ bool GuidedShelterLoopFunc::PointIsInBlackArea(CVector2 point) {
 bool GuidedShelterLoopFunc::PointIsInWhiteArea(CVector2 point) {
     Real shelter_y_limit = -(ARENA_DEPTH - m_fDepth);
     Real shelter_x_limit = m_fWidth/2;
+    /*
     //TODO: Get the real light position here. For some reason it is broken though.
     Real lX = 0; // m_cLightPosition.GetX();
     Real lY = -1.25; // m_cLightPosition.GetY();
@@ -123,6 +126,13 @@ bool GuidedShelterLoopFunc::PointIsInWhiteArea(CVector2 point) {
             return true;
         } else {
             return false;
+        }
+    }
+    return false;
+    */
+    if (point.GetY() >= shelter_y_limit) {
+        if ((point.GetX() >= -shelter_x_limit) && (point.GetX() <= shelter_x_limit)) {
+            return true;
         }
     }
     return false;
