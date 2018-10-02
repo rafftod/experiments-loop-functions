@@ -43,6 +43,7 @@ void GuidedShelterLoopFunc::Init(TConfigurationNode& t_tree) {
         cParametersNode = GetNode(t_tree, "params");
         GetNodeAttributeOrDefault(cParametersNode, "w", m_fWidth, (Real) 0);
         GetNodeAttributeOrDefault(cParametersNode, "d", m_fDepth, (Real) 0);
+        GetNodeAttributeOrDefault(cParametersNode, "o", m_fOffset, (Real) 0);
     } catch(std::exception e) {
         LOGERR << e.what() << std::endl;
     }
@@ -86,7 +87,7 @@ void GuidedShelterLoopFunc::GetLightPosition() {
 }
 
 bool GuidedShelterLoopFunc::PointIsInBlackArea(CVector2 point) {
-    Real shelter_y_limit = -(ARENA_DEPTH - m_fDepth);
+    Real shelter_y_limit = -(ARENA_DEPTH - m_fOffset - m_fDepth);
     Real shelter_x_limit = m_fWidth/2;
 
     if (point.GetY() < shelter_y_limit) {
@@ -100,9 +101,8 @@ bool GuidedShelterLoopFunc::PointIsInBlackArea(CVector2 point) {
 }
 
 bool GuidedShelterLoopFunc::PointIsInWhiteArea(CVector2 point) {
-    Real shelter_y_limit = -(ARENA_DEPTH - m_fDepth);
+    Real shelter_y_limit = -(ARENA_DEPTH - m_fOffset - m_fDepth);
     Real shelter_x_limit = m_fWidth/2;
-    /*
     //TODO: Get the real light position here. For some reason it is broken though.
     Real lX = 0; // m_cLightPosition.GetX();
     Real lY = -1.25; // m_cLightPosition.GetY();
@@ -129,13 +129,14 @@ bool GuidedShelterLoopFunc::PointIsInWhiteArea(CVector2 point) {
         }
     }
     return false;
-    */
+    /*
     if (point.GetY() >= shelter_y_limit) {
         if ((point.GetX() >= -shelter_x_limit) && (point.GetX() <= shelter_x_limit)) {
             return true;
         }
     }
     return false;
+    */
 }
 
 
@@ -156,6 +157,12 @@ argos::CColor GuidedShelterLoopFunc::GetFloorColor(const argos::CVector2& c_posi
   CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
 
   //TODO: Check it's in the arena bounds
+
+  Real offset_limit = -ARENA_DEPTH + m_fOffset;
+  // the point is behind the shelter
+  if (vCurrentPoint.GetY() <= offset_limit) {
+    return CColor::GRAY50;
+  }
 
   //calculate the black area
   if (PointIsInBlackArea(vCurrentPoint)) {

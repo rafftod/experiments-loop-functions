@@ -14,7 +14,7 @@
   <loop_functions library="/home/jkuckling/AutoMoDe-loopfunctions/build/loop-functions/localsearch/libguided_shelter_loopfunc.so"
    label="guided_shelter_loopfunc">
    <!-- The params need to match the position of the shelter walls -->
-   <params dist_radius="1.2" number_robots="20" w="0.6" d="0.3"/>
+   <params dist_radius="1.2" number_robots="20" w="0.6" d="0.4" o="0"/>
   </loop_functions>
 
   <!-- *************** -->

@@ -14,7 +14,7 @@
   <loop_functions library="/home/jkuckling/AutoMoDe-loopfunctions/build/loop-functions/localsearch/libguided_shelter_loopfunc.so"
    label="guided_shelter_loopfunc">
    <!-- The params need to match the position of the shelter walls -->
-   <params dist_radius="1.2" number_robots="20" w="0.6" d="0.6"/>
+   <params dist_radius="1.2" number_robots="20" w="0.6" d="0.6" o="0.3"/>
   </loop_functions>
 
   <!-- *************** -->
@@ -55,11 +55,24 @@
   <light id="light" position="0,-1.25,0.75" orientation="0,0,0" color="yellow" intensity="5.0" medium="leds"/>
 
   <!--Walls for the shelter. Need to match the param values from the controller -->
-  <box id="shelter_wall_1" size="0.01,0.6,0.08" movable="false">
-    <body position="-0.3,-0.931,0" orientation="0,0,0"/>
+  <!--
+    AD (ARENA_DEPTH) = 1.231
+    w (width) = parameter
+    d (depth) = parameter
+    o (offset) = parameter
+  -->
+  <!--The size for the border walls is (0.01,d,0.08)-->
+  <!--The position for the border walls is (+/- w/2,-AD+o+d/2,0)-->
+  <box id="shelter_wall_left" size="0.01,0.4,0.08" movable="false">
+    <body position="-0.3,-0.731,0" orientation="0,0,0"/>
   </box>
-  <box id="shelter_wall_2" size="0.01,0.6,0.08" movable="false">
-    <body position="0.3,-0.931,0" orientation="0,0,0"/>
+  <box id="shelter_wall_right" size="0.01,0.4,0.08" movable="false">
+    <body position="0.3,-0.731,0" orientation="0,0,0"/>
+  </box>
+  <!--The size for the back wall is (0.01,w,0.08)-->
+  <!--The position for the back wall is (0,-AD+o,0)-->
+  <box id="shelter_wall_back" size="0.01,0.6,0.08" movable="false">
+    <body position="0,-0.931,0" orientation="90,0,0"/>
   </box>
 
   <!--Dodecagonal arena with side of length .66-->

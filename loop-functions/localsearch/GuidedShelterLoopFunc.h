@@ -51,6 +51,7 @@ class GuidedShelterLoopFunc: public CoreLoopFunctions {
 
     Real m_fDepth;
     Real m_fWidth;
+    Real m_fOffset;
     CVector2 m_cLightPosition;
     static const Real ARENA_DEPTH = 1.231;
 
