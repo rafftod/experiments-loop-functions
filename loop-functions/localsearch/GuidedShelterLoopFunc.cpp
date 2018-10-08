@@ -186,12 +186,10 @@ void GuidedShelterLoopFunc::PostStep() {
         CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
         cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                            pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
-
-        Real shelter_y_limit = -(1.231 - m_fDepth);
-        Real shelter_x_limit = m_fWidth/2;
-        //calculate the black area
-        if (cEpuckPosition.GetY() < shelter_y_limit) {
-            if ((cEpuckPosition.GetX() > -shelter_x_limit) && (cEpuckPosition.GetX() < shelter_x_limit)) {
+        Real offset_limit = -ARENA_DEPTH + m_fOffset;
+        // the point is not behind the shelter
+        if (cEpuckPosition.GetY() >= offset_limit) {
+            if (PointIsInBlackArea(cEpuckPosition)) {
                 m_unScoreSpot++;
                 // LOG << "Robot is in goal" << std::endl;
             }
