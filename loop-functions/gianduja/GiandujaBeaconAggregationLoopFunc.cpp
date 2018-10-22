@@ -8,6 +8,7 @@ GiandujaBeaconAggregationLoopFunction::GiandujaBeaconAggregationLoopFunction() {
   m_cCoordSpot1 = CVector2(0.5,0.5);
   m_cCoordSpot2 = CVector2(-0.5,0.5);
   m_unCostSpot1 = 0;
+  m_unCostSpot2 = 0;
   m_fObjectiveFunction = 0;
   m_unTime = 0;
   m_unMesParam = 0;
@@ -131,34 +132,6 @@ CVector3 GiandujaBeaconAggregationLoopFunction::GetRandomPosition() {
 /****************************************/
 
 void GiandujaBeaconAggregationLoopFunction::PostStep() {
-    // CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
-    // CVector2 cEpuckPosition(0,0);
-    //
-    // for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
-    //     CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
-    //     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
-    //                      pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
-    //
-    //     Real fDistanceSpot;
-    //     if (m_unMes == 0) {
-    //         fDistanceSpot = (m_cCoordSpot1 - cEpuckPosition).Length();
-    //     }
-    //     else if (m_unMes == 1) {
-    //         fDistanceSpot = (m_cCoordSpot2 - cEpuckPosition).Length();
-    //     }
-    //
-    //     if (fDistanceSpot >= m_fRadius) {
-    //         m_unCostSpot1 += 1;
-    //     }
-    // }
-    // m_fObjectiveFunction = (Real) m_unCostSpot1;
-    // m_unTime+=1;
-}
-
-/****************************************/
-/****************************************/
-
-void GiandujaBeaconAggregationLoopFunction::PostExperiment() {
     CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
     CVector2 cEpuckPosition(0,0);
 
@@ -175,18 +148,58 @@ void GiandujaBeaconAggregationLoopFunction::PostExperiment() {
             fDistanceSpot = (m_cCoordSpot2 - cEpuckPosition).Length();
         }
 
-        if (fDistanceSpot <= m_fRadius) {
+        if (fDistanceSpot >= m_fRadius) {
             m_unCostSpot1 += 1;
         }
     }
     m_fObjectiveFunction = (Real) m_unCostSpot1;
+    m_unTime+=1;
+}
 
+/****************************************/
+/****************************************/
+
+void GiandujaBeaconAggregationLoopFunction::PostExperiment() {
+    // CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
+    // CVector2 cEpuckPosition(0,0);
+    //
+    // for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
+    //     CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
+    //     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
+    //                      pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+    //
+    //     Real fDistanceSpot1;
+    //     Real fDistanceSpot2;
+    //     if (m_unMes == 0) {
+    //         fDistanceSpot1 = (m_cCoordSpot1 - cEpuckPosition).Length();
+    //         fDistanceSpot2 = (m_cCoordSpot2 - cEpuckPosition).Length();
+    //     }
+    //     else if (m_unMes == 1) {
+    //         fDistanceSpot1 = (m_cCoordSpot2 - cEpuckPosition).Length();
+    //         fDistanceSpot2 = (m_cCoordSpot1 - cEpuckPosition).Length();
+    //     }
+    //
+    //     if (fDistanceSpot1 <= m_fRadius) {
+    //         m_unCostSpot1 += 1;
+    //     }
+    //     if ( fDistanceSpot2 <= m_fRadius ) {
+    //         m_unCostSpot2 += 1;
+    //     }
+    // }
+    //
+    // LOG << "1:" << m_unCostSpot1 << " 2:" << m_unCostSpot2 << std::endl;
+    // Real score = m_unCostSpot1 - m_unCostSpot2;
+    // if (score < 0) {
+    //     score = 0;
+    // }
+    // m_fObjectiveFunction = (Real) score ;
+
+    m_fObjectiveFunction = (Real) 25201 - (m_unCostSpot1);
     LOG<< "fit: " << m_fObjectiveFunction << std::endl;
 }
 
 Real GiandujaBeaconAggregationLoopFunction::GetObjectiveFunction() {
-    SInt32 score = m_fObjectiveFunction;
-    return (score);
+    return m_fObjectiveFunction;
 }
 
 REGISTER_LOOP_FUNCTIONS(GiandujaBeaconAggregationLoopFunction, "gianduja_beacon_aggregation_loop_functions");

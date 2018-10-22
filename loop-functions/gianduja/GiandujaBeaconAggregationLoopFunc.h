@@ -34,7 +34,8 @@ class GiandujaBeaconAggregationLoopFunction: public CoreLoopFunctions {
     CVector2 m_cCoordSpot1;
     CVector2 m_cCoordSpot2;
 
-    UInt32 m_unCostSpot1;
+    SInt32 m_unCostSpot1;
+    SInt32 m_unCostSpot2;
     Real m_fObjectiveFunction;
     UInt32 m_unMesParam;
     UInt8 m_unMes;

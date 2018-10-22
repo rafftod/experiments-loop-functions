@@ -119,13 +119,13 @@ void GiandujaStopLoopFunction::PostStep() {
             if (fDistanceSpot1 <= m_fRadius) {
                 un_trigger = 1;
             }
-            else if ( fabs(m_tOldPosPoints[pcEpuck].GetX() - cEpuckPosition.GetX()) < 0.005 && fabs(m_tOldPosPoints[pcEpuck].GetY() - cEpuckPosition.GetY()) < 0.005) {
+            else if ( fabs(m_tOldPosPoints[pcEpuck].GetX() - cEpuckPosition.GetX()) < 0.0005 && fabs(m_tOldPosPoints[pcEpuck].GetY() - cEpuckPosition.GetY()) < 0.0005) {
                 m_unCostI+=1;
             }
             m_unTbar +=1;
         }
         else if (m_unState == 1) {
-            if ( fabs(m_tOldPosPoints[pcEpuck].GetX() - cEpuckPosition.GetX()) > 0.005 && fabs(m_tOldPosPoints[pcEpuck].GetY() - cEpuckPosition.GetY()) > 0.005) {
+            if ( fabs(m_tOldPosPoints[pcEpuck].GetX() - cEpuckPosition.GetX()) > 0.0005 && fabs(m_tOldPosPoints[pcEpuck].GetY() - cEpuckPosition.GetY()) > 0.0005) {
                 m_unCostO+=1;
             }
         }
@@ -134,7 +134,7 @@ void GiandujaStopLoopFunction::PostStep() {
 
     if (m_unState == 0 && un_trigger == 1) {
         m_unState = 1;
-        LOG << "Found Spot, triggering." << std::endl;
+        LOG << "Found Spot, triggering, t:"<< m_unTbar << std::endl;
     }
 
 }
