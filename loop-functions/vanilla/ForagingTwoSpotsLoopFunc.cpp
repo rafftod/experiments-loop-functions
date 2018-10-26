@@ -109,7 +109,8 @@ void ForagingTwoSpotsLoopFunction::PostStep() {
     std::string robot_id = pcEpuck->GetId();
     UInt8 first_underscore = robot_id.find("_");
     UInt8 second_underscore = robot_id.find("_", first_underscore+1);
-    robot_id = robot_id.substr(first_underscore, second_underscore-first_underscore);
+    robot_id = robot_id.substr(first_underscore+1, second_underscore-(first_underscore+1));
+    // LOG << "Robot Id: " << robot_id << std::endl;
     unId = atoi(robot_id.c_str());
     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                        pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
