@@ -1,17 +1,17 @@
 /*
- * Surface and Perimeter Coverage
+ * Swarm Coverage Region
  *
- * @file <loop-functions/example/MateSCLoopFunc.cpp>
+ * @file <loop-functions/example/MateSPD8LoopFunc.cpp>
  *
- * @author Antoine Ligot - <aligot@ulb.ac.be>
+ * @author Fernando Mendiburu - <fmendibu@ulb.ac.be>
  *
  * @package AutoMoDe-Mate
  *
  * @license MIT License
  */
 
- #ifndef MATE_SC_LOOP_FUNC_H
- #define MATE_SC_LOOP_FUNC_H
+ #ifndef MATE_SPD8_LOOP_FUNC_H
+ #define MATE_SPD8_LOOP_FUNC_H
 
  #include "../../../src/CoreLoopFunctions.h"
  #include <argos3/core/simulator/space/space.h>
@@ -19,12 +19,12 @@
 
 using namespace argos;
 
-class MateSCLoopFunction : public CoreLoopFunctions {
+class MateSPD8LoopFunction : public CoreLoopFunctions {
 
    public:
-      MateSCLoopFunction();
-      MateSCLoopFunction(const MateSCLoopFunction& orig);
-      virtual ~MateSCLoopFunction();
+      MateSPD8LoopFunction();
+      MateSPD8LoopFunction(const MateSPD8LoopFunction& orig);
+      virtual ~MateSPD8LoopFunction();
 
       virtual void Destroy();
       virtual void Reset();
@@ -52,7 +52,7 @@ class MateSCLoopFunction : public CoreLoopFunctions {
       UInt32 m_unNumberPoints;
 
       Real m_fObjectiveFunction;
-      Real m_fDoptA;
+
 };
 
 #endif

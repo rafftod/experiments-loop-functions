@@ -1,5 +1,5 @@
 /*
- * Largest Covering Area
+ * Longest Shortest Path
  *
  * @file <loop-functions/mate/SPD11/MateSPD11LoopFunc.cpp>
  *
@@ -57,7 +57,7 @@ class MateSPD11LoopFunction : public CoreLoopFunctions {
       private:
 
       Real m_fRadius;
-      CVector2 m_cCoordWhiteSpot1;
+      CVector2 m_cCoordBlackSpot1;
 
       struct CAgent {
         CVector2 cPosition;
@@ -89,28 +89,33 @@ class MateSPD11LoopFunction : public CoreLoopFunctions {
           }
       };
 
-
       Real ComputeObjectiveFunction();
 
-      UInt32 DetermineBiggestGroup(std::vector<CAgent> &agents);
+      UInt32 CountRobots(std::vector<CAgent> agents);
+
+      bool IsOnSpot1(CVector2& c_position);
 
       void AddNeighs(std::vector<CAgent> &agents, std::vector<CAgent>::iterator ag);
 
-      UInt32 dijkstraShortestPath(std::vector<UInt32> vNodes, std::vector<MateSPD11LoopFunction::Edges> vVertices, UInt32 unIdSource);
+      UInt32 dijkstraShortestPath(std::vector<UInt32> vNodes, std::vector<Edges> vVertices, UInt32 unIdSource);
 
-      std::vector<MateSPD11LoopFunction::CAgent> PickAgents();
+      std::vector<CAgent> PickAgents();
 
-      std::vector<MateSPD11LoopFunction::CAgent> PickAgentsOfSameID(std::vector<CAgent> agents, UInt32 un_GroupID);
+      std::vector<CAgent> PickAgentsOfSameID(std::vector<CAgent> agents, UInt32 un_GroupID);
 
-      std::vector<MateSPD11LoopFunction::Edges> DetermineEdges(std::vector<CAgent> agents);
+      UInt32 DetermineBiggestGroup(std::vector<CAgent> &agents);
+
+      std::vector<Edges> DetermineEdges(std::vector<CAgent> agents);
 
       std::vector<UInt32> DetermineNodes(std::vector<CAgent> agentes);
 
       void PrintAgents(std::vector<CAgent> agents);
 
-      void PrintEdges(std::vector<MateSPD11LoopFunction::Edges> v_edges);
+      void PrintEdges(std::vector<Edges> v_edges);
 
       void PrintNodes(std::vector<UInt32> vNodes);
+
+      void PrintSource(UInt32 unIdSource);
 
       void PrintShortesPath(vertex_descriptor source, vertex_descriptor goal, std::vector<vertex_descriptor> predecessor);
 
@@ -124,6 +129,7 @@ class MateSPD11LoopFunction : public CoreLoopFunctions {
 
       CVector2 m_cArenaCenter;
 
+      UInt32 m_unLengthExperiment;
 };
 
 #endif

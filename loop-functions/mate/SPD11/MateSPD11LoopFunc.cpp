@@ -15,10 +15,10 @@
 
 MateSPD11LoopFunction::MateSPD11LoopFunction() {
 
-  m_fRadius = 0.15;
-  m_cCoordWhiteSpot1 = CVector2(0,0);
+  m_fRadius = 0.3;
+  m_cCoordBlackSpot1 = CVector2(1.2,0);
 
-  m_fCommunicationDistance = 0.20;
+  m_fCommunicationDistance = 0.30;
   m_cArenaCenter = CVector2(0,0);
   m_fObjectiveFunction = 0;
 
@@ -52,6 +52,8 @@ void MateSPD11LoopFunction::Reset() {
 /****************************************/
 
 argos::CColor MateSPD11LoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
+    CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
+
 
 
     return CColor::GRAY50;
@@ -62,6 +64,7 @@ argos::CColor MateSPD11LoopFunction::GetFloorColor(const argos::CVector2& c_posi
 
 void MateSPD11LoopFunction::PostExperiment() {
 
+
     LOG << "Score: " << GetObjectiveFunction() << std::endl;
 
 }
@@ -70,8 +73,25 @@ void MateSPD11LoopFunction::PostStep() {
 
     m_fObjectiveFunction += ComputeObjectiveFunction();
 
+
 }
 
+
+/****************************************/
+/****************************************/
+
+bool MateSPD11LoopFunction::IsOnSpot1(CVector2& c_position) {
+
+    CVector2 vCurrentPoint(c_position.GetX(), c_position.GetY());
+
+    Real d1 = (m_cCoordBlackSpot1 - vCurrentPoint).Length();
+
+    if (d1 <= m_fRadius) {
+      return true;
+    }
+
+    return false;
+}
 
 /****************************************/
 /****************************************/
@@ -121,69 +141,6 @@ std::vector<MateSPD11LoopFunction::CAgent> MateSPD11LoopFunction::PickAgents() {
 /****************************************/
 /****************************************/
 
-Real MateSPD11LoopFunction::ComputeObjectiveFunction() {
-
-  Real performance = 0;
-
-  /* Push all agents in a vector */
-  std::vector<CAgent> agents = PickAgents();
-
-
-  /* Determine the group ID in the region*/
-  UInt32 unGroupID = DetermineBiggestGroup(agents);
-
-
-  /* Pick the agents that form a network and are in the area*/
-  std::vector<CAgent> agentes = PickAgentsOfSameID(agents,unGroupID);
-
-  //PrintAgents(agentes);
-
-  /* if exist a group in the region*/
-  if(unGroupID)
-  {
-
-        std::vector<MateSPD11LoopFunction::Edges> vEdges;
-        std::vector<UInt32> vNodes;
-
-        /* Determine the edges and nodes of the network */
-        vEdges = DetermineEdges(agentes);
-        vNodes = DetermineNodes(agentes);
-
-
-        UInt32 un_LSP = 0;
-        UInt32 un_SP = 0;
-
-
-        if(vNodes.size() > 1) {
-
-            /* for each robot calculate the shortest path*/
-            for (std::vector<CAgent>::iterator ag = agentes.begin(); ag != agentes.end(); ++ag){
-
-                UInt32 unIDSource = ag->unRobotID;
-
-                un_SP = dijkstraShortestPath(vNodes, vEdges, unIDSource);
-
-                /* if actual shortest path is higher than the last longest shortest path found before*/
-                if(un_SP > un_LSP ) {
-                    un_LSP = un_SP;
-                }
-            }
-        }
-
-        performance = un_LSP;
-  }
-
-  /* return the longest shortest path: the graph diameter */
-  return performance;
-
-}
-
-
-/****************************************/
-/****************************************/
-
-
-
 UInt32 MateSPD11LoopFunction::DetermineBiggestGroup(std::vector<CAgent> &agents) {
 
     /* Cluster the agents in groups */
@@ -216,6 +173,59 @@ UInt32 MateSPD11LoopFunction::DetermineBiggestGroup(std::vector<CAgent> &agents)
     return biggestGroupID;
 }
 
+/****************************************/
+/****************************************/
+
+Real MateSPD11LoopFunction::ComputeObjectiveFunction() {
+
+  Real performance = 0;
+
+  /* Push all agents in a vector */
+  std::vector<CAgent> agents = PickAgents();
+
+  /* Determine ID group arround the spot */
+  UInt32 unGroupID = DetermineBiggestGroup(agents);
+
+  /* Determine the agents forming the biggest region */
+  std::vector<CAgent> AgentsBiggestRegion = PickAgentsOfSameID(agents,unGroupID);
+
+
+  if(!AgentsBiggestRegion.empty()) {
+
+              std::vector<MateSPD11LoopFunction::Edges> vEdges;
+              std::vector<UInt32> vNodes;
+
+              /* Determine the edges and nodes of the graph */
+              vEdges = DetermineEdges(AgentsBiggestRegion);
+              vNodes = DetermineNodes(AgentsBiggestRegion);
+
+              UInt32 un_LSP = 0;
+              UInt32 un_SP = 0;
+
+
+              if(vNodes.size() > 1) {
+
+                /* for each robot calculate the shortest path*/
+                for (std::vector<CAgent>::iterator ag = AgentsBiggestRegion.begin(); ag != AgentsBiggestRegion.end(); ++ag){
+
+                    UInt32 unIDSource = ag->unRobotID;
+
+                    un_SP = dijkstraShortestPath(vNodes, vEdges, unIDSource);
+
+                    /* if actual shortest path is higher than the last longest shortest path found before*/
+                    if(un_SP > un_LSP ) {
+                        un_LSP = un_SP;
+                    }
+                 }
+              }
+
+              performance = un_LSP;
+  }
+
+  /* return the longest shortest path: the graph diameter */
+  return performance;
+
+}
 
 /****************************************/
 /****************************************/
@@ -282,7 +292,7 @@ UInt32 MateSPD11LoopFunction::dijkstraShortestPath(std::vector<UInt32> vNodes, s
     Edge edge_array[vEdges.size()];
     int weights[vEdges.size()];
 
-    UInt32 i;
+    unsigned int i;
     
     for ( i = 0; i < vEdges.size(); i++ ) {
         edge_array[i] = Edge(vEdges[i].InEdge, vEdges[i].OutEdge);
@@ -296,7 +306,7 @@ UInt32 MateSPD11LoopFunction::dijkstraShortestPath(std::vector<UInt32> vNodes, s
     graph_t g(edge_array, edge_array + num_arcs, weights, num_nodes);
 
     // Create property_map from edges to weights
-    boost::property_map<graph_t, boost::edge_weight_t>::type weightmap = get(boost::edge_weight, g);
+    //boost::property_map<graph_t, boost::edge_weight_t>::type weightmap = get(boost::edge_weight, g);
 
     // Create vectors to store the predecessors (p) and the distances from the root (d)
     std::vector<vertex_descriptor> p(num_vertices(g));
@@ -327,6 +337,21 @@ UInt32 MateSPD11LoopFunction::dijkstraShortestPath(std::vector<UInt32> vNodes, s
 
       return unValue;
 
+}
+
+
+/****************************************/
+/****************************************/
+
+UInt32 MateSPD11LoopFunction::CountRobots(std::vector<CAgent> agents) {
+
+    UInt32 unNumRobots = 0;
+
+    for (std::vector<CAgent>::iterator ag = agents.begin(); ag != agents.end(); ++ag){
+        unNumRobots++;
+    }
+
+    return unNumRobots;
 }
 
 /****************************************/
@@ -395,24 +420,29 @@ void MateSPD11LoopFunction::PrintNodes(std::vector<UInt32> vNodes) {
 }
 
 
+void MateSPD11LoopFunction::PrintSource(UInt32 unIdSource) {
+
+        std::cout << "source: " << unIdSource << "\n";
+
+}
+
+
 /****************************************/
 /****************************************/
 
 CVector3 MateSPD11LoopFunction::GetRandomPosition() {
 
-    Real temp;
-    Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-    Real  b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-    // If b < a, swap them
-    if (b < a) {
-      temp = a;
-      a = b;
-      b = temp;
-    }
-    Real fPosX = b * m_fDistributionRadius * cos(2 * CRadians::PI.GetValue() * (a/b));
-    Real fPosY = b * m_fDistributionRadius * sin(2 * CRadians::PI.GetValue() * (a/b));
+    CVector3 cPosition;
 
-    return CVector3(fPosX, fPosY, 0);
+
+    do {
+    cPosition = CVector3(m_pcRng->Uniform(CRange<Real>(-m_fDistributionRadius,m_fDistributionRadius)),
+                         m_pcRng->Uniform(CRange<Real>(-m_fDistributionRadius,m_fDistributionRadius)),
+                         0);
+    } while(cPosition.Length()>=m_fDistributionRadius);
+
+
+    return cPosition;
 }
 
 REGISTER_LOOP_FUNCTIONS(MateSPD11LoopFunction, "mate_spd11_loop_functions");

@@ -1,2 +1,0 @@
-add_library(mate_sc_loopfunc SHARED MateSCLoopFunc.h MateSCLoopFunc.cpp)
-target_link_libraries(mate_sc_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)

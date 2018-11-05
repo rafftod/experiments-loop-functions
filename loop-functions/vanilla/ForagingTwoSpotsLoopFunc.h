@@ -29,6 +29,7 @@ class ForagingTwoSpotsLoopFunction: public CoreLoopFunctions {
 
     virtual argos::CColor GetFloorColor(const argos::CVector2& c_position_on_plane);
     virtual void PostStep();
+    virtual void PostExperiment();
     virtual void Reset();
 
     Real GetObjectiveFunction();

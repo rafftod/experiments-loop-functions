@@ -14,9 +14,9 @@
 /****************************************/
 
 MateLCFLoopFunction::MateLCFLoopFunction() {
-  m_fSensingRange = 0.20;
-  m_fCommunicationDistance = 0.20;
-  m_unNumberPoints = 25000;
+  m_fSensingRange = 0.30;
+  m_fCommunicationDistance = 0.30;
+  m_unNumberPoints = 10000;
   m_cArenaCenter = CVector2(0,0);
   m_fObjectiveFunction = 0;
 
@@ -67,8 +67,6 @@ argos::CColor MateLCFLoopFunction::GetFloorColor(const argos::CVector2& c_positi
 
 void MateLCFLoopFunction::PostStep() {
     m_fObjectiveFunction += ComputeObjectiveFunction();
-    //LOG << "part: " << ComputeObjectiveFunction() << std::endl;
-    //LOG << "Score: " << GetObjectiveFunction() << std::endl;
 }
 
 void MateLCFLoopFunction::PostExperiment() {
@@ -241,7 +239,7 @@ Real MateLCFLoopFunction::ComputeObjectiveFunction() {
   /* Determine the biggest group ID*/
   UInt32 unBiggestGroupID = DetermineBiggestGroup(agents);
 
-  /* Compute the coverage-ratio of the biggest group in the rectangle*/
+  /* Compute the coverage-ratio of the biggest group in the spot*/
   performance = ComputeCoverageRatio(agents,unBiggestGroupID);
 
   //PrintAgents(agents);
@@ -306,13 +304,15 @@ CVector3 MateLCFLoopFunction::GetRandomPosition() {
 
     CVector3 cPosition;
 
-    cPosition.FromSphericalCoords(
-                m_pcRng->Uniform(CRange<Real>(-m_fDistributionRadius, m_fDistributionRadius)),     // distance from origin
-                CRadians::PI_OVER_TWO,                                                             // angle with Z axis
-                m_pcRng->Uniform(CRadians::UNSIGNED_RANGE)                                         // rotation around Z
-                );
 
-return CVector3(cPosition.GetX(), cPosition.GetY(), 0);
+    do {
+    cPosition = CVector3(m_pcRng->Uniform(CRange<Real>(-m_fDistributionRadius,m_fDistributionRadius)),
+                         m_pcRng->Uniform(CRange<Real>(0.6,m_fDistributionRadius)),
+                         0);
+    } while(cPosition.Length()>=m_fDistributionRadius);
+
+
+    return cPosition;
 }
 
 REGISTER_LOOP_FUNCTIONS(MateLCFLoopFunction, "mate_lcf_loop_functions");
