@@ -38,7 +38,7 @@ void GiandujaBeaconAggregationLoopFunction::Reset() {
     m_unCostSpot1 = 0;
     m_fObjectiveFunction = 0;
     if (m_unMesParam == 3) {
-        m_unMes = m_pcRng->Uniform(CRange<UInt32>(0,2));
+        m_unMes = m_pcRng->Uniform(CRange<UInt32>(0,2))*150+10;
     }
     else {
         m_unMes = m_unMesParam;
@@ -58,7 +58,7 @@ void GiandujaBeaconAggregationLoopFunction::Init(TConfigurationNode& t_tree) {
         LOGERR << e.what() << std::endl;
     }
     if (m_unMesParam == 3) {
-        m_unMes = m_pcRng->Uniform(CRange<UInt32>(0,2));
+        m_unMes = m_pcRng->Uniform(CRange<UInt32>(0,2))*150+10;
     }
     else {
         m_unMes = m_unMesParam;
@@ -104,10 +104,10 @@ void GiandujaBeaconAggregationLoopFunction::SetMessageBeacon() {
         CEPuckEntity& cEntity = dynamic_cast<CEPuckEntity&>(GetSpace().GetEntity("beacon0"));
         CEPuckBeacon& cController = dynamic_cast<CEPuckBeacon&>(cEntity.GetControllableEntity().GetController());
         cController.setMessage(m_unMes);
-        if (m_unMes==0) {
+        if (m_unMes==160) {
             LOG << "Message=" << m_unMes << "blanc" << std::endl;
         }
-        else if (m_unMes==1) {
+        else if (m_unMes==10) {
             LOG << "Message=" << m_unMes << "noir"<< std::endl;
         }
     } catch (std::exception& ex) {
@@ -141,10 +141,10 @@ void GiandujaBeaconAggregationLoopFunction::PostStep() {
                          pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
         Real fDistanceSpot;
-        if (m_unMes == 0) {
+        if (m_unMes == 160) {
             fDistanceSpot = (m_cCoordSpot1 - cEpuckPosition).Length();
         }
-        else if (m_unMes == 1) {
+        else if (m_unMes == 10) {
             fDistanceSpot = (m_cCoordSpot2 - cEpuckPosition).Length();
         }
 
