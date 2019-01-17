@@ -104,13 +104,16 @@ void ForagingTwoSpotsLoopFunction::PostStep() {
   UInt32 unId;
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
     CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
-    unId = atoi(pcEpuck->GetId().substr(5, 2).c_str());
-    // expects the id to be in the following form: epuck_{unId}_{robotId}
-    // std::string robot_id = pcEpuck->GetId();
-    // UInt8 first_underscore = robot_id.find("_");
-    // UInt8 second_underscore = robot_id.find("_", first_underscore+1);
-    // robot_id = robot_id.substr(first_underscore, second_underscore-first_underscore);
-    // unId = atoi(robot_id.c_str());
+    // expects the id to be in the following form: epuck_{robotId}_{tagId} or epuck_{robotId}
+    std::string strRobotId = pcEpuck->GetId();
+    UInt8 unFirstUnderscore = strRobotId.find("_");
+    UInt8 unSecondUnderscore = strRobotId.find("_", unFirstUnderscore+1);
+    if (unSecondUnderscore != std::string::npos)
+      strRobotId = strRobotId.substr(unFirstUnderscore+1, unSecondUnderscore-(unFirstUnderscore+1));
+    else
+      strRobotId = strRobotId.substr(unFirstUnderscore+1, strRobotId.length()-(unFirstUnderscore+1));
+    //LOG << "Robot Id: " << strRobotId << std::endl;
+    unId = atoi(strRobotId.c_str());
     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                        pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
