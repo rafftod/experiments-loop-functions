@@ -92,7 +92,7 @@ void AggregationTwoSpotsXOR2::PostStep() {
          m_unScoreSpot2 += 1;
         }
     }
-    LOG << "Sco1 = " << m_unScoreSpot1 << "Sco2 = " << m_unScoreSpot2 << std::endl;
+    //LOG << "Sco1 = " << m_unScoreSpot1 << "Sco2 = " << m_unScoreSpot2 << std::endl;
     m_fObjectiveFunction += Max(m_unScoreSpot1, m_unScoreSpot2);
 }
 
