@@ -76,6 +76,8 @@ void AggregationTwoSpotsXOR2::Reset() {
 /****************************************/
 
 void AggregationTwoSpotsXOR2::PostStep() {
+    m_unScoreSpot1 = 0;
+    m_unScoreSpot2 = 0;
     CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
     CVector2 cEpuckPosition(0,0);
     for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
@@ -90,6 +92,7 @@ void AggregationTwoSpotsXOR2::PostStep() {
          m_unScoreSpot2 += 1;
         }
     }
+    LOG << "Sco1 = " << m_unScoreSpot1 << "Sco2 = " << m_unScoreSpot2 << std::endl;
     m_fObjectiveFunction += Max(m_unScoreSpot1, m_unScoreSpot2);
 }
 
