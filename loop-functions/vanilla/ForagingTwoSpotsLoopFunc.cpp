@@ -131,7 +131,7 @@ void ForagingTwoSpotsLoopFunction::PostStep() {
   }
 
   if (score_temp != m_fObjectiveFunction) {
-    LOGERR << "Obj " << m_fObjectiveFunction << std::endl;
+    // LOGERR << "Obj " << m_fObjectiveFunction << std::endl;
   }
 }
 
