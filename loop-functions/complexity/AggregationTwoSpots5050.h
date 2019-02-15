@@ -14,6 +14,7 @@
 #include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
 
 #include "../../src/CoreLoopFunctions.h"
+#include "/home/aligot/Desktop/Arena/NEAT-private/src/controllers/NeuralNetworkRM1Dot1Binary.h"
 
 using namespace argos;
 
@@ -28,11 +29,14 @@ class AggregationTwoSpots5050: public CoreLoopFunctions {
 
     virtual argos::CColor GetFloorColor(const argos::CVector2& c_position_on_plane);
     virtual void PostExperiment();
+    virtual void PostStep();
     virtual void Reset();
 
     Real GetObjectiveFunction();
 
     CVector3 GetRandomPosition();
+
+    void OpenFile();
 
   private:
     Real m_fRadius;
@@ -42,6 +46,10 @@ class AggregationTwoSpots5050: public CoreLoopFunctions {
     UInt32 m_unScoreSpot1;
     UInt32 m_unScoreSpot2;
     Real m_fObjectiveFunction;
+
+    std::string m_strOutputFile;
+    std::ofstream m_cTrace;
+    std::ofstream m_cFitness;
 };
 
 #endif

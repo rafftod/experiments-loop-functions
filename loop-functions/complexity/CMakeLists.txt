@@ -13,3 +13,9 @@ target_link_libraries(aggregation_xor argos3plugin_${ARGOS_BUILD_FOR}_epuck)
 
 add_library(aggregation_single SHARED AggregationSingleSpot.h AggregationSingleSpot.cpp)
 target_link_libraries(aggregation_single argos3plugin_${ARGOS_BUILD_FOR}_epuck)
+
+add_library(empty_arena SHARED EmptyArena.h EmptyArena.cpp)
+target_link_libraries(empty_arena argos3plugin_${ARGOS_BUILD_FOR}_epuck)
+
+add_library(two_spots_arena SHARED AggregationTwoSpots.h AggregationTwoSpots.cpp)
+target_link_libraries(two_spots_arena argos3plugin_${ARGOS_BUILD_FOR}_epuck)
