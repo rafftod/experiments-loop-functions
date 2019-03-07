@@ -76,7 +76,7 @@ void ForagingTwoSpotsLoopFunction::Reset() {
   if (m_punFoodData == NULL) {
     m_punFoodData = new UInt32[m_unNumberRobots+1];
   }
-  for (UInt32 i = m_unNumberRobots; i <= m_unNumberRobots; i++) {
+  for (UInt32 i = 0; i <= m_unNumberRobots; i++) {
     m_punFoodData[i] = 0;
   }
 
