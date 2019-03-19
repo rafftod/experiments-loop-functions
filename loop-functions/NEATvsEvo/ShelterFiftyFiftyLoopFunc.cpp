@@ -162,7 +162,7 @@ void ShelterFiftyFiftyLoopFunction::PostExperiment() {
 void ShelterFiftyFiftyLoopFunction::PostStep() {
   CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   CVector2 cEpuckPosition(0,0);
-  UInt32 unCurrentScore = m_unNumberRobots;
+  UInt32 unCurrentScore = 0;
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
     CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
@@ -172,12 +172,12 @@ void ShelterFiftyFiftyLoopFunction::PostStep() {
             and m_cShelterAY.WithinMinBoundIncludedMaxBoundIncluded(cEpuckPosition.GetY()))
         or (m_cShelterBX.WithinMinBoundIncludedMaxBoundIncluded(cEpuckPosition.GetX())
             and m_cShelterBY.WithinMinBoundIncludedMaxBoundIncluded(cEpuckPosition.GetY()))) {
-      unCurrentScore -= 1;
+      unCurrentScore += 1;
     }
   }
 
   m_fObjectiveFunction += unCurrentScore;
-  //LOG << m_fObjectiveFunction << std::endl;
+  LOG << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/
