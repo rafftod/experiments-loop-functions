@@ -47,13 +47,13 @@ class ShelterFiftyFiftyLoopFunction: public CoreLoopFunctions {
 
     CRange<Real> m_cBlackFloorX;
     CRange<Real> m_cBlackFloorY;
-    CRange<Real> m_cShelterAX;
-    CRange<Real> m_cShelterAY;
-    CRange<Real> m_cShelterBX;
-    CRange<Real> m_cShelterBY;
+    CRange<Real> m_cShelterLeftX;
+    CRange<Real> m_cShelterLeftY;
+    CRange<Real> m_cShelterRightX;
+    CRange<Real> m_cShelterRightY;
 
-    CBoxEntity *m_pcBoxLeftA, *m_pcBoxRightA, *m_pcBoxCenterA;
-    CBoxEntity *m_pcBoxLeftB, *m_pcBoxRightB, *m_pcBoxCenterB;
+    CBoxEntity *m_pcBoxTopLeft, *m_pcBoxBottomLeft, *m_pcBoxCenterLeft;
+    CBoxEntity *m_pcBoxTopRight, *m_pcBoxBottomRight, *m_pcBoxCenterRight;
 
     Real m_fObjectiveFunction;
 };
