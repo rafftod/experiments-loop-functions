@@ -177,7 +177,7 @@ void ShelterFiftyFiftyLoopFunction::PostStep() {
   }
 
   m_fObjectiveFunction += unCurrentScore;
-  LOG << m_fObjectiveFunction << std::endl;
+  // LOG << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/
