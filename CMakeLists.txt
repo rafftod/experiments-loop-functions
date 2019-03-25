@@ -29,7 +29,7 @@ include(${CMAKE_SOURCE_DIR}/src/cmake/ARGoSBuildChecks.cmake)
 # Set base source files
 #
 add_subdirectory(src)
-# add_subdirectory(manual-controllers)
+#add_subdirectory(manual-controllers)
 
 if(ARGOS_BUILD_FOR_SIMULATOR)
 	add_subdirectory(loop-functions)
