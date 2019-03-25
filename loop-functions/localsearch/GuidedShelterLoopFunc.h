@@ -53,7 +53,10 @@ class GuidedShelterLoopFunc: public CoreLoopFunctions {
     Real m_fWidth;
     Real m_fOffset;
     CVector2 m_cLightPosition;
-    static const Real ARENA_DEPTH = 1.231;
+    // I forgot why I put the following line but it broke on my system. Maybe it was used on the cluster?
+    // static const Real ARENA_DEPTH = 1.231;
+    // The current version is only const. Seems to work on my computer
+    const Real ARENA_DEPTH = 1.231;
 
     Real m_fRadius;
     CVector2 m_cCoordBlackSpot;
