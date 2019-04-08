@@ -82,32 +82,32 @@ void AggregationTwoSpotsXOR::Reset() {
 /****************************************/
 /****************************************/
 
-void AggregationTwoSpotsXOR::PostStep() {
-  CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
-  CVector2 cEpuckPosition(0,0);
-  UInt32 unNumberRobotsSpotA = 0;
-  UInt32 unNumberRobotsSpotB = 0;
-  for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
-    CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
-    NeuralNetworkRM1Dot1Binary& cController = dynamic_cast<NeuralNetworkRM1Dot1Binary&>(pcEpuck->GetControllableEntity().GetController());
-    m_cTrace << cController.GetState();
-    LOG << cController.GetState();
-
-    /* Fill Fitness file */
-    cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
-                       pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
-    Real fDistanceSpot1 = (m_cCoordSpot1 - cEpuckPosition).Length();
-    Real fDistanceSpot2 = (m_cCoordSpot2 - cEpuckPosition).Length();
-    if (fDistanceSpot1 <= m_fRadius) {
-      unNumberRobotsSpotA += 1;
-    } else if (fDistanceSpot2 <= m_fRadius){
-      unNumberRobotsSpotB += 1;
-    }
-  }
-  m_cTrace << std::endl;
-  m_cFitness << unNumberRobotsSpotA << "\t" << unNumberRobotsSpotB << "\t" << Max(unNumberRobotsSpotA, unNumberRobotsSpotB)/(Real) m_unNumberRobots << std::endl;
-  LOG << std::endl;
-}
+// void AggregationTwoSpotsXOR::PostStep() {
+//   CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
+//   CVector2 cEpuckPosition(0,0);
+//   UInt32 unNumberRobotsSpotA = 0;
+//   UInt32 unNumberRobotsSpotB = 0;
+//   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
+//     CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
+//     NeuralNetworkRM1Dot1Binary& cController = dynamic_cast<NeuralNetworkRM1Dot1Binary&>(pcEpuck->GetControllableEntity().GetController());
+//     m_cTrace << cController.GetState();
+//     LOG << cController.GetState();
+//
+//     /* Fill Fitness file */
+//     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
+//                        pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+//     Real fDistanceSpot1 = (m_cCoordSpot1 - cEpuckPosition).Length();
+//     Real fDistanceSpot2 = (m_cCoordSpot2 - cEpuckPosition).Length();
+//     if (fDistanceSpot1 <= m_fRadius) {
+//       unNumberRobotsSpotA += 1;
+//     } else if (fDistanceSpot2 <= m_fRadius){
+//       unNumberRobotsSpotB += 1;
+//     }
+//   }
+//   m_cTrace << std::endl;
+//   m_cFitness << unNumberRobotsSpotA << "\t" << unNumberRobotsSpotB << "\t" << Max(unNumberRobotsSpotA, unNumberRobotsSpotB)/(Real) m_unNumberRobots << std::endl;
+//   LOG << std::endl;
+// }
 
 /****************************************/
 /****************************************/

@@ -6,11 +6,11 @@ link_directories(
     )
 
 add_subdirectory(chocolate)
-#add_subdirectory(example)
+add_subdirectory(example)
 #add_subdirectory(gianduja)
 add_subdirectory(complexity)
 add_subdirectory(vanilla)
 #add_subdirectory(extra)
-#add_subdirectory(NEATvsEvo)
+add_subdirectory(NEATvsEvo)
 #add_subdirectory(visual-add-ons)
 #add_subdirectory(debug)

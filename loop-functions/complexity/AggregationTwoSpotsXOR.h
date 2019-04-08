@@ -30,7 +30,7 @@ class AggregationTwoSpotsXOR: public CoreLoopFunctions {
 
     virtual argos::CColor GetFloorColor(const argos::CVector2& c_position_on_plane);
     virtual void PostExperiment();
-    virtual void PostStep();
+    //virtual void PostStep();
     virtual void Reset();
 
     Real GetObjectiveFunction();
