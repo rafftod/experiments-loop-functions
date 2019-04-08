@@ -14,8 +14,8 @@
 /****************************************/
 
 ShelterFiftyFiftyLoopFunction::ShelterFiftyFiftyLoopFunction() {
-  m_fWidthShelterArea = 0.15;
-  m_fLengthShelterArea = 0.4;
+  m_fWidthShelterArea = 0.14;
+  m_fLengthShelterArea = 0.35;
   m_fDistanceBetweenShelters = 1.2;
   m_fObjectiveFunction = 0;
 
@@ -166,22 +166,26 @@ void ShelterFiftyFiftyLoopFunction::PostExperiment() {
 void ShelterFiftyFiftyLoopFunction::PostStep() {
   CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   CVector2 cEpuckPosition(0,0);
-  UInt32 unCurrentScore = 0;
+  UInt32 unNbRobotLeft = 0;
+  UInt32 unNbRobotRight = 0;
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
     CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                        pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
-    if ((m_cShelterLeftX.WithinMinBoundIncludedMaxBoundIncluded(cEpuckPosition.GetX())
-            and m_cShelterLeftY.WithinMinBoundIncludedMaxBoundIncluded(cEpuckPosition.GetY()))
-        or (m_cShelterRightX.WithinMinBoundIncludedMaxBoundIncluded(cEpuckPosition.GetX())
-            and m_cShelterRightY.WithinMinBoundIncludedMaxBoundIncluded(cEpuckPosition.GetY()))) {
-      unCurrentScore += 1;
+    if (m_cShelterLeftX.WithinMinBoundIncludedMaxBoundIncluded(cEpuckPosition.GetX())
+            and m_cShelterLeftY.WithinMinBoundIncludedMaxBoundIncluded(cEpuckPosition.GetY())) {
+      unNbRobotLeft += 1;
+    }
+    if (m_cShelterRightX.WithinMinBoundIncludedMaxBoundIncluded(cEpuckPosition.GetX())
+            and m_cShelterRightY.WithinMinBoundIncludedMaxBoundIncluded(cEpuckPosition.GetY())) {
+      unNbRobotRight += 1;
     }
   }
 
-  m_fObjectiveFunction += unCurrentScore;
-  LOG << m_fObjectiveFunction << std::endl;
+  //LOG << "L: " << unNbRobotLeft << "  R: " << unNbRobotRight << std::endl;
+  m_fObjectiveFunction += (unNbRobotLeft + unNbRobotRight);
+  //LOG << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/
