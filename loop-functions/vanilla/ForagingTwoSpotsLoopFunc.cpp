@@ -19,6 +19,7 @@ ForagingTwoSpotsLoopFunction::ForagingTwoSpotsLoopFunction() {
   m_fObjectiveFunction = 0;
   m_bInitializationStep = true;
   m_punFoodData  = NULL;
+  m_cRegex = std::regex("epuck_?([0-9]+)_?([0-9]+)?");
 }
 
 /****************************************/
@@ -101,19 +102,19 @@ void ForagingTwoSpotsLoopFunction::PostStep() {
   }
   CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   CVector2 cEpuckPosition(0,0);
-  UInt32 unId;
+  UInt32 unId=0;
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
     CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
-    // expects the id to be in the following form: epuck_{robotId}_{tagId} or epuck_{robotId}
+
+    // expects the id to be in the following form: epuck{robotId} or epuck_{robotId}_{tagId} or epuck_{robotId}
     std::string strRobotId = pcEpuck->GetId();
-    UInt8 unFirstUnderscore = strRobotId.find("_");
-    UInt8 unSecondUnderscore = strRobotId.find("_", unFirstUnderscore+1);
-    if (unSecondUnderscore != std::string::npos)
-      strRobotId = strRobotId.substr(unFirstUnderscore+1, unSecondUnderscore-(unFirstUnderscore+1));
-    else
-      strRobotId = strRobotId.substr(unFirstUnderscore+1, strRobotId.length()-(unFirstUnderscore+1));
-    //LOG << "Robot Id: " << strRobotId << std::endl;
-    unId = atoi(strRobotId.c_str());
+    std::smatch cMatch;
+    bool bMatchFound = std::regex_match(strRobotId, cMatch , m_cRegex);
+    if (bMatchFound) {
+      unId = std::stoi(cMatch[1].str());
+    }
+
+    //unId = atoi(strRobotId.c_str());
     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                        pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
@@ -131,7 +132,7 @@ void ForagingTwoSpotsLoopFunction::PostStep() {
   }
 
   if (score_temp != m_fObjectiveFunction) {
-    // LOGERR << "Obj " << m_fObjectiveFunction << std::endl;
+     //LOGERR << "Obj " << m_fObjectiveFunction << std::endl;
   }
 }
 
