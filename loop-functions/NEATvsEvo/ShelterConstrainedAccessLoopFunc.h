@@ -38,6 +38,8 @@ class ShelterConstrainedAccessLoopFunction : public CoreLoopFunctions {
       Real m_fSpotRadius;
       Real m_fWidthShelter;
       Real m_fHeightShelter;
+      Real m_fWidthWallsShelter;
+      Real m_fHeightWallsShelter;
       CVector2 m_cPositionShelter;
       CVector2 m_cCoordBlackSpot;
       CVector2 m_cCoordWhiteSpot;

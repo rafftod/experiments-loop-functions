@@ -62,12 +62,59 @@ argos::CColor ForagingTwoSpotsLoopFunction::GetFloorColor(const argos::CVector2&
     return CColor::BLACK;
   }
 
-  if (vCurrentPoint.GetY() > m_fNestLimit)
+  // if (vCurrentPoint.GetY() > m_fNestLimit)
+  //   return CColor::GRAY50;
+  // else
+  //   return CColor::WHITE;
+  if (vCurrentPoint.GetY() < m_fNestLimit) {
+    Real fMaxDim = 1.231;
+    Real fLengthWall = 0.66;
+    Real fWidthWall = 0.01;
+    Real fPI = 3.14159265;
+    CVector2 cCenter(0, m_fNestLimit);
+    CVector2 cTop(1.066 + fWidthWall, m_fNestLimit);
+    CVector2 cBottom(-1.066 - fWidthWall, m_fNestLimit);
+    CVector2 cAngle1(1.066 - ARGOS_COS(60*fPI/180.0f)*fLengthWall/2 + fWidthWall, m_fNestLimit - (ARGOS_SIN(60*fPI/180.0f)*fLengthWall/2) - fWidthWall);
+    CVector2 cAngle2(fLengthWall/2 + fWidthWall, -fMaxDim);
+    CVector2 cAngle3(-(fLengthWall/2 + fWidthWall), -fMaxDim);
+    CVector2 cAngle4(-1.066 + ARGOS_COS(60*fPI/180.0f)*fLengthWall/2 - fWidthWall, m_fNestLimit - (ARGOS_SIN(60*fPI/180.0f)*fLengthWall/2) - fWidthWall);
+    if ((IsWithinTriangle(vCurrentPoint, cCenter, cTop, cAngle1)) ||
+        (IsWithinTriangle(vCurrentPoint, cCenter, cAngle2, cAngle3)) ||
+        (IsWithinTriangle(vCurrentPoint, cCenter, cAngle1, cAngle2)) ||
+        (IsWithinTriangle(vCurrentPoint, cCenter, cAngle3, cAngle4)) ||
+        (IsWithinTriangle(vCurrentPoint, cCenter, cAngle4, cBottom))) {
+      return CColor::WHITE;
+    } else {
+      return CColor::GRAY50;
+    }
+  } else {
     return CColor::GRAY50;
-  else
-    return CColor::WHITE;
+  }
 }
 
+/****************************************/
+/****************************************/
+
+Real ForagingTwoSpotsLoopFunction::AreaTriangle(CVector2& c_point_a, CVector2& c_point_b, CVector2& c_point_c) {
+  Real fArea = Abs(c_point_a.GetX()*(c_point_b.GetY()-c_point_c.GetY()) + c_point_b.GetX()*(c_point_c.GetY()-c_point_a.GetY()) + c_point_c.GetX()*(c_point_a.GetY()-c_point_b.GetY()))/2;
+  return fArea;
+}
+
+/****************************************/
+/****************************************/
+
+bool ForagingTwoSpotsLoopFunction::IsWithinTriangle(CVector2& c_point_q, CVector2& c_point_a, CVector2& c_point_b, CVector2& c_point_c) {
+  Real fAreaTriangle = AreaTriangle(c_point_a, c_point_b, c_point_c);
+  Real fAreaABQ = AreaTriangle(c_point_a, c_point_b, c_point_q);
+  Real fAreaBCQ = AreaTriangle(c_point_b, c_point_c, c_point_q);
+  Real fAreaACQ = AreaTriangle(c_point_a, c_point_c, c_point_q);
+
+  if (Abs(fAreaTriangle - (fAreaABQ + fAreaACQ + fAreaBCQ)) < 0.0001) {
+    return true;
+  } else {
+    return false;
+  }
+}
 
 /****************************************/
 /****************************************/

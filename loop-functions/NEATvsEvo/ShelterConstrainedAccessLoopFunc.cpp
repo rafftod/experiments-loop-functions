@@ -20,6 +20,8 @@ ShelterConstrainedAccessLoopFunction::ShelterConstrainedAccessLoopFunction() {
   m_fObjectiveFunction = 0;
   m_fWidthShelter = 0.5;
   m_fHeightShelter = 0.3;
+  m_fHeightWallsShelter = 0.07;
+  m_fWidthWallsShelter = 0.045;
   m_cPositionShelter = CVector2(0,0);
 }
 
@@ -57,28 +59,28 @@ void ShelterConstrainedAccessLoopFunction::Init(TConfigurationNode& t_tree) {
   // Center
   angleWall.FromEulerAngles(CRadians::PI_OVER_TWO, CRadians::ZERO, CRadians::ZERO);
   m_pcBoxCenter = new CBoxEntity("wall_center",
-      CVector3(0, m_cPositionShelter.GetY() - (m_fHeightShelter/2)- (0.05/2), 0.0),
+      CVector3(0, m_cPositionShelter.GetY() - (m_fHeightShelter/2)- (m_fWidthWallsShelter/2), 0.0),
       angleWall,
       false,
-      CVector3(0.05, m_fWidthShelter+0.05, 0.2));
+      CVector3(m_fWidthWallsShelter, m_fWidthShelter+m_fWidthWallsShelter, m_fHeightWallsShelter));
   AddEntity(*m_pcBoxCenter);
 
 
   // Left
   angleWall.FromEulerAngles(CRadians::ZERO, CRadians::ZERO, CRadians::ZERO);
   m_pcBoxLeft = new CBoxEntity("wall_left",
-      CVector3(-m_fWidthShelter/2-0.05/4, m_cPositionShelter.GetY()-0.05/2, 0.0),
+      CVector3(-m_fWidthShelter/2-0.05/4, m_cPositionShelter.GetY()-m_fWidthWallsShelter/2, 0.0),
       angleWall,
       false,
-      CVector3(0.05, m_fHeightShelter+0.05, 0.2));
+      CVector3(m_fWidthWallsShelter, m_fHeightShelter+m_fWidthWallsShelter, m_fHeightWallsShelter));
   AddEntity(*m_pcBoxLeft);
 
   // Right
   m_pcBoxRight = new CBoxEntity("wall_right",
-      CVector3(m_fWidthShelter/2+0.05/4, m_cPositionShelter.GetY()-0.05/2, 0.0),
+      CVector3(m_fWidthShelter/2+0.05/4, m_cPositionShelter.GetY()-m_fWidthWallsShelter/2, 0.0),
       angleWall,
       false,
-      CVector3(0.05, m_fHeightShelter+0.05, 0.2));
+      CVector3(m_fWidthWallsShelter, m_fHeightShelter+m_fWidthWallsShelter, m_fHeightWallsShelter));
   AddEntity(*m_pcBoxRight);
 }
 

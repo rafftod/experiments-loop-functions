@@ -37,6 +37,9 @@ class ForagingTwoSpotsLoopFunction: public CoreLoopFunctions {
 
     CVector3 GetRandomPosition();
 
+    bool IsWithinTriangle(CVector2& c_point_q, CVector2& c_point_a, CVector2& c_point_b, CVector2& c_point_c);
+    Real AreaTriangle(CVector2& c_point_a, CVector2& c_point_b, CVector2& c_point_c);
+
   private:
     Real m_fRadius;
     Real m_fNestLimit;
