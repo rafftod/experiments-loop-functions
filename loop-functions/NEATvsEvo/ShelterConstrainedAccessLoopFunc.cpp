@@ -18,7 +18,7 @@ ShelterConstrainedAccessLoopFunction::ShelterConstrainedAccessLoopFunction() {
   m_cCoordBlackSpot = CVector2(0.8, 0.0);
   m_cCoordWhiteSpot = CVector2(-0.8, 0.0);
   m_fObjectiveFunction = 0;
-  m_fWidthShelter = 0.6;
+  m_fWidthShelter = 0.5;
   m_fHeightShelter = 0.3;
   m_cPositionShelter = CVector2(0,0);
 }
