@@ -37,14 +37,16 @@ void GiandujaBeaconAggregationLoopFunction::Reset() {
     CoreLoopFunctions::Reset();
     m_unCostSpot1 = 0;
     m_fObjectiveFunction = 0;
-    if (m_unMesParam == 3) {
-        m_unMes = m_pcRng->Uniform(CRange<UInt32>(0,2))*150+10;
-    }
-    else {
-        m_unMes = m_unMesParam;
-    }
+    m_unMes = 0;
+    // if (m_unMesParam == 3) {
+    //     m_unMes = m_pcRng->Uniform(CRange<UInt32>(0,2))*150+10;
+    // }
+    // else {
+    //     m_unMes = m_unMesParam;
+    // }
     PlaceBeacon();
-    //PlaceLight();
+    ExtractMessage();
+    //SetMessageBeacon();
 }
 
 
@@ -53,19 +55,22 @@ void GiandujaBeaconAggregationLoopFunction::Init(TConfigurationNode& t_tree) {
     TConfigurationNode cParametersNode;
     try {
         cParametersNode = GetNode(t_tree, "params");
-        GetNodeAttributeOrDefault(cParametersNode, "mes", m_unMesParam, (UInt32) 3);
+        //GetNodeAttributeOrDefault(cParametersNode, "mes", m_unMesParam, (UInt32) 3);
     } catch(std::exception e) {
         LOGERR << e.what() << std::endl;
     }
-    if (m_unMesParam == 3) {
-        m_unMes = m_pcRng->Uniform(CRange<UInt32>(0,2))*150+10;
-    }
-    else {
-        m_unMes = m_unMesParam;
-    }
-    //PlaceLight();
+    // if (m_unMesParam == 3) {
+    //     m_unMes = m_pcRng->Uniform(CRange<UInt32>(0,2))*150+10;
+    // }
+    // else {
+    //     m_unMes = m_unMesParam;
+    // }
+    m_unMes = 0;
+    m_unCostSpot1 = 0;
+    m_fObjectiveFunction = 0;
     PlaceBeacon();
-    SetMessageBeacon();
+    ExtractMessage();
+    //SetMessageBeacon();
 }
 
 /****************************************/
@@ -97,6 +102,22 @@ void GiandujaBeaconAggregationLoopFunction::PlaceBeacon() {
          LOGERR << "Error while casting PlaceBeacon: " << ex.what() << std::endl;
      }
 
+}
+
+void GiandujaBeaconAggregationLoopFunction::ExtractMessage() {
+    try {
+        CEPuckEntity& cEntity = dynamic_cast<CEPuckEntity&>(GetSpace().GetEntity("beacon0"));
+        CEPuckBeacon& cController = dynamic_cast<CEPuckBeacon&>(cEntity.GetControllableEntity().GetController());
+        m_unMes = cController.getMessage();
+    } catch (std::exception& ex) {
+        LOGERR << "Error while casting ExtractMessage: " << ex.what() << std::endl;
+    }
+    if (m_unMes==160) {
+        LOG << "Message=" << m_unMes << " blanc" << std::endl;
+    }
+    else if (m_unMes==10) {
+        LOG << "Message=" << m_unMes << " noir"<< std::endl;
+    }
 }
 
 void GiandujaBeaconAggregationLoopFunction::SetMessageBeacon() {

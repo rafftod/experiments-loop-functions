@@ -26,6 +26,7 @@ class GiandujaBeaconAggregationLoopFunction: public CoreLoopFunctions {
     Real GetObjectiveFunction();
     void PlaceBeacon();
     void SetMessageBeacon();
+    void ExtractMessage();
 
     virtual CVector3 GetRandomPosition();
 
