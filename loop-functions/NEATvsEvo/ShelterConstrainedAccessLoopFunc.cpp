@@ -140,6 +140,13 @@ void ShelterConstrainedAccessLoopFunction::PostStep() {
 /****************************************/
 /****************************************/
 
+void ShelterConstrainedAccessLoopFunction::PostExperiment() {
+  LOG << m_fObjectiveFunction << std::endl;
+}
+
+/****************************************/
+/****************************************/
+
 Real ShelterConstrainedAccessLoopFunction::GetObjectiveFunction() {
   return m_fObjectiveFunction;
 }

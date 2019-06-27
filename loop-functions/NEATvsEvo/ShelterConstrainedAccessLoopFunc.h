@@ -25,6 +25,8 @@ class ShelterConstrainedAccessLoopFunction : public CoreLoopFunctions {
       virtual void Init(TConfigurationNode& t_tree);
       virtual void Reset();
       virtual void PostStep();
+      virtual void PostExperiment();
+
 
       Real GetObjectiveFunction();
 
