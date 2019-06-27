@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# Other
+build/*
+loop-functions/AutoMoDe-Modules/versions/*
+loop-functions/ModularityExperiment/versions/*
+.vscode/*
