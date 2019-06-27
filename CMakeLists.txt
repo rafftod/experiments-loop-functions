@@ -34,8 +34,3 @@ add_subdirectory(src)
 if(ARGOS_BUILD_FOR_SIMULATOR)
 	add_subdirectory(loop-functions)
 endif(ARGOS_BUILD_FOR_SIMULATOR)
-
-#
-# For "c++11"
-#
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
