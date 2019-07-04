@@ -8,6 +8,8 @@
 
 ExplorationLoopFunction::ExplorationLoopFunction() {
   m_ObjectiveFunction = 0;
+  maxScore = 1.0;
+  sizeArena.Set(1,1);
 }
 
 /****************************************/
@@ -21,7 +23,8 @@ void ExplorationLoopFunction::Init(argos::TConfigurationNode& t_tree){
 
 void ExplorationLoopFunction::InitGrid(){
   sizeArena.Set(GetSpace().GetArenaSize().GetX(),GetSpace().GetArenaSize().GetY());
-  grid.reserve((unsigned int)(sizeArena.GetY()*100*sizeArena.GetX()*100));
+  maxScore = ((int)(sizeArena.GetY()*100*sizeArena.GetX()*100))*1.0;
+  grid.reserve((unsigned int)maxScore);
 }
 
 /****************************************/
@@ -65,7 +68,7 @@ Real ExplorationLoopFunction::ComputeStepObjectiveValue() {
       temp+=1;
     }
   }
-  return temp;
+  return temp/maxScore;
 }
 
 void ExplorationLoopFunction::RegisterPositions() {

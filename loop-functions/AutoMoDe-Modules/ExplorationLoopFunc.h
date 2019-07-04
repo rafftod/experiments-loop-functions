@@ -38,6 +38,7 @@ class ExplorationLoopFunction: public CoreLoopFunctions {
 	  Real m_ObjectiveFunction;
     std::vector<bool> grid;
     CVector2 sizeArena;
+	Real maxScore;
 };
 
 #endif
