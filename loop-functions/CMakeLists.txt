@@ -6,7 +6,6 @@ link_directories(
     )
 
 #add_subdirectory(example)
-#add_subdirectory(chocolate)
-#add_subdirectory(example)
-add_subdirectory(gianduja)
+add_subdirectory(chocolate)
+#add_subdirectory(gianduja)
 #add_subdirectory(vanilla)
