@@ -3,3 +3,6 @@ target_link_libraries(shelter_fifty_fifty_loopfunc argos3plugin_${ARGOS_BUILD_FO
 
 add_library(shelter_constrained_access_loopfunc SHARED ShelterConstrainedAccessLoopFunc.h ShelterConstrainedAccessLoopFunc.cpp ${LOOP_HEADERS} ${LOOP_SOURCES})
 target_link_libraries(shelter_constrained_access_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)
+
+add_library(sca_bis_loopfunc SHARED SCAbisLoopFunc.h SCAbisLoopFunc.cpp ${LOOP_HEADERS} ${LOOP_SOURCES})
+target_link_libraries(sca_bis_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)
