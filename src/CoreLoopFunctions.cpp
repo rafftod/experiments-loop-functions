@@ -23,7 +23,7 @@ void CoreLoopFunctions::Init(argos::TConfigurationNode& t_tree) {
     GetNodeAttributeOrDefault(cParametersNode, "number_robots", m_unNumberRobots, (UInt32) 1);
     GetNodeAttributeOrDefault(cParametersNode, "dist_radius", m_fDistributionRadius, (Real) 0);
   } catch(std::exception e) {
-    LOGERR << e.what() << std::endl;
+    LOGERR << "Problem with Attributes in node params" << std::endl;
   }
 
   MoveRobots();

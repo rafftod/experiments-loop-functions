@@ -23,12 +23,6 @@ class CoreLoopFunctions: public CLoopFunctions {
     ~CoreLoopFunctions();
 
     /*
-     * Initialization method where the parameters of the loop function
-     * are fetched from the xml declaration.
-     */
-    virtual void Init(argos::TConfigurationNode& t_tree);
-
-    /*
      * Reset function. First remove the robots, then re-position them.
      */
     virtual void Reset();
@@ -63,6 +57,11 @@ class CoreLoopFunctions: public CLoopFunctions {
     CRandom::CRNG* m_pcRng;
 
   public:
+    /*
+     * Initialization method where the parameters of the loop function
+     * are fetched from the xml declaration.
+     */
+    virtual void Init(argos::TConfigurationNode& t_tree);
 
     /*
      * This method should return the fitness of the controller.
