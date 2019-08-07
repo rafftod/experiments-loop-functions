@@ -39,12 +39,6 @@ class CoreLoopFunctions: public CLoopFunctions {
     void MoveRobots();
 
     /*
-     * Method used to create and distribute the robots.
-     * The position is given by the method GetRandomPosition().
-     */
-    void PositionRobots();
-
-    /*
      * The number of robots to be placed for the experiment.
      */
     UInt32 m_unNumberRobots;

@@ -44,38 +44,6 @@ CoreLoopFunctions::~CoreLoopFunctions() {}
 /****************************************/
 /****************************************/
 
-//This function is decrepated: the robots should be instanciated in the .argos file
-void CoreLoopFunctions::PositionRobots() {
-  CEPuckEntity* pcEpuck;
-  bool bPlaced = false;
-  UInt32 unTrials;
-  for(UInt32 i = 1; i < m_unNumberRobots + 1; ++i) {
-    std::ostringstream id;
-    id << "epuck" << i;
-    pcEpuck = new CEPuckEntity(id.str().c_str(),
-                               "decrepated",
-                               CVector3(0,0,0),
-                               CQuaternion().FromEulerAngles(CRadians::ZERO,CRadians::ZERO,CRadians::ZERO));
-    AddEntity(*pcEpuck);
-    // Choose position at random
-    unTrials = 0;
-    do {
-       ++unTrials;
-       CVector3 cEpuckPosition = GetRandomPosition();
-       bPlaced = MoveEntity((*pcEpuck).GetEmbodiedEntity(),
-                            cEpuckPosition,
-                            CQuaternion().FromEulerAngles(m_pcRng->Uniform(CRange<CRadians>(CRadians::ZERO,CRadians::TWO_PI)),
-                            CRadians::ZERO,CRadians::ZERO),false);
-    } while(!bPlaced && unTrials < 100);
-    if(!bPlaced) {
-       THROW_ARGOSEXCEPTION("Can't place robot");
-    }
-  }
-}
-
-/****************************************/
-/****************************************/
-
 void CoreLoopFunctions::MoveRobots() {
   CEPuckEntity* pcEpuck;
   bool bPlaced = false;
@@ -92,7 +60,7 @@ void CoreLoopFunctions::MoveRobots() {
                             cEpuckPosition,
                             CQuaternion().FromEulerAngles(m_pcRng->Uniform(CRange<CRadians>(CRadians::ZERO,CRadians::TWO_PI)),
                             CRadians::ZERO,CRadians::ZERO),false);
-    } while(!bPlaced && unTrials < 100);
+    } while(!bPlaced && unTrials < 1000);
     if(!bPlaced) {
        THROW_ARGOSEXCEPTION("Can't place robot");
     }
