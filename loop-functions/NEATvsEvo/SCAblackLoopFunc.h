@@ -4,8 +4,8 @@
  * @author Antoine Ligot - <aligot@ulb.ac.be>
  */
 
-#ifndef SHELTER_CONSTRAINED_ACCESS_LOOP_FUNC_H
-#define SHELTER_CONSTRAINED_ACCESS_LOOP_FUNC_H
+#ifndef SCA_BLACK_LOOP_FUNC_H
+#define SCA_BLACK_LOOP_FUNC_H
 
 #include "../../src/CoreLoopFunctions.h"
 #include <argos3/core/simulator/space/space.h>
@@ -14,18 +14,19 @@
 
 using namespace argos;
 
-class ShelterConstrainedAccessLoopFunction : public CoreLoopFunctions {
+class SCAblackLoopFunction : public CoreLoopFunctions {
 
    public:
-      ShelterConstrainedAccessLoopFunction();
-      ShelterConstrainedAccessLoopFunction(const ShelterConstrainedAccessLoopFunction& orig);
-      virtual ~ShelterConstrainedAccessLoopFunction();
+      SCAblackLoopFunction();
+      SCAblackLoopFunction(const SCAblackLoopFunction& orig);
+      virtual ~SCAblackLoopFunction();
 
       virtual void Destroy();
       virtual void Init(TConfigurationNode& t_tree);
       virtual void Reset();
       virtual void PostStep();
       virtual void PostExperiment();
+
 
       Real GetObjectiveFunction();
 
@@ -42,8 +43,8 @@ class ShelterConstrainedAccessLoopFunction : public CoreLoopFunctions {
       Real m_fWidthWallsShelter;
       Real m_fHeightWallsShelter;
       CVector2 m_cPositionShelter;
-      CVector2 m_cCoordBlackSpot;
-      CVector2 m_cCoordWhiteSpot;
+      CVector2 m_cCoordBlackSpot1;
+      CVector2 m_cCoordBlackSpot2;
 
       Real m_fObjectiveFunction;
       CBoxEntity *m_pcBoxLeft, *m_pcBoxRight, *m_pcBoxCenter;

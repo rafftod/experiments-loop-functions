@@ -4,8 +4,8 @@
  * @author Antoine Ligot - <aligot@ulb.ac.be>
  */
 
-#ifndef SHELTER_CONSTRAINED_ACCESS_LOOP_FUNC_H
-#define SHELTER_CONSTRAINED_ACCESS_LOOP_FUNC_H
+#ifndef SCA_BEHIND_LOOP_FUNC_H
+#define SCA_BEHIND_LOOP_FUNC_H
 
 #include "../../src/CoreLoopFunctions.h"
 #include <argos3/core/simulator/space/space.h>
@@ -14,18 +14,19 @@
 
 using namespace argos;
 
-class ShelterConstrainedAccessLoopFunction : public CoreLoopFunctions {
+class SCAbehindLoopFunction : public CoreLoopFunctions {
 
    public:
-      ShelterConstrainedAccessLoopFunction();
-      ShelterConstrainedAccessLoopFunction(const ShelterConstrainedAccessLoopFunction& orig);
-      virtual ~ShelterConstrainedAccessLoopFunction();
+      SCAbehindLoopFunction();
+      SCAbehindLoopFunction(const SCAbehindLoopFunction& orig);
+      virtual ~SCAbehindLoopFunction();
 
       virtual void Destroy();
       virtual void Init(TConfigurationNode& t_tree);
       virtual void Reset();
       virtual void PostStep();
       virtual void PostExperiment();
+
 
       Real GetObjectiveFunction();
 

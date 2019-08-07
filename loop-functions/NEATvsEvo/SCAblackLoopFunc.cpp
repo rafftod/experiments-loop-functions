@@ -8,15 +8,15 @@
   * @license MIT License
   */
 
-#include "ShelterConstrainedAccessLoopFunc.h"
+#include "SCAblackLoopFunc.h"
 
 /****************************************/
 /****************************************/
 
-ShelterConstrainedAccessLoopFunction::ShelterConstrainedAccessLoopFunction() {
+SCAblackLoopFunction::SCAblackLoopFunction() {
   m_fSpotRadius = 0.3;
-  m_cCoordBlackSpot = CVector2(0.8, 0.0);
-  m_cCoordWhiteSpot = CVector2(-0.8, 0.0);
+  m_cCoordBlackSpot1 = CVector2(0.8, 0.0);
+  m_cCoordBlackSpot2 = CVector2(-0.8, 0.0);
   m_fObjectiveFunction = 0;
   m_fWidthShelter = 0.5;
   m_fHeightShelter = 0.3;
@@ -28,22 +28,22 @@ ShelterConstrainedAccessLoopFunction::ShelterConstrainedAccessLoopFunction() {
 /****************************************/
 /****************************************/
 
-ShelterConstrainedAccessLoopFunction::ShelterConstrainedAccessLoopFunction(const ShelterConstrainedAccessLoopFunction& orig) {}
+SCAblackLoopFunction::SCAblackLoopFunction(const SCAblackLoopFunction& orig) {}
 
 /****************************************/
 /****************************************/
 
-ShelterConstrainedAccessLoopFunction::~ShelterConstrainedAccessLoopFunction() {}
+SCAblackLoopFunction::~SCAblackLoopFunction() {}
 
 /****************************************/
 
 /****************************************/
-void ShelterConstrainedAccessLoopFunction::Destroy() {}
+void SCAblackLoopFunction::Destroy() {}
 
 /****************************************/
 /****************************************/
 
-void ShelterConstrainedAccessLoopFunction::Reset() {
+void SCAblackLoopFunction::Reset() {
   m_fObjectiveFunction = 0;
   CoreLoopFunctions::Reset();
 }
@@ -51,7 +51,7 @@ void ShelterConstrainedAccessLoopFunction::Reset() {
 /****************************************/
 /****************************************/
 
-void ShelterConstrainedAccessLoopFunction::Init(TConfigurationNode& t_tree) {
+void SCAblackLoopFunction::Init(TConfigurationNode& t_tree) {
   CoreLoopFunctions::Init(t_tree);
 
   CQuaternion angleWall;
@@ -87,14 +87,14 @@ void ShelterConstrainedAccessLoopFunction::Init(TConfigurationNode& t_tree) {
 /****************************************/
 /****************************************/
 
-argos::CColor ShelterConstrainedAccessLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
+argos::CColor SCAblackLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
   CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
-  Real d = (m_cCoordBlackSpot - vCurrentPoint).Length();
+  Real d = (m_cCoordBlackSpot1 - vCurrentPoint).Length();
   if (d <= m_fSpotRadius) {
     return CColor::BLACK;
   }
 
-  d = (m_cCoordWhiteSpot - vCurrentPoint).Length();
+  d = (m_cCoordBlackSpot2 - vCurrentPoint).Length();
   if (d <= m_fSpotRadius) {
     return CColor::BLACK;
   }
@@ -109,7 +109,7 @@ argos::CColor ShelterConstrainedAccessLoopFunction::GetFloorColor(const argos::C
 /****************************************/
 /****************************************/
 
-bool ShelterConstrainedAccessLoopFunction::IsInShelter(CVector2& c_position) {
+bool SCAblackLoopFunction::IsInShelter(CVector2& c_position) {
   Real fMaximalXCoord = m_fWidthShelter / 2;
   Real fMaximalYCoord = (m_fHeightShelter / 2) + m_cPositionShelter.GetY();
   if (c_position.GetX() > -fMaximalXCoord && c_position.GetX() < fMaximalXCoord) {
@@ -123,7 +123,7 @@ bool ShelterConstrainedAccessLoopFunction::IsInShelter(CVector2& c_position) {
 /****************************************/
 /****************************************/
 
-void ShelterConstrainedAccessLoopFunction::PostStep() {
+void SCAblackLoopFunction::PostStep() {
   CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   CVector2 cEpuckPosition(0,0);
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
@@ -140,35 +140,28 @@ void ShelterConstrainedAccessLoopFunction::PostStep() {
 /****************************************/
 /****************************************/
 
-void ShelterConstrainedAccessLoopFunction::PostExperiment() {
+void SCAblackLoopFunction::PostExperiment() {
   LOG << m_fObjectiveFunction << std::endl;
 }
 
-
 /****************************************/
 /****************************************/
 
-Real ShelterConstrainedAccessLoopFunction::GetObjectiveFunction() {
+Real SCAblackLoopFunction::GetObjectiveFunction() {
   return m_fObjectiveFunction;
 }
 
 /****************************************/
 /****************************************/
 
-CVector3 ShelterConstrainedAccessLoopFunction::GetRandomPosition() {
-  Real temp;
-  Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-  Real  b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-  // If b < a, swap them
-  if (b < a) {
-    temp = a;
-    a = b;
-    b = temp;
+CVector3 SCAblackLoopFunction::GetRandomPosition() {
+  Real fRadius = m_pcRng->Uniform(CRange<Real>(0, m_fSpotRadius));
+  CVector2 cPos = CVector2(fRadius, 0).Rotate(m_pcRng->Uniform(CRange<CRadians>(CRadians::ZERO, CRadians::TWO_PI)));
+  if (m_pcRng->Bernoulli(0.5f)) {
+    return CVector3(m_cCoordBlackSpot1.GetX()+cPos.GetX(), m_cCoordBlackSpot1.GetY()+cPos.GetY(), 0.0f);
+  } else {
+    return CVector3(m_cCoordBlackSpot2.GetX()+cPos.GetX(), m_cCoordBlackSpot2.GetY()+cPos.GetY(), 0.0f);
   }
-  Real fPosX = b * m_fDistributionRadius * cos(2 * CRadians::PI.GetValue() * (a/b));
-  Real fPosY = b * m_fDistributionRadius * sin(2 * CRadians::PI.GetValue() * (a/b));
-
-  return CVector3(fPosX, fPosY, 0);
 }
 
-REGISTER_LOOP_FUNCTIONS(ShelterConstrainedAccessLoopFunction, "shelter_constrained_access_loop_functions");
+REGISTER_LOOP_FUNCTIONS(SCAblackLoopFunction, "sca_black_loop_functions");
