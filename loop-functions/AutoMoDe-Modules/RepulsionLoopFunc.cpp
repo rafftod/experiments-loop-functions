@@ -60,9 +60,11 @@ Real RepulsionLoopFunction::ComputeStepObjectiveValue() {
   for (unsigned int i = 0; i<m_unNumberRobots-1; i++){
     Real distance = 0;
     Real temp2 = -1; // "Empty" value, to indicate to take the new distance anyways
-    for (unsigned int j = i+1; j<m_unNumberRobots; j++){
-      distance = (*positions[i] - *positions[j]).Length();
-      temp2 = (temp2<distance || temp2==-1)?temp2:distance;
+    for (unsigned int j = 0; j<m_unNumberRobots; j++){
+      if(i!=j){
+        distance = (*positions[i] - *positions[j]).Length();
+        temp2 = (temp2<distance && temp2!=-1)?temp2:distance;
+      }
     }
     temp += temp2;
   }
