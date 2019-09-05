@@ -14,7 +14,6 @@
 #include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
 
 #include "../../src/CoreLoopFunctions.h"
-#include "/home/aligot/Desktop/Arena/NEAT-private/src/controllers/NeuralNetworkRM1Dot1Binary.h"
 
 using namespace argos;
 
@@ -42,10 +41,6 @@ class AggregationSingleSpot: public CoreLoopFunctions {
     UInt32 m_unScoreSpot1;
     Real m_fObjectiveFunction;
     Real m_fHeightNest;
-
-    std::string m_strOutputFile;
-    std::ofstream m_cTrace;
-    std::ofstream m_cFitness;
 };
 
 #endif

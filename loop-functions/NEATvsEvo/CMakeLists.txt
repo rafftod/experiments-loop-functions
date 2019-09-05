@@ -11,6 +11,8 @@ add_library(sca_loopfunc SHARED
                           SCAblackLoopFunc.cpp
                           SCAaroundLoopFunc.h
                           SCAaroundLoopFunc.cpp
+                          AggregationSingleSpot.h
+                          AggregationSingleSpot.cpp
                           ${LOOP_HEADERS}
                           ${LOOP_SOURCES})
 target_link_libraries(sca_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)

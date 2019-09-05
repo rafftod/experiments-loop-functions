@@ -13,7 +13,7 @@
 
 AggregationSingleSpot::AggregationSingleSpot() {
   m_fRadius = 0.3;
-  m_cCoordSpot1 = CVector2(0,0);
+  m_cCoordSpot1 = CVector2(0,-0.7);
   m_unScoreSpot1 = 0;
   m_fObjectiveFunction = 0;
   m_fHeightNest = 0.6;
@@ -122,7 +122,7 @@ CVector3 AggregationSingleSpot::GetRandomPosition() {
       fPosX = b * m_fDistributionRadius * cos(2 * CRadians::PI.GetValue() * (a/b));
       fPosY = b * m_fDistributionRadius * sin(2 * CRadians::PI.GetValue() * (a/b));
 
-      if fPosY >= m_fHeightNest {
+      if (fPosY >= m_fHeightNest) {
         bPlaced = true;
       }
   } while(!bPlaced);
