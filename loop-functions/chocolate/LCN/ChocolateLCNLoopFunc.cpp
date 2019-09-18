@@ -55,6 +55,7 @@ argos::CColor ChocolateLCNLoopFunction::GetFloorColor(const argos::CVector2& c_p
 
 void ChocolateLCNLoopFunction::PostExperiment() {
   m_fObjectiveFunction = ComputeObjectiveFunction();
+  LOG << "Score: " << GetObjectiveFunction() << std::endl;
 }
 
 /****************************************/

@@ -5,7 +5,8 @@ link_directories(
 	${CMAKE_BINARY_DIR}/src
     )
 
-#add_subdirectory(example)
+
 add_subdirectory(chocolate)
 #add_subdirectory(gianduja)
 #add_subdirectory(vanilla)
+#add_subdirectory(mate)
