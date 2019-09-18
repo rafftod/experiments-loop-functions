@@ -13,8 +13,8 @@
 
 AggregationTwoSpotsLoopFunction::AggregationTwoSpotsLoopFunction() {
   m_fRadius = 0.3;
-  m_cCoordSpot1 = CVector2(0.5,0);
-  m_cCoordSpot2 = CVector2(-0.5,0);
+  m_cCoordSpot1 = CVector2(0.55,0);
+  m_cCoordSpot2 = CVector2(-0.55,0);
   m_unScoreSpot1 = 0;
   m_unScoreSpot2 = 0;
   m_fObjectiveFunction = 0;

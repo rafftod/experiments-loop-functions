@@ -8,12 +8,12 @@
   * @license MIT License
   */
 
-#include "ShelterConstrainedAccessLoopFunc.h"
+#include "SCAbisLoopFunc.h"
 
 /****************************************/
 /****************************************/
 
-ShelterConstrainedAccessLoopFunction::ShelterConstrainedAccessLoopFunction() {
+SCAbisLoopFunction::SCAbisLoopFunction() {
   m_fSpotRadius = 0.3;
   m_cCoordBlackSpot = CVector2(0.8, 0.0);
   m_cCoordWhiteSpot = CVector2(-0.8, 0.0);
@@ -28,22 +28,22 @@ ShelterConstrainedAccessLoopFunction::ShelterConstrainedAccessLoopFunction() {
 /****************************************/
 /****************************************/
 
-ShelterConstrainedAccessLoopFunction::ShelterConstrainedAccessLoopFunction(const ShelterConstrainedAccessLoopFunction& orig) {}
+SCAbisLoopFunction::SCAbisLoopFunction(const SCAbisLoopFunction& orig) {}
 
 /****************************************/
 /****************************************/
 
-ShelterConstrainedAccessLoopFunction::~ShelterConstrainedAccessLoopFunction() {}
+SCAbisLoopFunction::~SCAbisLoopFunction() {}
 
 /****************************************/
 
 /****************************************/
-void ShelterConstrainedAccessLoopFunction::Destroy() {}
+void SCAbisLoopFunction::Destroy() {}
 
 /****************************************/
 /****************************************/
 
-void ShelterConstrainedAccessLoopFunction::Reset() {
+void SCAbisLoopFunction::Reset() {
   m_fObjectiveFunction = 0;
   CoreLoopFunctions::Reset();
 }
@@ -51,7 +51,7 @@ void ShelterConstrainedAccessLoopFunction::Reset() {
 /****************************************/
 /****************************************/
 
-void ShelterConstrainedAccessLoopFunction::Init(TConfigurationNode& t_tree) {
+void SCAbisLoopFunction::Init(TConfigurationNode& t_tree) {
   CoreLoopFunctions::Init(t_tree);
 
   CQuaternion angleWall;
@@ -59,7 +59,7 @@ void ShelterConstrainedAccessLoopFunction::Init(TConfigurationNode& t_tree) {
   // Center
   angleWall.FromEulerAngles(CRadians::PI_OVER_TWO, CRadians::ZERO, CRadians::ZERO);
   m_pcBoxCenter = new CBoxEntity("wall_center",
-      CVector3(0, m_cPositionShelter.GetY() + (m_fHeightShelter/2) + (m_fWidthWallsShelter/2), 0.0),
+      CVector3(0, m_cPositionShelter.GetY() - (m_fHeightShelter/2)- (m_fWidthWallsShelter/2), 0.0),
       angleWall,
       false,
       CVector3(m_fWidthWallsShelter, m_fWidthShelter+m_fWidthWallsShelter, m_fHeightWallsShelter));
@@ -69,7 +69,7 @@ void ShelterConstrainedAccessLoopFunction::Init(TConfigurationNode& t_tree) {
   // Left
   angleWall.FromEulerAngles(CRadians::ZERO, CRadians::ZERO, CRadians::ZERO);
   m_pcBoxLeft = new CBoxEntity("wall_left",
-      CVector3(-m_fWidthShelter/2-0.05/4, m_cPositionShelter.GetY()+m_fWidthWallsShelter/2, 0.0),
+      CVector3(-m_fWidthShelter/2-0.05/4, m_cPositionShelter.GetY()-m_fWidthWallsShelter/2, 0.0),
       angleWall,
       false,
       CVector3(m_fWidthWallsShelter, m_fHeightShelter+m_fWidthWallsShelter, m_fHeightWallsShelter));
@@ -77,7 +77,7 @@ void ShelterConstrainedAccessLoopFunction::Init(TConfigurationNode& t_tree) {
 
   // Right
   m_pcBoxRight = new CBoxEntity("wall_right",
-      CVector3(m_fWidthShelter/2+0.05/4, m_cPositionShelter.GetY()+m_fWidthWallsShelter/2, 0.0),
+      CVector3(m_fWidthShelter/2+0.05/4, m_cPositionShelter.GetY()-m_fWidthWallsShelter/2, 0.0),
       angleWall,
       false,
       CVector3(m_fWidthWallsShelter, m_fHeightShelter+m_fWidthWallsShelter, m_fHeightWallsShelter));
@@ -87,7 +87,7 @@ void ShelterConstrainedAccessLoopFunction::Init(TConfigurationNode& t_tree) {
 /****************************************/
 /****************************************/
 
-argos::CColor ShelterConstrainedAccessLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
+argos::CColor SCAbisLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
   CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
   Real d = (m_cCoordBlackSpot - vCurrentPoint).Length();
   if (d <= m_fSpotRadius) {
@@ -109,7 +109,7 @@ argos::CColor ShelterConstrainedAccessLoopFunction::GetFloorColor(const argos::C
 /****************************************/
 /****************************************/
 
-bool ShelterConstrainedAccessLoopFunction::IsInShelter(CVector2& c_position) {
+bool SCAbisLoopFunction::IsInShelter(CVector2& c_position) {
   Real fMaximalXCoord = m_fWidthShelter / 2;
   Real fMaximalYCoord = (m_fHeightShelter / 2) + m_cPositionShelter.GetY();
   if (c_position.GetX() > -fMaximalXCoord && c_position.GetX() < fMaximalXCoord) {
@@ -123,7 +123,7 @@ bool ShelterConstrainedAccessLoopFunction::IsInShelter(CVector2& c_position) {
 /****************************************/
 /****************************************/
 
-void ShelterConstrainedAccessLoopFunction::PostStep() {
+void SCAbisLoopFunction::PostStep() {
   CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   CVector2 cEpuckPosition(0,0);
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
@@ -140,34 +140,40 @@ void ShelterConstrainedAccessLoopFunction::PostStep() {
 /****************************************/
 /****************************************/
 
-void ShelterConstrainedAccessLoopFunction::PostExperiment() {
+void SCAbisLoopFunction::PostExperiment() {
   LOG << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/
 /****************************************/
 
-Real ShelterConstrainedAccessLoopFunction::GetObjectiveFunction() {
+Real SCAbisLoopFunction::GetObjectiveFunction() {
   return m_fObjectiveFunction;
 }
 
 /****************************************/
 /****************************************/
 
-CVector3 ShelterConstrainedAccessLoopFunction::GetRandomPosition() {
-  Real temp;
-  Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-  Real  b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-  // If b < a, swap them
-  if (b < a) {
-    temp = a;
-    a = b;
-    b = temp;
-  }
-  Real fPosX = b * m_fDistributionRadius * cos(2 * CRadians::PI.GetValue() * (a/b));
-  Real fPosY = b * m_fDistributionRadius * sin(2 * CRadians::PI.GetValue() * (a/b));
+CVector3 SCAbisLoopFunction::GetRandomPosition() {
+  Real temp, a, b, fPosX, fPosY;
+  bool bPlaced = false;
+  do {
+    a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    // If b < a, swap them
+    if (b < a) {
+      temp = a;
+      a = b;
+      b = temp;
+    }
+    fPosX = b * m_fDistributionRadius * cos(2 * CRadians::PI.GetValue() * (a/b));
+    fPosY = b * m_fDistributionRadius * sin(2 * CRadians::PI.GetValue() * (a/b));
 
+    if (fPosY <= -m_fHeightShelter/2) {
+      bPlaced = true;
+    }
+  } while (!bPlaced);
   return CVector3(fPosX, fPosY, 0);
 }
 
-REGISTER_LOOP_FUNCTIONS(ShelterConstrainedAccessLoopFunction, "shelter_constrained_access_loop_functions");
+REGISTER_LOOP_FUNCTIONS(SCAbisLoopFunction, "sca_bis_loop_functions");
