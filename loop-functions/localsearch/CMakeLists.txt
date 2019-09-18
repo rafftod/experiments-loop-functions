@@ -1,0 +1,5 @@
+add_library(aggregation_white_and_black_loopfunc SHARED AggregationWhiteAndBlackLoopFunc.h AggregationWhiteAndBlackLoopFunc.cpp ${LOOP_HEADERS} ${LOOP_SOURCES})
+target_link_libraries(aggregation_white_and_black_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)
+
+add_library(guided_shelter_loopfunc SHARED GuidedShelterLoopFunc.h GuidedShelterLoopFunc.cpp ${LOOP_HEADERS} ${LOOP_SOURCES})
+target_link_libraries(guided_shelter_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)

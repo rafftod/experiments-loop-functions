@@ -1,2 +1,4 @@
-add_library(epuck_planning_user_functions MODULE epuck_planning_user_functions.cpp epuck_planning_user_functions.h)
-target_link_libraries(epuck_planning_user_functions argos3core_simulator argos3plugin_${ARGOS_BUILD_FOR}_epuck)
+if(ARGOS_COMPILE_QTOPENGL)
+    add_library(epuck_planning_user_functions MODULE epuck_planning_user_functions.cpp epuck_planning_user_functions.h)
+    target_link_libraries(epuck_planning_user_functions argos3core_simulator argos3plugin_${ARGOS_BUILD_FOR}_epuck)
+endif(ARGOS_COMPILE_QTOPENGL)
