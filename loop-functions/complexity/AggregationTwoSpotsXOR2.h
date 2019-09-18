@@ -1,5 +1,5 @@
 /**
-  * @file <loop-functions/example/ForagingLoopFunc.h>
+  * @file <loop-functions/example/AggregationLoopFunc.h>
   *
   * @author Antoine Ligot - <aligot@ulb.ac.be>
   *
@@ -8,10 +8,8 @@
   * @license MIT License
   */
 
-#ifndef FORAGING_TWO_SPOTS_LOOP_FUNC
-#define FORAGING_TWO_SPOTS_LOOP_FUNC
-
-#include <regex>
+#ifndef AGGREGATION_TWO_SPOTS_XOR2
+#define AGGREGATION_TWO_SPOTS_XOR2
 
 #include <argos3/core/simulator/space/space.h>
 #include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
@@ -20,16 +18,17 @@
 
 using namespace argos;
 
-class ForagingTwoSpotsLoopFunction: public CoreLoopFunctions {
+class AggregationTwoSpotsXOR2: public CoreLoopFunctions {
   public:
-    ForagingTwoSpotsLoopFunction();
-    ForagingTwoSpotsLoopFunction(const ForagingTwoSpotsLoopFunction& orig);
-    virtual ~ForagingTwoSpotsLoopFunction();
+    AggregationTwoSpotsXOR2();
+    AggregationTwoSpotsXOR2(const AggregationTwoSpotsXOR2& orig);
+    virtual ~AggregationTwoSpotsXOR2();
 
     virtual void Destroy();
     virtual void Init(TConfigurationNode& t_tree);
 
     virtual argos::CColor GetFloorColor(const argos::CVector2& c_position_on_plane);
+    virtual void PostExperiment();
     virtual void PostStep();
     virtual void Reset();
 
@@ -37,22 +36,14 @@ class ForagingTwoSpotsLoopFunction: public CoreLoopFunctions {
 
     CVector3 GetRandomPosition();
 
-    bool IsWithinTriangle(CVector2& c_point_q, CVector2& c_point_a, CVector2& c_point_b, CVector2& c_point_c);
-    Real AreaTriangle(CVector2& c_point_a, CVector2& c_point_b, CVector2& c_point_c);
-
   private:
     Real m_fRadius;
-    Real m_fNestLimit;
     CVector2 m_cCoordSpot1;
     CVector2 m_cCoordSpot2;
-    std::regex m_cRegex;
 
-    bool m_bInitializationStep;
-
+    UInt32 m_unScoreSpot1;
+    UInt32 m_unScoreSpot2;
     Real m_fObjectiveFunction;
-
-    UInt32 * m_punFoodData;
-
 };
 
 #endif

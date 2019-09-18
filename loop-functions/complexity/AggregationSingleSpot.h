@@ -1,5 +1,4 @@
 /**
-  * @file <loop-functions/example/ForagingLoopFunc.h>
   *
   * @author Antoine Ligot - <aligot@ulb.ac.be>
   *
@@ -8,28 +7,28 @@
   * @license MIT License
   */
 
-#ifndef FORAGING_TWO_SPOTS_LOOP_FUNC
-#define FORAGING_TWO_SPOTS_LOOP_FUNC
-
-#include <regex>
+#ifndef AGGREGATION_SINGLE_SPOT
+#define AGGREGATION_SINGLE_SPOT
 
 #include <argos3/core/simulator/space/space.h>
 #include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
 
 #include "../../src/CoreLoopFunctions.h"
+#include "/home/aligot/Desktop/Arena/NEAT-private/src/controllers/NeuralNetworkRM1Dot1Binary.h"
 
 using namespace argos;
 
-class ForagingTwoSpotsLoopFunction: public CoreLoopFunctions {
+class AggregationSingleSpot: public CoreLoopFunctions {
   public:
-    ForagingTwoSpotsLoopFunction();
-    ForagingTwoSpotsLoopFunction(const ForagingTwoSpotsLoopFunction& orig);
-    virtual ~ForagingTwoSpotsLoopFunction();
+    AggregationSingleSpot();
+    AggregationSingleSpot(const AggregationSingleSpot& orig);
+    virtual ~AggregationSingleSpot();
 
     virtual void Destroy();
     virtual void Init(TConfigurationNode& t_tree);
 
     virtual argos::CColor GetFloorColor(const argos::CVector2& c_position_on_plane);
+    virtual void PostExperiment();
     virtual void PostStep();
     virtual void Reset();
 
@@ -37,22 +36,17 @@ class ForagingTwoSpotsLoopFunction: public CoreLoopFunctions {
 
     CVector3 GetRandomPosition();
 
-    bool IsWithinTriangle(CVector2& c_point_q, CVector2& c_point_a, CVector2& c_point_b, CVector2& c_point_c);
-    Real AreaTriangle(CVector2& c_point_a, CVector2& c_point_b, CVector2& c_point_c);
+    void OpenFile();
 
   private:
     Real m_fRadius;
-    Real m_fNestLimit;
     CVector2 m_cCoordSpot1;
-    CVector2 m_cCoordSpot2;
-    std::regex m_cRegex;
-
-    bool m_bInitializationStep;
-
+    UInt32 m_unScoreSpot1;
     Real m_fObjectiveFunction;
 
-    UInt32 * m_punFoodData;
-
+    std::string m_strOutputFile;
+    std::ofstream m_cTrace;
+    std::ofstream m_cFitness;
 };
 
 #endif

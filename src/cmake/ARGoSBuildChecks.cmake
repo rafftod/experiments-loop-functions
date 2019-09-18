@@ -21,3 +21,10 @@ IF(NOT ARGOS_BUILD_FOR_EPUCK)
     include_directories(${LUA_INCLUDE_DIR})
   endif(LUA52_FOUND)
 endif (NOT ARGOS_BUILD_FOR_EPUCK)
+
+#
+# Check for Qt and OpenGL when compiling for the simulator
+#
+if(ARGOS_BUILD_FOR_SIMULATOR)
+  include(ARGoSCheckQTOpenGL)
+endif(ARGOS_BUILD_FOR_SIMULATOR)

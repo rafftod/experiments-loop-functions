@@ -23,12 +23,6 @@ class CoreLoopFunctions: public CLoopFunctions {
     ~CoreLoopFunctions();
 
     /*
-     * Initialization method where the parameters of the loop function
-     * are fetched from the xml declaration.
-     */
-    virtual void Init(argos::TConfigurationNode& t_tree);
-
-    /*
      * Reset function. First remove the robots, then re-position them.
      */
     virtual void Reset();
@@ -45,13 +39,6 @@ class CoreLoopFunctions: public CLoopFunctions {
     void MoveRobots();
 
     /*
-     * Method used to create and distribute the robots.
-     * The position is given by the method GetRandomPosition().
-     * NOT USED ANYMORE (see note in Cpp file)
-     */
-    //void PositionRobots();
-
-    /*
      * The number of robots to be placed for the experiment.
      */
     UInt32 m_unNumberRobots;
@@ -64,6 +51,11 @@ class CoreLoopFunctions: public CLoopFunctions {
     CRandom::CRNG* m_pcRng;
 
   public:
+    /*
+     * Initialization method where the parameters of the loop function
+     * are fetched from the xml declaration.
+     */
+    virtual void Init(argos::TConfigurationNode& t_tree);
 
     /*
      * This method should return the fitness of the controller.
