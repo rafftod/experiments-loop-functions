@@ -1,8 +1,6 @@
 add_library(shelter_fifty_fifty_loopfunc SHARED ShelterFiftyFiftyLoopFunc.h ShelterFiftyFiftyLoopFunc.cpp ${LOOP_HEADERS} ${LOOP_SOURCES})
 target_link_libraries(shelter_fifty_fifty_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)
 
-add_library(sca_bis_loopfunc SHARED SCAbisLoopFunc.h SCAbisLoopFunc.cpp ${LOOP_HEADERS} ${LOOP_SOURCES})
-target_link_libraries(sca_bis_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)
 
 add_library(sca_loopfunc SHARED
                           ShelterConstrainedAccessLoopFunc.h
@@ -15,6 +13,8 @@ add_library(sca_loopfunc SHARED
                           SCAaroundLoopFunc.cpp
                           AggregationSingleSpot.h
                           AggregationSingleSpot.cpp
+                          DirectionalGate.h
+                          DirectionalGate.cpp
                           ${LOOP_HEADERS}
                           ${LOOP_SOURCES})
 target_link_libraries(sca_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)

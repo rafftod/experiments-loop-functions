@@ -11,7 +11,7 @@
 #ifndef FORAGING_TWO_SPOTS_LOOP_FUNC
 #define FORAGING_TWO_SPOTS_LOOP_FUNC
 
-#include <regex>
+#include <map>
 
 #include <argos3/core/simulator/space/space.h>
 #include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
@@ -45,13 +45,10 @@ class ForagingTwoSpotsLoopFunction: public CoreLoopFunctions {
     Real m_fNestLimit;
     CVector2 m_cCoordSpot1;
     CVector2 m_cCoordSpot2;
-    std::regex m_cRegex;
-
-    bool m_bInitializationStep;
 
     Real m_fObjectiveFunction;
 
-    UInt32 * m_punFoodData;
+    std::map<std::string, UInt32> m_mapFoodData;
 
 };
 

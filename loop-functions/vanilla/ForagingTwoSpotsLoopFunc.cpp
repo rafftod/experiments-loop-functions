@@ -17,10 +17,8 @@ ForagingTwoSpotsLoopFunction::ForagingTwoSpotsLoopFunction() {
   m_cCoordSpot1 = CVector2(0.75,0);
   m_cCoordSpot2 = CVector2(-0.75,0);
   m_fObjectiveFunction = 0;
-  m_bInitializationStep = true;
-  m_punFoodData  = NULL;
-  m_cRegex = std::regex("epuck_?([0-9]+)_?([0-9]+)?");
 }
+
 
 /****************************************/
 /****************************************/
@@ -39,7 +37,6 @@ void ForagingTwoSpotsLoopFunction::Init(TConfigurationNode& t_tree) {
 /****************************************/
 
 ForagingTwoSpotsLoopFunction::~ForagingTwoSpotsLoopFunction() {
-  delete[] m_punFoodData;
 }
 
 /****************************************/
@@ -122,63 +119,40 @@ bool ForagingTwoSpotsLoopFunction::IsWithinTriangle(CVector2& c_point_q, CVector
 void ForagingTwoSpotsLoopFunction::Reset() {
   CoreLoopFunctions::Reset();
   std::ios::sync_with_stdio(false);
-  if (m_punFoodData == NULL) {
-    m_punFoodData = new UInt32[m_unNumberRobots+1];
-  }
-  for (UInt32 i = 0; i <= m_unNumberRobots; i++) {
-    m_punFoodData[i] = 0;
-  }
-
+  m_mapFoodData.clear();
   m_fObjectiveFunction = 0;
-  m_bInitializationStep = false;
 }
 
 /****************************************/
 /****************************************/
 
 void ForagingTwoSpotsLoopFunction::PostStep() {
-  //m_unNumberRobots = 70;
-
   UInt32 score_temp = m_fObjectiveFunction;
 
-  if (m_bInitializationStep) {
-    m_punFoodData = new UInt32[m_unNumberRobots+1];
-    for (UInt32 i = 0; i <= m_unNumberRobots; i++) {
-      m_punFoodData[i] = 0;
-    }
-    m_bInitializationStep = false;
-  }
   CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   CVector2 cEpuckPosition(0,0);
-  UInt32 unId=0;
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
     CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
 
-    // expects the id to be in the following form: epuck{robotId} or epuck_{robotId}_{tagId} or epuck_{robotId}
     std::string strRobotId = pcEpuck->GetId();
-    std::smatch cMatch;
-    bool bMatchFound = std::regex_match(strRobotId, cMatch , m_cRegex);
-    if (bMatchFound) {
-      unId = std::stoi(cMatch[1].str());
-    }
-
-    //unId = atoi(strRobotId.c_str());
     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                        pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
     Real fDistanceSpot1 = (m_cCoordSpot1 - cEpuckPosition).Length();
     Real fDistanceSpot2 = (m_cCoordSpot2 - cEpuckPosition).Length();
     if (fDistanceSpot1 <= m_fRadius) {
-      m_punFoodData[unId] = 1;
+      m_mapFoodData[strRobotId] = 1;
     } else if (fDistanceSpot2 <= m_fRadius){
-      m_punFoodData[unId] = 1;
+      m_mapFoodData[strRobotId] = 1;
     } else if (cEpuckPosition.GetY() <= m_fNestLimit) {
-      m_fObjectiveFunction = m_fObjectiveFunction + m_punFoodData[unId];
-      m_punFoodData[unId] = 0;
+      std::map<std::string, UInt32>::iterator itFood = m_mapFoodData.find(strRobotId);
+      if (itFood != m_mapFoodData.end()) {
+        m_fObjectiveFunction += itFood->second;
+      }
+      m_mapFoodData[strRobotId] = 0;
       // LOG << "Obj " << m_fObjectiveFunction << std::endl;
     }
   }
-
   if (score_temp != m_fObjectiveFunction) {
      //LOGERR << "Obj " << m_fObjectiveFunction << std::endl;
   }
