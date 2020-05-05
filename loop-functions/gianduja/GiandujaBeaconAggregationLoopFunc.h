@@ -5,7 +5,7 @@
 #include <argos3/core/simulator/space/space.h>
 #include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
 #include <argos3/plugins/simulator/entities/light_entity.h>
-#include "../../../robots-thesis/src/beacon_epuck/epuck_beacon.h"
+#include "epuck_beacon.h"
 
 using namespace argos;
 
