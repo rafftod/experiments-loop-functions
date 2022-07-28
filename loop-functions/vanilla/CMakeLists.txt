@@ -6,9 +6,9 @@ link_directories(
     )
 
 add_library(aggregation_loopfunc SHARED AggregationTwoSpotsLoopFunc.h AggregationTwoSpotsLoopFunc.cpp)
-target_link_libraries(aggregation_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)
+target_link_libraries(aggregation_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_rvr)
 
 add_library(foraging_loopfunc SHARED ForagingTwoSpotsLoopFunc.h ForagingTwoSpotsLoopFunc.cpp)
-target_link_libraries(foraging_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)
+target_link_libraries(foraging_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_rvr)
 
 

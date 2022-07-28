@@ -12,7 +12,7 @@
 #define AGGREGATION_TWO_SPOTS_XOR
 
 #include <argos3/core/simulator/space/space.h>
-#include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
+#include <argos3/plugins/robots/rvr/simulator/rvr_entity.h>
 
 #include "../../src/CoreLoopFunctions.h"
 #include "/home/aligot/Desktop/Arena/NEAT-private/src/controllers/NeuralNetworkRM1Dot1Binary.h"

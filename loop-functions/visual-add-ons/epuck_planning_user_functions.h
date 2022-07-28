@@ -4,7 +4,7 @@
 #include <argos3/plugins/simulator/visualizations/qt-opengl/qtopengl_user_functions.h>
 
 #include <argos3/core/utility/logging/argos_log.h>
-#include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
+#include <argos3/plugins/robots/rvr/simulator/rvr_entity.h>
 #include <argos3/core/simulator/entity/controllable_entity.h>
 
 using namespace argos;
