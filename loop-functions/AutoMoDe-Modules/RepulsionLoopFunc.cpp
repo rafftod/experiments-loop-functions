@@ -60,7 +60,7 @@ Real RepulsionLoopFunction::ComputeStepObjectiveValue()
   CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
   {
-    CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
+    CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
     positions.push_back(new CVector2(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(), pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY()));
   }
   for (unsigned int i = 0; i < m_unNumberRobots - 1; i++)

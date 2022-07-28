@@ -101,7 +101,7 @@ CVector3 GiandujaStopLoopFunction::GetRandomPosition()
 //   CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("rvr");
 // /* Go through them */
 // for(CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
-//   CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
+//   CRVREntity* pcEpuck = any_cast<CRVREntity*>(it->second);
 //   m_tOldPosPoints[pcEpuck] = CVector2(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(), pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 //   }
 
@@ -116,7 +116,7 @@ CVector3 GiandujaStopLoopFunction::GetRandomPosition()
     UInt8 un_trigger = 0;
     for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
     {
-        CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
+        CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
         cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                            pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 

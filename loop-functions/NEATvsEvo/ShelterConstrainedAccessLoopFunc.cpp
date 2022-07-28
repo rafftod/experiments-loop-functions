@@ -138,7 +138,7 @@ void ShelterConstrainedAccessLoopFunction::PostStep()
   CVector2 cEpuckPosition(0, 0);
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
   {
-    CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
+    CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                        pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 

@@ -173,7 +173,7 @@ Real ChocolateCFALoopFunction::GetClosestEpuckDistanceFromPoint(CVector2 &c_rand
   Real fMinDistance = 2.5;
   for (CSpace::TMapPerType::iterator it = mapEpucks.begin(); it != mapEpucks.end(); ++it)
   {
-    CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
+    CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                        pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
     // Only consider epucks not on black spots

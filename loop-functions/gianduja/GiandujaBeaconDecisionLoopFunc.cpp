@@ -92,7 +92,7 @@ void GiandujaBeaconDecisionLoopFunction::ExtractMessage()
 {
     try
     {
-        CEPuckEntity &cEntity = dynamic_cast<CEPuckEntity &>(GetSpace().GetEntity("beacon0"));
+        CRVREntity &cEntity = dynamic_cast<CRVREntity &>(GetSpace().GetEntity("beacon0"));
         CEPuckBeacon &cController = dynamic_cast<CEPuckBeacon &>(cEntity.GetControllableEntity().GetController());
         m_unMessage = cController.getMessage();
     }
@@ -106,7 +106,7 @@ void GiandujaBeaconDecisionLoopFunction::PlaceBeacon()
 {
     try
     {
-        CEPuckEntity &cEpuck = dynamic_cast<CEPuckEntity &>(GetSpace().GetEntity("beacon0"));
+        CRVREntity &cEpuck = dynamic_cast<CRVREntity &>(GetSpace().GetEntity("beacon0"));
         MoveEntity(cEpuck.GetEmbodiedEntity(),
                    CVector3(0, -0.5, 0),
                    CQuaternion().FromEulerAngles(CRadians::ZERO,
@@ -123,7 +123,7 @@ void GiandujaBeaconDecisionLoopFunction::ChangeMessage()
 {
     try
     {
-        CEPuckEntity &cEntity = dynamic_cast<CEPuckEntity &>(GetSpace().GetEntity("beacon0"));
+        CRVREntity &cEntity = dynamic_cast<CRVREntity &>(GetSpace().GetEntity("beacon0"));
         CEPuckBeacon &cController = dynamic_cast<CEPuckBeacon &>(cEntity.GetControllableEntity().GetController());
 
         if (m_unMessage == 10)
@@ -166,7 +166,7 @@ void GiandujaBeaconDecisionLoopFunction::PostStep()
     CVector2 cEpuckPosition(0, 0);
     for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
     {
-        CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
+        CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
         cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                            pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 

@@ -110,7 +110,7 @@ Real ChocolateSPCLoopFunction::ComputeObjectiveFunction()
 
         for (CSpace::TMapPerType::iterator it = mEpucks.begin(); it != mEpucks.end(); ++it)
         {
-            CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>((*it).second);
+            CRVREntity *pcEpuck = any_cast<CRVREntity *>((*it).second);
             cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                                pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
             if (IsOnSquareArea(cEpuckPosition))
@@ -136,7 +136,7 @@ Real ChocolateSPCLoopFunction::ComputeObjectiveFunction()
 
         for (CSpace::TMapPerType::iterator it = mEpucks.begin(); it != mEpucks.end(); ++it)
         {
-            CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>((*it).second);
+            CRVREntity *pcEpuck = any_cast<CRVREntity *>((*it).second);
             cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                                pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
             if (IsOnCirclePerimeter(cEpuckPosition))

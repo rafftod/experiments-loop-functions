@@ -88,7 +88,7 @@ void AggregationSingleSpot::PostStep()
   UInt32 unNumberRobotsOnPoint = 0;
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
   {
-    CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
+    CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
     /* Fill Trace file */
     NeuralNetworkRM1Dot1Binary &cController = dynamic_cast<NeuralNetworkRM1Dot1Binary &>(pcEpuck->GetControllableEntity().GetController());
     m_cTrace << cController.GetState();
@@ -136,7 +136,7 @@ void AggregationSingleSpot::PostExperiment()
   CVector2 cEpuckPosition(0, 0);
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
   {
-    CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
+    CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                        pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
