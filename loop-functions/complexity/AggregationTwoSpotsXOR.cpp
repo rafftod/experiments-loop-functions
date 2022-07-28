@@ -1,20 +1,21 @@
 /**
-  * @file <loop-functions/AggregationTwoSpotsLoopFunc.cpp>
-  *
-  * @author Antoine Ligot - <aligot@ulb.ac.be>
-  *
-  * @license MIT License
-  */
+ * @file <loop-functions/AggregationTwoSpotsLoopFunc.cpp>
+ *
+ * @author Antoine Ligot - <aligot@ulb.ac.be>
+ *
+ * @license MIT License
+ */
 
 #include "AggregationTwoSpotsXOR.h"
 
 /****************************************/
 /****************************************/
 
-AggregationTwoSpotsXOR::AggregationTwoSpotsXOR() {
+AggregationTwoSpotsXOR::AggregationTwoSpotsXOR()
+{
   m_fRadius = 0.3;
-  m_cCoordSpot1 = CVector2(0.65,0);
-  m_cCoordSpot2 = CVector2(-0.65,0);
+  m_cCoordSpot1 = CVector2(0.65, 0);
+  m_cCoordSpot2 = CVector2(-0.65, 0);
   m_unScoreSpot1 = 0;
   m_unScoreSpot2 = 0;
   m_fObjectiveFunction = 0;
@@ -23,25 +24,28 @@ AggregationTwoSpotsXOR::AggregationTwoSpotsXOR() {
 /****************************************/
 /****************************************/
 
-AggregationTwoSpotsXOR::AggregationTwoSpotsXOR(const AggregationTwoSpotsXOR& orig) {}
+AggregationTwoSpotsXOR::AggregationTwoSpotsXOR(const AggregationTwoSpotsXOR &orig) {}
 
 /****************************************/
 /****************************************/
 
-void AggregationTwoSpotsXOR::Init(TConfigurationNode& t_tree) {
-    CoreLoopFunctions::Init(t_tree);
-    TConfigurationNode cParametersNode;
-    try {
-      cParametersNode = GetNode(t_tree, "params");
-      GetNodeAttribute(cParametersNode, "output_file", m_strOutputFile);
-      OpenFile();
-    } catch(std::exception e) {
-    }
+void AggregationTwoSpotsXOR::Init(TConfigurationNode &t_tree)
+{
+  CoreLoopFunctions::Init(t_tree);
+  TConfigurationNode cParametersNode;
+  try
+  {
+    cParametersNode = GetNode(t_tree, "params");
+    GetNodeAttribute(cParametersNode, "output_file", m_strOutputFile);
+    OpenFile();
+  }
+  catch (std::exception e)
+  {
+  }
 }
 
 /****************************************/
 /****************************************/
-
 
 AggregationTwoSpotsXOR::~AggregationTwoSpotsXOR() {}
 
@@ -53,26 +57,29 @@ void AggregationTwoSpotsXOR::Destroy() {}
 /****************************************/
 /****************************************/
 
-argos::CColor AggregationTwoSpotsXOR::GetFloorColor(const argos::CVector2& c_position_on_plane) {
+argos::CColor AggregationTwoSpotsXOR::GetFloorColor(const argos::CVector2 &c_position_on_plane)
+{
   CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
   Real d = (m_cCoordSpot1 - vCurrentPoint).Length();
-  if (d <= m_fRadius) {
+  if (d <= m_fRadius)
+  {
     return CColor::BLACK;
   }
 
   d = (m_cCoordSpot2 - vCurrentPoint).Length();
-  if (d <= m_fRadius) {
+  if (d <= m_fRadius)
+  {
     return CColor::BLACK;
   }
 
   return CColor::GRAY50;
 }
 
-
 /****************************************/
 /****************************************/
 
-void AggregationTwoSpotsXOR::Reset() {
+void AggregationTwoSpotsXOR::Reset()
+{
   m_fObjectiveFunction = 0;
   m_unScoreSpot1 = 0;
   m_unScoreSpot2 = 0;
@@ -83,7 +90,7 @@ void AggregationTwoSpotsXOR::Reset() {
 /****************************************/
 
 // void AggregationTwoSpotsXOR::PostStep() {
-//   CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
+//   CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("rvr");
 //   CVector2 cEpuckPosition(0,0);
 //   UInt32 unNumberRobotsSpotA = 0;
 //   UInt32 unNumberRobotsSpotB = 0;
@@ -112,7 +119,8 @@ void AggregationTwoSpotsXOR::Reset() {
 /****************************************/
 /****************************************/
 
-void AggregationTwoSpotsXOR::OpenFile() {
+void AggregationTwoSpotsXOR::OpenFile()
+{
   std::stringstream stringStream;
   stringStream << m_strOutputFile + ".trace";
   std::string strTrace = stringStream.str();
@@ -130,24 +138,29 @@ void AggregationTwoSpotsXOR::OpenFile() {
 /****************************************/
 /****************************************/
 
-void AggregationTwoSpotsXOR::PostExperiment() {
-  CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
-  CVector2 cEpuckPosition(0,0);
-  for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
-    CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
+void AggregationTwoSpotsXOR::PostExperiment()
+{
+  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
+  CVector2 cEpuckPosition(0, 0);
+  for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
+  {
+    CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                        pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
     Real fDistanceSpot1 = (m_cCoordSpot1 - cEpuckPosition).Length();
     Real fDistanceSpot2 = (m_cCoordSpot2 - cEpuckPosition).Length();
-    if (fDistanceSpot1 <= m_fRadius) {
+    if (fDistanceSpot1 <= m_fRadius)
+    {
       m_unScoreSpot1 += 1;
-    } else if (fDistanceSpot2 <= m_fRadius){
+    }
+    else if (fDistanceSpot2 <= m_fRadius)
+    {
       m_unScoreSpot2 += 1;
     }
   }
 
-  m_fObjectiveFunction = Max(m_unScoreSpot1, m_unScoreSpot2)/(Real) m_unNumberRobots;
+  m_fObjectiveFunction = Max(m_unScoreSpot1, m_unScoreSpot2) / (Real)m_unNumberRobots;
   LOG << "Score = " << m_fObjectiveFunction << std::endl;
   m_cTrace.close();
   m_cFitness.close();
@@ -156,25 +169,28 @@ void AggregationTwoSpotsXOR::PostExperiment() {
 /****************************************/
 /****************************************/
 
-Real AggregationTwoSpotsXOR::GetObjectiveFunction() {
+Real AggregationTwoSpotsXOR::GetObjectiveFunction()
+{
   return m_fObjectiveFunction;
 }
 
 /****************************************/
 /****************************************/
 
-CVector3 AggregationTwoSpotsXOR::GetRandomPosition() {
+CVector3 AggregationTwoSpotsXOR::GetRandomPosition()
+{
   Real temp;
   Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-  Real  b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+  Real b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
   // If b < a, swap them
-  if (b < a) {
+  if (b < a)
+  {
     temp = a;
     a = b;
     b = temp;
   }
-  Real fPosX = b * m_fDistributionRadius * cos(2 * CRadians::PI.GetValue() * (a/b));
-  Real fPosY = b * m_fDistributionRadius * sin(2 * CRadians::PI.GetValue() * (a/b));
+  Real fPosX = b * m_fDistributionRadius * cos(2 * CRadians::PI.GetValue() * (a / b));
+  Real fPosY = b * m_fDistributionRadius * sin(2 * CRadians::PI.GetValue() * (a / b));
 
   return CVector3(fPosX, fPosY, 0);
 }

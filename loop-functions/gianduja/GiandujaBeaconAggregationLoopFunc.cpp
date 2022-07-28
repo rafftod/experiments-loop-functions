@@ -3,22 +3,23 @@
 /****************************************/
 /****************************************/
 
-GiandujaBeaconAggregationLoopFunction::GiandujaBeaconAggregationLoopFunction() {
-  m_fRadius = 0.3;
-  m_cCoordSpot1 = CVector2(0.5,0.5);
-  m_cCoordSpot2 = CVector2(-0.5,0.5);
-  m_unCostSpot1 = 0;
-  m_unCostSpot2 = 0;
-  m_fObjectiveFunction = 0;
-  m_unTime = 0;
-  m_unMesParam = 0;
-  m_unMes = 0;
+GiandujaBeaconAggregationLoopFunction::GiandujaBeaconAggregationLoopFunction()
+{
+    m_fRadius = 0.3;
+    m_cCoordSpot1 = CVector2(0.5, 0.5);
+    m_cCoordSpot2 = CVector2(-0.5, 0.5);
+    m_unCostSpot1 = 0;
+    m_unCostSpot2 = 0;
+    m_fObjectiveFunction = 0;
+    m_unTime = 0;
+    m_unMesParam = 0;
+    m_unMes = 0;
 }
 
 /****************************************/
 /****************************************/
 
-GiandujaBeaconAggregationLoopFunction::GiandujaBeaconAggregationLoopFunction(const GiandujaBeaconAggregationLoopFunction& orig) {}
+GiandujaBeaconAggregationLoopFunction::GiandujaBeaconAggregationLoopFunction(const GiandujaBeaconAggregationLoopFunction &orig) {}
 
 /****************************************/
 /****************************************/
@@ -33,7 +34,8 @@ void GiandujaBeaconAggregationLoopFunction::Destroy() {}
 /****************************************/
 /****************************************/
 
-void GiandujaBeaconAggregationLoopFunction::Reset() {
+void GiandujaBeaconAggregationLoopFunction::Reset()
+{
     CoreLoopFunctions::Reset();
     m_unCostSpot1 = 0;
     m_fObjectiveFunction = 0;
@@ -46,17 +48,20 @@ void GiandujaBeaconAggregationLoopFunction::Reset() {
     // }
     PlaceBeacon();
     ExtractMessage();
-    //SetMessageBeacon();
+    // SetMessageBeacon();
 }
 
-
-void GiandujaBeaconAggregationLoopFunction::Init(TConfigurationNode& t_tree) {
+void GiandujaBeaconAggregationLoopFunction::Init(TConfigurationNode &t_tree)
+{
     CoreLoopFunctions::Init(t_tree);
     TConfigurationNode cParametersNode;
-    try {
+    try
+    {
         cParametersNode = GetNode(t_tree, "params");
-        //GetNodeAttributeOrDefault(cParametersNode, "mes", m_unMesParam, (UInt32) 3);
-    } catch(std::exception e) {
+        // GetNodeAttributeOrDefault(cParametersNode, "mes", m_unMesParam, (UInt32) 3);
+    }
+    catch (std::exception e)
+    {
         LOGERR << e.what() << std::endl;
     }
     // if (m_unMesParam == 3) {
@@ -70,73 +75,93 @@ void GiandujaBeaconAggregationLoopFunction::Init(TConfigurationNode& t_tree) {
     m_fObjectiveFunction = 0;
     PlaceBeacon();
     ExtractMessage();
-    //SetMessageBeacon();
+    // SetMessageBeacon();
 }
 
 /****************************************/
 /****************************************/
 
-argos::CColor GiandujaBeaconAggregationLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
-  CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
-  Real d = (m_cCoordSpot1 - vCurrentPoint).Length();
-  if (d <= m_fRadius) {
-    return CColor::WHITE;
-  }
+argos::CColor GiandujaBeaconAggregationLoopFunction::GetFloorColor(const argos::CVector2 &c_position_on_plane)
+{
+    CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
+    Real d = (m_cCoordSpot1 - vCurrentPoint).Length();
+    if (d <= m_fRadius)
+    {
+        return CColor::WHITE;
+    }
 
-  d = (m_cCoordSpot2 - vCurrentPoint).Length();
-  if (d <= m_fRadius) {
-    return CColor::BLACK;
-  }
+    d = (m_cCoordSpot2 - vCurrentPoint).Length();
+    if (d <= m_fRadius)
+    {
+        return CColor::BLACK;
+    }
 
-  return CColor::GRAY50;
+    return CColor::GRAY50;
 }
 
-void GiandujaBeaconAggregationLoopFunction::PlaceBeacon() {
-    try {
-        CEPuckEntity& cEpuck = dynamic_cast<CEPuckEntity&>(GetSpace().GetEntity("beacon0"));
+void GiandujaBeaconAggregationLoopFunction::PlaceBeacon()
+{
+    try
+    {
+        CEPuckEntity &cEpuck = dynamic_cast<CEPuckEntity &>(GetSpace().GetEntity("beacon0"));
         MoveEntity(cEpuck.GetEmbodiedEntity(),
-                         CVector3(0, 0.5, 0),
-                         CQuaternion().FromEulerAngles(CRadians::ZERO,
-                         CRadians::ZERO,CRadians::ZERO),false);
-     } catch (std::exception& ex) {
-         LOGERR << "Error while casting PlaceBeacon: " << ex.what() << std::endl;
-     }
-
+                   CVector3(0, 0.5, 0),
+                   CQuaternion().FromEulerAngles(CRadians::ZERO,
+                                                 CRadians::ZERO, CRadians::ZERO),
+                   false);
+    }
+    catch (std::exception &ex)
+    {
+        LOGERR << "Error while casting PlaceBeacon: " << ex.what() << std::endl;
+    }
 }
 
-void GiandujaBeaconAggregationLoopFunction::ExtractMessage() {
-    try {
-        CEPuckEntity& cEntity = dynamic_cast<CEPuckEntity&>(GetSpace().GetEntity("beacon0"));
-        CEPuckBeacon& cController = dynamic_cast<CEPuckBeacon&>(cEntity.GetControllableEntity().GetController());
+void GiandujaBeaconAggregationLoopFunction::ExtractMessage()
+{
+    try
+    {
+        CEPuckEntity &cEntity = dynamic_cast<CEPuckEntity &>(GetSpace().GetEntity("beacon0"));
+        CEPuckBeacon &cController = dynamic_cast<CEPuckBeacon &>(cEntity.GetControllableEntity().GetController());
         m_unMes = cController.getMessage();
-    } catch (std::exception& ex) {
+    }
+    catch (std::exception &ex)
+    {
         LOGERR << "Error while casting ExtractMessage: " << ex.what() << std::endl;
     }
-    if (m_unMes==160) {
+    if (m_unMes == 160)
+    {
         LOG << "Message=" << m_unMes << " blanc" << std::endl;
     }
-    else if (m_unMes==10) {
-        LOG << "Message=" << m_unMes << " noir"<< std::endl;
+    else if (m_unMes == 10)
+    {
+        LOG << "Message=" << m_unMes << " noir" << std::endl;
     }
 }
 
-void GiandujaBeaconAggregationLoopFunction::SetMessageBeacon() {
-    try {
-        CEPuckEntity& cEntity = dynamic_cast<CEPuckEntity&>(GetSpace().GetEntity("beacon0"));
-        CEPuckBeacon& cController = dynamic_cast<CEPuckBeacon&>(cEntity.GetControllableEntity().GetController());
+void GiandujaBeaconAggregationLoopFunction::SetMessageBeacon()
+{
+    try
+    {
+        CEPuckEntity &cEntity = dynamic_cast<CEPuckEntity &>(GetSpace().GetEntity("beacon0"));
+        CEPuckBeacon &cController = dynamic_cast<CEPuckBeacon &>(cEntity.GetControllableEntity().GetController());
         cController.setMessage(m_unMes);
-        if (m_unMes==160) {
+        if (m_unMes == 160)
+        {
             LOG << "Message=" << m_unMes << "blanc" << std::endl;
         }
-        else if (m_unMes==10) {
-            LOG << "Message=" << m_unMes << "noir"<< std::endl;
+        else if (m_unMes == 10)
+        {
+            LOG << "Message=" << m_unMes << "noir" << std::endl;
         }
-    } catch (std::exception& ex) {
+    }
+    catch (std::exception &ex)
+    {
         LOGERR << "Error while casting SetMessageBeacon: " << ex.what() << std::endl;
     }
 }
 
-CVector3 GiandujaBeaconAggregationLoopFunction::GetRandomPosition() {
+CVector3 GiandujaBeaconAggregationLoopFunction::GetRandomPosition()
+{
     Real a;
     Real b;
 
@@ -152,36 +177,42 @@ CVector3 GiandujaBeaconAggregationLoopFunction::GetRandomPosition() {
 /****************************************/
 /****************************************/
 
-void GiandujaBeaconAggregationLoopFunction::PostStep() {
-    CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
-    CVector2 cEpuckPosition(0,0);
+void GiandujaBeaconAggregationLoopFunction::PostStep()
+{
+    CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
+    CVector2 cEpuckPosition(0, 0);
 
-    for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
-        CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
+    for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
+    {
+        CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
         cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
-                         pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+                           pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
         Real fDistanceSpot;
-        if (m_unMes == 160) {
+        if (m_unMes == 160)
+        {
             fDistanceSpot = (m_cCoordSpot1 - cEpuckPosition).Length();
         }
-        else if (m_unMes == 10) {
+        else if (m_unMes == 10)
+        {
             fDistanceSpot = (m_cCoordSpot2 - cEpuckPosition).Length();
         }
 
-        if (fDistanceSpot >= m_fRadius) {
+        if (fDistanceSpot >= m_fRadius)
+        {
             m_unCostSpot1 += 1;
         }
     }
-    m_fObjectiveFunction = (Real) m_unCostSpot1;
-    m_unTime+=1;
+    m_fObjectiveFunction = (Real)m_unCostSpot1;
+    m_unTime += 1;
 }
 
 /****************************************/
 /****************************************/
 
-void GiandujaBeaconAggregationLoopFunction::PostExperiment() {
-    // CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
+void GiandujaBeaconAggregationLoopFunction::PostExperiment()
+{
+    // CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("rvr");
     // CVector2 cEpuckPosition(0,0);
     //
     // for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
@@ -215,11 +246,12 @@ void GiandujaBeaconAggregationLoopFunction::PostExperiment() {
     // }
     // m_fObjectiveFunction = (Real) score ;
 
-    m_fObjectiveFunction = (Real) 25201 - (m_unCostSpot1);
-    LOG<< "fit: " << m_fObjectiveFunction << std::endl;
+    m_fObjectiveFunction = (Real)25201 - (m_unCostSpot1);
+    LOG << "fit: " << m_fObjectiveFunction << std::endl;
 }
 
-Real GiandujaBeaconAggregationLoopFunction::GetObjectiveFunction() {
+Real GiandujaBeaconAggregationLoopFunction::GetObjectiveFunction()
+{
     return m_fObjectiveFunction;
 }
 

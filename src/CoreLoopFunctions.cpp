@@ -9,20 +9,23 @@
  * @license MIT License
  */
 
-
 #include "CoreLoopFunctions.h"
 
 /****************************************/
 /****************************************/
 
-void CoreLoopFunctions::Init(argos::TConfigurationNode& t_tree) {
+void CoreLoopFunctions::Init(argos::TConfigurationNode &t_tree)
+{
   m_pcRng = CRandom::CreateRNG("argos");
   TConfigurationNode cParametersNode;
-  try {
+  try
+  {
     cParametersNode = GetNode(t_tree, "params");
-    GetNodeAttributeOrDefault(cParametersNode, "number_robots", m_unNumberRobots, (UInt32) 1);
-    GetNodeAttributeOrDefault(cParametersNode, "dist_radius", m_fDistributionRadius, (Real) 0);
-  } catch(std::exception e) {
+    GetNodeAttributeOrDefault(cParametersNode, "number_robots", m_unNumberRobots, (UInt32)1);
+    GetNodeAttributeOrDefault(cParametersNode, "dist_radius", m_fDistributionRadius, (Real)0);
+  }
+  catch (std::exception e)
+  {
     LOGERR << "Problem with Attributes in node params" << std::endl;
   }
 
@@ -32,7 +35,8 @@ void CoreLoopFunctions::Init(argos::TConfigurationNode& t_tree) {
 /****************************************/
 /****************************************/
 
-void CoreLoopFunctions::Reset() {
+void CoreLoopFunctions::Reset()
+{
   MoveRobots();
 }
 
@@ -44,25 +48,30 @@ CoreLoopFunctions::~CoreLoopFunctions() {}
 /****************************************/
 /****************************************/
 
-void CoreLoopFunctions::MoveRobots() {
-  CEPuckEntity* pcEpuck;
+void CoreLoopFunctions::MoveRobots()
+{
+  CRVREntity *pcRVR;
   bool bPlaced = false;
   UInt32 unTrials;
-  CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
-  for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
-    pcEpuck = any_cast<CEPuckEntity*>(it->second);
+  CSpace::TMapPerType &tRVRMap = GetSpace().GetEntitiesByType("rvr");
+  for (CSpace::TMapPerType::iterator it = tRVRMap.begin(); it != tRVRMap.end(); ++it)
+  {
+    pcRVR = any_cast<CRVREntity *>(it->second);
     // Choose position at random
     unTrials = 0;
-    do {
-       ++unTrials;
-       CVector3 cEpuckPosition = GetRandomPosition();
-       bPlaced = MoveEntity(pcEpuck->GetEmbodiedEntity(),
-                            cEpuckPosition,
-                            CQuaternion().FromEulerAngles(m_pcRng->Uniform(CRange<CRadians>(CRadians::ZERO,CRadians::TWO_PI)),
-                            CRadians::ZERO,CRadians::ZERO),false);
-    } while(!bPlaced && unTrials < 1000);
-    if(!bPlaced) {
-       THROW_ARGOSEXCEPTION("Can't place robot");
+    do
+    {
+      ++unTrials;
+      CVector3 cRVRPosition = GetRandomPosition();
+      bPlaced = MoveEntity(pcRVR->GetEmbodiedEntity(),
+                           cRVRPosition,
+                           CQuaternion().FromEulerAngles(m_pcRng->Uniform(CRange<CRadians>(CRadians::ZERO, CRadians::TWO_PI)),
+                                                         CRadians::ZERO, CRadians::ZERO),
+                           false);
+    } while (!bPlaced && unTrials < 1000);
+    if (!bPlaced)
+    {
+      THROW_ARGOSEXCEPTION("Can't place robot");
     }
   }
 }
@@ -70,10 +79,12 @@ void CoreLoopFunctions::MoveRobots() {
 /****************************************/
 /****************************************/
 
-void CoreLoopFunctions::RemoveRobots() {
-  for(UInt32 i = 1; i < m_unNumberRobots + 1; ++i) {
+void CoreLoopFunctions::RemoveRobots()
+{
+  for (UInt32 i = 1; i < m_unNumberRobots + 1; ++i)
+  {
     std::ostringstream id;
-    id << "epuck" << i;
+    id << "rvr" << i;
     RemoveEntity(id.str().c_str());
   }
 }
