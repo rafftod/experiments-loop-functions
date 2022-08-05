@@ -1,0 +1,2 @@
+add_subdirectory(aggregation)
+add_subdirectory(grid-exploration)
