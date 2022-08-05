@@ -1,37 +1,38 @@
-#include "GridExplorationLoopFunc.h"
+#include "ColorAggregationLoopFunc.h"
 
 /****************************************/
 /****************************************/
 
-GridExplorationLoopFunction::GridExplorationLoopFunction()
+ColorAggregationLoopFunction::ColorAggregationLoopFunction()
 {
 
     m_arenaSize = 2.50001;
     m_gridSize = 10;
+    m_patchesSize = 0.3f;
     m_grid.assign(m_gridSize, std::vector<int>(m_gridSize, 0));
-
+    CreateColorTiles();
     m_fObjectiveFunction = 0;
 }
 
 /****************************************/
 /****************************************/
 
-GridExplorationLoopFunction::GridExplorationLoopFunction(const GridExplorationLoopFunction &orig) {}
+ColorAggregationLoopFunction::ColorAggregationLoopFunction(const ColorAggregationLoopFunction &orig) {}
 
 /****************************************/
 /****************************************/
 
-GridExplorationLoopFunction::~GridExplorationLoopFunction() {}
+ColorAggregationLoopFunction::~ColorAggregationLoopFunction() {}
 
 /****************************************/
 /****************************************/
 
-void GridExplorationLoopFunction::Destroy() {}
+void ColorAggregationLoopFunction::Destroy() {}
 
 /****************************************/
 /****************************************/
 
-void GridExplorationLoopFunction::Reset()
+void ColorAggregationLoopFunction::Reset()
 {
     CoreLoopFunctions::Reset();
 
@@ -42,29 +43,46 @@ void GridExplorationLoopFunction::Reset()
 /****************************************/
 /****************************************/
 
-void GridExplorationLoopFunction::Init(TConfigurationNode &t_tree)
+void ColorAggregationLoopFunction::Init(TConfigurationNode &t_tree)
 {
     CoreLoopFunctions::Init(t_tree);
 }
 
-argos::CColor GridExplorationLoopFunction::GetFloorColor(const argos::CVector2 &c_position_on_plane)
+argos::CColor ColorAggregationLoopFunction::GetFloorColor(const argos::CVector2 &c_position_on_plane)
 {
-    /*
     CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
-    if (abs(vCurrentPoint.GetX()) > m_arenaSize/2.0 || abs(vCurrentPoint.GetY()) > m_arenaSize/2.0 ) {
-        return CColor::WHITE;
+    for (size_t i = 0; i < m_colorMap.size(); i++)
+    {
+        for (size_t j = 0; j < m_colorMap[i].size(); j++)
+        {
+            // check that the square centered at the pair
+            // contains the current point
+            if (vCurrentPoint.GetX() >= m_colorMap[i][j].first - m_patchesSize / 2 &&
+                vCurrentPoint.GetX() <= m_colorMap[i][j].first + m_patchesSize / 2 &&
+                vCurrentPoint.GetY() >= m_colorMap[i][j].second - m_patchesSize / 2 &&
+                vCurrentPoint.GetY() <= m_colorMap[i][j].second + m_patchesSize / 2)
+            {
+                return GetColorParameter(i);
+            }
+        }
     }
-    if ( (m_gridSize*(vCurrentPoint.GetX()/m_arenaSize+0.5)) - floor(m_gridSize*(vCurrentPoint.GetX()/m_arenaSize+0.5)) < 0.1) {
-        return CColor::WHITE;
-    }
-    if ( (m_gridSize*(vCurrentPoint.GetY()/m_arenaSize+0.5)) - floor(m_gridSize*(vCurrentPoint.GetY()/m_arenaSize+0.5)) < 0.1) {
-        return CColor::WHITE;
-    }
-    */
+    // if (abs(vCurrentPoint.GetX()) > m_arenaSize / 2.0 || abs(vCurrentPoint.GetY()) > m_arenaSize / 2.0)
+    // {
+    //     return CColor::WHITE;
+    // }
+    // if ((m_gridSize * (vCurrentPoint.GetX() / m_arenaSize + 0.5)) - floor(m_gridSize * (vCurrentPoint.GetX() / m_arenaSize + 0.5)) < 0.1)
+    // {
+    //     return CColor::WHITE;
+    // }
+    // if ((m_gridSize * (vCurrentPoint.GetY() / m_arenaSize + 0.5)) - floor(m_gridSize * (vCurrentPoint.GetY() / m_arenaSize + 0.5)) < 0.1)
+    // {
+    //     return CColor::WHITE;
+    // }
+
     return CColor::GRAY50;
 }
 
-CVector3 GridExplorationLoopFunction::GetRandomPosition()
+CVector3 ColorAggregationLoopFunction::GetRandomPosition()
 {
     Real temp;
     Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
@@ -85,7 +103,7 @@ CVector3 GridExplorationLoopFunction::GetRandomPosition()
 /****************************************/
 /****************************************/
 
-void GridExplorationLoopFunction::PostStep()
+void ColorAggregationLoopFunction::PostStep()
 {
     ArrestTrespassers();
     CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
@@ -121,18 +139,18 @@ void GridExplorationLoopFunction::PostStep()
 /****************************************/
 /****************************************/
 
-void GridExplorationLoopFunction::PostExperiment()
+void ColorAggregationLoopFunction::PostExperiment()
 {
     m_fObjectiveFunction = m_fObjectiveFunction / m_gridSize / m_gridSize;
     // LOG << "Final value : "<< m_fObjectiveFunction << std::endl;
 }
 
-Real GridExplorationLoopFunction::GetObjectiveFunction()
+Real ColorAggregationLoopFunction::GetObjectiveFunction()
 {
     return (m_fObjectiveFunction);
 }
 
-void GridExplorationLoopFunction::ArrestTrespassers()
+void ColorAggregationLoopFunction::ArrestTrespassers()
 {
     CRVREntity *pcEpuck;
     bool bPlaced = false;
@@ -165,7 +183,7 @@ void GridExplorationLoopFunction::ArrestTrespassers()
     }
 }
 
-CVector3 GridExplorationLoopFunction::GetJailPosition()
+CVector3 ColorAggregationLoopFunction::GetJailPosition()
 {
     Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
     Real b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
@@ -176,4 +194,39 @@ CVector3 GridExplorationLoopFunction::GetJailPosition()
     return CVector3(fPosX, fPosY, 0);
 }
 
-REGISTER_LOOP_FUNCTIONS(GridExplorationLoopFunction, "grid_exploration_loop_functions");
+void ColorAggregationLoopFunction::CreateColorTiles()
+{
+    std::vector<std::pair<Real, Real>> blueCenters = {std::pair<Real, Real>(0.75, 0.75), std::pair<Real, Real>(0.0, 0.75), std::pair<Real, Real>(-0.75, 0.75)};
+    std::vector<std::pair<Real, Real>> greenCenters = {std::pair<Real, Real>(0.75, 0.25), std::pair<Real, Real>(0.0, 0.25), std::pair<Real, Real>(-0.75, 0.25)};
+    std::vector<std::pair<Real, Real>> yellowCenters = {std::pair<Real, Real>(0.75, -0.25), std::pair<Real, Real>(0.0, -0.25), std::pair<Real, Real>(-0.75, -0.25)};
+    std::vector<std::pair<Real, Real>> redCenters = {std::pair<Real, Real>(0.75, -0.75), std::pair<Real, Real>(0.0, -0.75), std::pair<Real, Real>(-0.75, -0.75)};
+    m_colorMap.push_back(blueCenters);
+    m_colorMap.push_back(greenCenters);
+    m_colorMap.push_back(yellowCenters);
+    m_colorMap.push_back(redCenters);
+}
+
+CColor ColorAggregationLoopFunction::GetColorParameter(const UInt32 &un_value)
+{
+    CColor cColorParameter;
+    switch (un_value)
+    {
+    case 0:
+        cColorParameter = CColor::BLUE;
+        break;
+    case 1:
+        cColorParameter = CColor::GREEN;
+        break;
+    case 2:
+        cColorParameter = CColor::YELLOW;
+        break;
+    case 3:
+        cColorParameter = CColor::RED;
+        break;
+    default:
+        cColorParameter = CColor::BLACK;
+    }
+    return cColorParameter;
+}
+
+REGISTER_LOOP_FUNCTIONS(ColorAggregationLoopFunction, "color_aggregation_loop_functions");

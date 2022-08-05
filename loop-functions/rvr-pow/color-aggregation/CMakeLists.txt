@@ -1,0 +1,2 @@
+add_library(rvr_pow_color_aggregation_loopfunc SHARED ColorAggregationLoopFunc.h ColorAggregationLoopFunc.cpp ${LOOP_HEADERS} ${LOOP_SOURCES})
+target_link_libraries(rvr_pow_color_aggregation_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_rvr)

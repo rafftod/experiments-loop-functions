@@ -222,4 +222,4 @@ CVector3 AggregationOneSpotLoopFunc::GetJailPosition()
   return CVector3(fPosX, fPosY, 0);
 }
 
-REGISTER_LOOP_FUNCTIONS(AggregationOneSpotLoopFunc, "aggregation_one_spot");
+REGISTER_LOOP_FUNCTIONS(AggregationOneSpotLoopFunc, "aggregation_one_spot_loop_functions");
