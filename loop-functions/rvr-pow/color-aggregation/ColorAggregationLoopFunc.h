@@ -35,13 +35,16 @@ private:
     Real m_arenaSize;
     UInt32 m_gridSize;
     Real m_patchesSize;
+
+    UInt32 m_unScoreSpot1;
     Real m_fObjectiveFunction;
-    // std::tr1::unordered_map<CColor, std::vector<std::pair<Real, Real>>> m_colorMap;
     std::vector<std::vector<std::pair<Real, Real>>> m_colorMap;
 
     virtual void CreateColorTiles();
 
     virtual CColor GetColorParameter(const UInt32 &un_value);
+
+    virtual Real GetColorScore(const UInt32 &un_value);
 };
 
 #endif
