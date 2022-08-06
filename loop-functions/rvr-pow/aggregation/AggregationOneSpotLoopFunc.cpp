@@ -13,7 +13,7 @@
 
 AggregationOneSpotLoopFunc::AggregationOneSpotLoopFunc()
 {
-  m_fRadius = 0.3;
+  m_fRadius = 0.6;
   m_cCoordSpot1 = CVector2(0, 0);
   m_unScoreSpot1 = 0;
   m_fObjectiveFunction = 0;
