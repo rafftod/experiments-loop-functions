@@ -210,16 +210,20 @@ CColor ColorAggregationLoopFunction::GetColorParameter(const UInt32 &un_value)
     switch (un_value)
     {
     case 0:
-        cColorParameter = CColor::BLUE;
+        // purple patch
+        cColorParameter = CColor(126, 79, 154);
         break;
     case 1:
-        cColorParameter = CColor::GREEN;
+        // blue patch
+        cColorParameter = CColor(0, 123, 194);
         break;
     case 2:
-        cColorParameter = CColor::YELLOW;
+        // yellow patch
+        cColorParameter = CColor(252, 238, 33);
         break;
     case 3:
-        cColorParameter = CColor::RED;
+        // red patch
+        cColorParameter = CColor(228, 53, 64);
         break;
     default:
         cColorParameter = CColor::BLACK;
