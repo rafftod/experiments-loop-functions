@@ -84,7 +84,7 @@ void AggregationOneSpotLoopFunc::PostStep()
     Real fDistanceSpot1 = (m_cCoordSpot1 - cEpuckPosition).Length();
     if (fDistanceSpot1 > m_fRadius)
     {
-      m_unScoreSpot1 += 1;
+      // m_unScoreSpot1 += 1;
     }
   }
 }
@@ -94,8 +94,23 @@ void AggregationOneSpotLoopFunc::PostStep()
 
 void AggregationOneSpotLoopFunc::PostExperiment()
 {
-  m_fObjectiveFunction = m_unScoreSpot1;
+  m_unScoreSpot1 = 0;
+  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
+  CVector2 cEpuckPosition(0, 0);
+  for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
+  {
+    CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
+    cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
+                       pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+
+    Real fDistanceSpot1 = (m_cCoordSpot1 - cEpuckPosition).Length();
+    if (fDistanceSpot1 > m_fRadius)
+    {
+      m_unScoreSpot1 += 1;
+    }
+  }
   // LOG << "Final value : "<< m_fObjectiveFunction << std::endl;
+  LOG << "Score " << m_unScoreSpot1 << std::endl;
 }
 
 /****************************************/

@@ -224,10 +224,14 @@ CVector3 ColorAggregationLoopFunction::GetJailPosition()
 void ColorAggregationLoopFunction::CreateColorTiles()
 {
     std::vector<std::pair<Real, Real>> TilePositions = {
-        std::pair<Real, Real>(0.5, 0.75), std::pair<Real, Real>(0.0, 0.75), std::pair<Real, Real>(-0.5, 0.75),
-        std::pair<Real, Real>(0.5, -0.25), std::pair<Real, Real>(0.0, -0.25), std::pair<Real, Real>(-0.5, -0.25),
-        std::pair<Real, Real>(0.5, -0.75), std::pair<Real, Real>(0.0, -0.75), std::pair<Real, Real>(-0.5, -0.75),
-        std::pair<Real, Real>(0.5, 0.25), std::pair<Real, Real>(0.0, 0.25), std::pair<Real, Real>(-0.5, 0.25)};
+        // upper row
+        std::pair<Real, Real>(0.75, -0.25), std::pair<Real, Real>(0.75, 0.25),
+        // upper mid row
+        std::pair<Real, Real>(0.25, -0.75), std::pair<Real, Real>(0.25, -0.25), std::pair<Real, Real>(0.25, 0.25), std::pair<Real, Real>(0.25, 0.75),
+        // lower mid row
+        std::pair<Real, Real>(-0.25, -0.75), std::pair<Real, Real>(-0.25, -0.25), std::pair<Real, Real>(-0.25, 0.25), std::pair<Real, Real>(-0.25, 0.75),
+        // lower row
+        std::pair<Real, Real>(-0.75, -0.25), std::pair<Real, Real>(-0.75, 0.25)};
     // assign each tile a position at random from the list
     for (size_t i = 0; i < 3; i++)
     {
