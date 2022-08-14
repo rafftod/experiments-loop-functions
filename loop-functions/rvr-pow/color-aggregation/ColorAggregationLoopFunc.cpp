@@ -237,7 +237,6 @@ void ColorAggregationLoopFunction::CreateColorTiles()
             size_t k = m_pcRng->Uniform(CRange<UInt32>(0, TilePositions.size()));
             ptColorVector.push_back(TilePositions[k]);
             TilePositions.erase(TilePositions.begin() + k);
-            std::cout << "Tile " << i << " " << j << ": " << ptColorVector[j].first << " " << ptColorVector[j].second << std::endl;
         }
         m_colorMap.push_back(ptColorVector);
     }
