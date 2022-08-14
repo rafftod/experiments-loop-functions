@@ -1,4 +1,5 @@
 #include "ColorAggregationLoopFunc.h"
+#include <random>
 
 /****************************************/
 /****************************************/
@@ -10,7 +11,6 @@ ColorAggregationLoopFunction::ColorAggregationLoopFunction()
     m_gridSize = 10;
     m_patchesSize = 0.3f;
     m_grid.assign(m_gridSize, std::vector<int>(m_gridSize, 0));
-    CreateColorTiles();
     m_unScoreSpot1 = 0;
     m_fObjectiveFunction = 0;
 }
@@ -36,7 +36,9 @@ void ColorAggregationLoopFunction::Destroy() {}
 void ColorAggregationLoopFunction::Reset()
 {
     CoreLoopFunctions::Reset();
-
+    m_colorMap.clear();
+    CreateColorTiles();
+    m_unScoreSpot1 = 0;
     m_grid.assign(m_gridSize, std::vector<int>(m_gridSize, 0));
     m_fObjectiveFunction = 0;
 }
@@ -47,6 +49,7 @@ void ColorAggregationLoopFunction::Reset()
 void ColorAggregationLoopFunction::Init(TConfigurationNode &t_tree)
 {
     CoreLoopFunctions::Init(t_tree);
+    CreateColorTiles();
 }
 
 argos::CColor ColorAggregationLoopFunction::GetFloorColor(const argos::CVector2 &c_position_on_plane)
@@ -126,7 +129,7 @@ void ColorAggregationLoopFunction::PostStep()
                     cEpuckPosition.GetY() >= m_colorMap[i][j].second - m_patchesSize / 2 &&
                     cEpuckPosition.GetY() <= m_colorMap[i][j].second + m_patchesSize / 2)
                 {
-                    m_unScoreSpot1 += GetColorScore(i);
+                    // m_unScoreSpot1 += GetColorScore(i);
                 }
             }
         }
@@ -139,8 +142,34 @@ void ColorAggregationLoopFunction::PostStep()
 
 void ColorAggregationLoopFunction::PostExperiment()
 {
+    ArrestTrespassers();
+    CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
+    CVector2 cEpuckPosition(0, 0);
+    for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
+    {
+        CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
+        cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
+                           pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+        // check if in a square
+        for (size_t i = 0; i < m_colorMap.size(); i++)
+        {
+            for (size_t j = 0; j < m_colorMap[i].size(); j++)
+            {
+                // check that the square centered at the pair
+                // contains the current point
+                if (cEpuckPosition.GetX() >= m_colorMap[i][j].first - m_patchesSize / 2 &&
+                    cEpuckPosition.GetX() <= m_colorMap[i][j].first + m_patchesSize / 2 &&
+                    cEpuckPosition.GetY() >= m_colorMap[i][j].second - m_patchesSize / 2 &&
+                    cEpuckPosition.GetY() <= m_colorMap[i][j].second + m_patchesSize / 2)
+                {
+                    m_unScoreSpot1 += GetColorScore(i);
+                }
+            }
+        }
+    }
     m_fObjectiveFunction = m_unScoreSpot1;
-    // LOG << "Final value : "<< m_fObjectiveFunction << std::endl;
+    LOG << "Score: " << m_unScoreSpot1 << std::endl;
+    LOG << "Final value : " << m_fObjectiveFunction << std::endl;
 }
 
 Real ColorAggregationLoopFunction::GetObjectiveFunction()
@@ -194,14 +223,24 @@ CVector3 ColorAggregationLoopFunction::GetJailPosition()
 
 void ColorAggregationLoopFunction::CreateColorTiles()
 {
-    std::vector<std::pair<Real, Real>> blueCenters = {std::pair<Real, Real>(0.5, 0.75), std::pair<Real, Real>(0.0, 0.75), std::pair<Real, Real>(-0.5, 0.75)};
-    std::vector<std::pair<Real, Real>> greenCenters = {std::pair<Real, Real>(0.5, 0.25), std::pair<Real, Real>(0.0, 0.25), std::pair<Real, Real>(-0.5, 0.25)};
-    std::vector<std::pair<Real, Real>> yellowCenters = {std::pair<Real, Real>(0.5, -0.25), std::pair<Real, Real>(0.0, -0.25), std::pair<Real, Real>(-0.5, -0.25)};
-    std::vector<std::pair<Real, Real>> redCenters = {std::pair<Real, Real>(0.5, -0.75), std::pair<Real, Real>(0.0, -0.75), std::pair<Real, Real>(-0.5, -0.75)};
-    m_colorMap.push_back(blueCenters);
-    m_colorMap.push_back(greenCenters);
-    m_colorMap.push_back(yellowCenters);
-    m_colorMap.push_back(redCenters);
+    std::vector<std::pair<Real, Real>> TilePositions = {
+        std::pair<Real, Real>(0.5, 0.75), std::pair<Real, Real>(0.0, 0.75), std::pair<Real, Real>(-0.5, 0.75),
+        std::pair<Real, Real>(0.5, -0.25), std::pair<Real, Real>(0.0, -0.25), std::pair<Real, Real>(-0.5, -0.25),
+        std::pair<Real, Real>(0.5, -0.75), std::pair<Real, Real>(0.0, -0.75), std::pair<Real, Real>(-0.5, -0.75),
+        std::pair<Real, Real>(0.5, 0.25), std::pair<Real, Real>(0.0, 0.25), std::pair<Real, Real>(-0.5, 0.25)};
+    // assign each tile a position at random from the list
+    for (size_t i = 0; i < 3; i++)
+    {
+        std::vector<std::pair<Real, Real>> ptColorVector;
+        for (size_t j = 0; j < 4; j++)
+        {
+            size_t k = m_pcRng->Uniform(CRange<UInt32>(0, TilePositions.size()));
+            ptColorVector.push_back(TilePositions[k]);
+            TilePositions.erase(TilePositions.begin() + k);
+            std::cout << "Tile " << i << " " << j << ": " << ptColorVector[j].first << " " << ptColorVector[j].second << std::endl;
+        }
+        m_colorMap.push_back(ptColorVector);
+    }
 }
 
 CColor ColorAggregationLoopFunction::GetColorParameter(const UInt32 &un_value)
@@ -210,20 +249,15 @@ CColor ColorAggregationLoopFunction::GetColorParameter(const UInt32 &un_value)
     switch (un_value)
     {
     case 0:
-        // purple patch
-        cColorParameter = CColor(126, 79, 154);
+        cColorParameter = CColor::GREEN;
         break;
     case 1:
-        // blue patch
-        cColorParameter = CColor(0, 123, 194);
+        // red physical patches
+        cColorParameter = CColor::RED;
         break;
     case 2:
-        // yellow patch
-        cColorParameter = CColor(252, 238, 33);
-        break;
-    case 3:
-        // red patch
-        cColorParameter = CColor(228, 53, 64);
+        // yellow physical patches
+        cColorParameter = CColor::YELLOW;
         break;
     default:
         cColorParameter = CColor::BLACK;
