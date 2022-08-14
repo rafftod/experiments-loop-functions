@@ -13,7 +13,7 @@
 
 AggregationOneSpotLoopFunc::AggregationOneSpotLoopFunc()
 {
-  m_fRadius = 0.6;
+  m_fRadius = 0.5;
   m_cCoordSpot1 = CVector2(0, 0);
   m_unScoreSpot1 = 0;
   m_fObjectiveFunction = 0;
@@ -104,7 +104,7 @@ void AggregationOneSpotLoopFunc::PostExperiment()
                        pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
     Real fDistanceSpot1 = (m_cCoordSpot1 - cEpuckPosition).Length();
-    if (fDistanceSpot1 > m_fRadius)
+    if (fDistanceSpot1 <= m_fRadius)
     {
       m_unScoreSpot1 += 1;
     }
