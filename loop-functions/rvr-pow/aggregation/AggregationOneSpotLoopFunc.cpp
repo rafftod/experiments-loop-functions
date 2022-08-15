@@ -111,7 +111,6 @@ void AggregationOneSpotLoopFunc::PostExperiment()
   }
   m_fObjectiveFunction = m_unScoreSpot1;
   // LOG << "Final value : "<< m_fObjectiveFunction << std::endl;
-  LOG << "Score " << m_unScoreSpot1 << std::endl;
 }
 
 /****************************************/
