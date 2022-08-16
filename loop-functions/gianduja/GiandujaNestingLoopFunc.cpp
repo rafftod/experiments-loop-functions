@@ -109,12 +109,12 @@ CVector3 GiandujaNestingLoopFunction::GetRandomPosition()
 
 void GiandujaNestingLoopFunction::PostStep()
 {
-  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
+  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   CVector2 cEpuckPosition(0, 0);
   UInt8 un_trigger = 0;
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
   {
-    CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
+    CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                        pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 

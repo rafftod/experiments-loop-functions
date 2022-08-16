@@ -13,7 +13,7 @@
 
 #include <argos3/core/simulator/space/space.h>
 #include <argos3/core/simulator/loop_functions.h>
-#include <argos3/plugins/robots/rvr/simulator/rvr_entity.h>
+#include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
 
 using namespace argos;
 

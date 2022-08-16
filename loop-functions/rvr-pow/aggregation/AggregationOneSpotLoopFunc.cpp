@@ -73,11 +73,11 @@ void AggregationOneSpotLoopFunc::Reset()
 void AggregationOneSpotLoopFunc::PostStep()
 {
   ArrestTrespassers();
-  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
+  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   CVector2 cEpuckPosition(0, 0);
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
   {
-    CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
+    CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                        pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
@@ -95,11 +95,11 @@ void AggregationOneSpotLoopFunc::PostStep()
 void AggregationOneSpotLoopFunc::PostExperiment()
 {
   m_unScoreSpot1 = 0;
-  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
+  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   CVector2 cEpuckPosition(0, 0);
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
   {
-    CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
+    CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                        pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
@@ -148,15 +148,15 @@ void AggregationOneSpotLoopFunc::PositionRobots()
   Real b;
   Real temp;
 
-  CRVREntity *pcEpuck;
+  CEPuckEntity *pcEpuck;
   UInt32 unTrials;
   bool bPlaced = false;
 
   for (UInt32 i = 1; i < m_unNumberRobots + 1; ++i)
   {
     std::ostringstream id;
-    id << "rvr" << i;
-    pcEpuck = new CRVREntity(id.str().c_str(),
+    id << "epuck" << i;
+    pcEpuck = new CEPuckEntity(id.str().c_str(),
                              "automode",
                              CVector3(0, 0, 0),
                              CQuaternion().FromEulerAngles(CRadians::ZERO, CRadians::ZERO, CRadians::ZERO));
@@ -195,13 +195,13 @@ void AggregationOneSpotLoopFunc::PositionRobots()
 
 void AggregationOneSpotLoopFunc::ArrestTrespassers()
 {
-  CRVREntity *pcEpuck;
+  CEPuckEntity *pcEpuck;
   bool bPlaced = false;
   UInt32 unTrials;
-  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
+  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
   {
-    pcEpuck = any_cast<CRVREntity *>(it->second);
+    pcEpuck = any_cast<CEPuckEntity *>(it->second);
     // Choose position at random
     Real posY = pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY();
     Real posX = pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX();

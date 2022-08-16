@@ -11,7 +11,7 @@
 #define DIRECTIONAL_GATE
 
 #include <argos3/core/simulator/space/space.h>
-#include <argos3/plugins/robots/rvr/simulator/rvr_entity.h>
+#include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
 #include <argos3/plugins/simulator/entities/box_entity.h>
 
 #include "../../src/CoreLoopFunctions.h"
@@ -38,7 +38,7 @@ public:
   CVector3 GetRandomPosition();
 
 private:
-  typedef std::map<CRVREntity *, CVector2> TOldPosMap;
+  typedef std::map<CEPuckEntity *, CVector2> TOldPosMap;
   TOldPosMap m_tOldPosPoints;
   Real m_fObjectiveFunction;
   CVector2 m_RectCoord1;

@@ -3,7 +3,7 @@
 
 #include "../../src/CoreLoopFunctions.h"
 #include <argos3/core/simulator/space/space.h>
-#include <argos3/plugins/robots/rvr/simulator/rvr_entity.h>
+#include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
 
 #include "epuck_beacon.h"
 
@@ -37,7 +37,7 @@ private:
   CVector2 m_CCoordRect2Pos;
   CVector2 m_CCoordRect1Pos;
 
-  typedef std::map<CRVREntity *, CVector2> TOldPosMap;
+  typedef std::map<CEPuckEntity *, CVector2> TOldPosMap;
   TOldPosMap m_tOldPosPoints;
 
   UInt8 m_unState;

@@ -103,7 +103,7 @@ void GiandujaBeaconAggregationLoopFunction::PlaceBeacon()
 {
     try
     {
-        CRVREntity &cEpuck = dynamic_cast<CRVREntity &>(GetSpace().GetEntity("beacon0"));
+        CEPuckEntity &cEpuck = dynamic_cast<CEPuckEntity &>(GetSpace().GetEntity("beacon0"));
         MoveEntity(cEpuck.GetEmbodiedEntity(),
                    CVector3(0, 0.5, 0),
                    CQuaternion().FromEulerAngles(CRadians::ZERO,
@@ -120,7 +120,7 @@ void GiandujaBeaconAggregationLoopFunction::ExtractMessage()
 {
     try
     {
-        CRVREntity &cEntity = dynamic_cast<CRVREntity &>(GetSpace().GetEntity("beacon0"));
+        CEPuckEntity &cEntity = dynamic_cast<CEPuckEntity &>(GetSpace().GetEntity("beacon0"));
         CEPuckBeacon &cController = dynamic_cast<CEPuckBeacon &>(cEntity.GetControllableEntity().GetController());
         m_unMes = cController.getMessage();
     }
@@ -142,7 +142,7 @@ void GiandujaBeaconAggregationLoopFunction::SetMessageBeacon()
 {
     try
     {
-        CRVREntity &cEntity = dynamic_cast<CRVREntity &>(GetSpace().GetEntity("beacon0"));
+        CEPuckEntity &cEntity = dynamic_cast<CEPuckEntity &>(GetSpace().GetEntity("beacon0"));
         CEPuckBeacon &cController = dynamic_cast<CEPuckBeacon &>(cEntity.GetControllableEntity().GetController());
         cController.setMessage(m_unMes);
         if (m_unMes == 160)
@@ -179,12 +179,12 @@ CVector3 GiandujaBeaconAggregationLoopFunction::GetRandomPosition()
 
 void GiandujaBeaconAggregationLoopFunction::PostStep()
 {
-    CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
+    CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("epuck");
     CVector2 cEpuckPosition(0, 0);
 
     for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
     {
-        CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
+        CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
         cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                            pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
@@ -212,11 +212,11 @@ void GiandujaBeaconAggregationLoopFunction::PostStep()
 
 void GiandujaBeaconAggregationLoopFunction::PostExperiment()
 {
-    // CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("rvr");
+    // CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
     // CVector2 cEpuckPosition(0,0);
     //
     // for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
-    //     CRVREntity* pcEpuck = any_cast<CRVREntity*>(it->second);
+    //     CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
     //     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
     //                      pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
     //

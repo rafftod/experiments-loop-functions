@@ -62,10 +62,10 @@ void PhototaxisLoopFunction::PostStep()
 Real PhototaxisLoopFunction::ComputeStepObjectiveValue()
 {
   Real temp = 0;
-  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
+  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
   {
-    CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
+    CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
     temp += (lightPosition - CVector2(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(), pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY())).Length();
   }
   return temp * -1.0; // Change: add "* -1.0"

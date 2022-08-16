@@ -50,13 +50,13 @@ CoreLoopFunctions::~CoreLoopFunctions() {}
 
 void CoreLoopFunctions::MoveRobots()
 {
-  CRVREntity *pcRVR;
+  CEPuckEntity *pcRVR;
   bool bPlaced = false;
   UInt32 unTrials;
-  CSpace::TMapPerType &tRVRMap = GetSpace().GetEntitiesByType("rvr");
+  CSpace::TMapPerType &tRVRMap = GetSpace().GetEntitiesByType("epuck");
   for (CSpace::TMapPerType::iterator it = tRVRMap.begin(); it != tRVRMap.end(); ++it)
   {
-    pcRVR = any_cast<CRVREntity *>(it->second);
+    pcRVR = any_cast<CEPuckEntity *>(it->second);
     // Choose position at random
     unTrials = 0;
     do
@@ -84,7 +84,7 @@ void CoreLoopFunctions::RemoveRobots()
   for (UInt32 i = 1; i < m_unNumberRobots + 1; ++i)
   {
     std::ostringstream id;
-    id << "rvr" << i;
+    id << "epuck" << i;
     RemoveEntity(id.str().c_str());
   }
 }

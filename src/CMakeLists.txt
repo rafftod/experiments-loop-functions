@@ -17,7 +17,7 @@ endif(ARGOS_BUILD_FOR_SIMULATOR)
 
 
 add_library(argos3_demiurge_loop_functions SHARED ${LOOP_HEADERS} ${LOOP_SOURCES} )
-target_link_libraries(argos3_demiurge_loop_functions argos3plugin_${ARGOS_BUILD_FOR}_rvr)
+target_link_libraries(argos3_demiurge_loop_functions argos3plugin_${ARGOS_BUILD_FOR}_rvr argos3plugin_${ARGOS_BUILD_FOR}_epuck)
 
 install(
   FILES ${LOOP_HEADERS}

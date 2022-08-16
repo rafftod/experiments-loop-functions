@@ -17,10 +17,10 @@ void StopLoopFunction::Init(argos::TConfigurationNode &t_tree)
   CoreLoopFunctions::Init(t_tree);
   previous.reserve(m_unNumberRobots);
   int count = 0;
-  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
+  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
   {
-    CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
+    CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
     previous.push_back(new CVector2(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(), pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY()));
     count++;
   }
@@ -65,10 +65,10 @@ Real StopLoopFunction::ComputeStepObjectiveValue()
 {
   Real temp0 = 0;
   int count = 0;
-  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
+  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
   {
-    CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
+    CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
     Real temp = (*(new CVector2(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(), pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY())) - *previous[count]).Length();
     previous[count]->Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(), pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
     temp0 += temp * 100;

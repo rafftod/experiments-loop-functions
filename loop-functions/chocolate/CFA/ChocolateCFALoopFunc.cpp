@@ -166,14 +166,14 @@ Real ChocolateCFALoopFunction::GetExpectedDistance()
 
 Real ChocolateCFALoopFunction::GetClosestEpuckDistanceFromPoint(CVector2 &c_random_point)
 {
-  CSpace::TMapPerType &mapEpucks = GetSpace().GetEntitiesByType("rvr");
+  CSpace::TMapPerType &mapEpucks = GetSpace().GetEntitiesByType("epuck");
   CVector2 cEpuckPosition;
 
   // Maximum distance = diameter of arena
   Real fMinDistance = 2.5;
   for (CSpace::TMapPerType::iterator it = mapEpucks.begin(); it != mapEpucks.end(); ++it)
   {
-    CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
+    CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                        pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
     // Only consider epucks not on black spots

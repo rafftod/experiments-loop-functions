@@ -94,7 +94,7 @@ void GiandujaBeaconStopLoopFunction::ExtractTime()
 {
     try
     {
-        CRVREntity &cEntity = dynamic_cast<CRVREntity &>(GetSpace().GetEntity("beacon0"));
+        CEPuckEntity &cEntity = dynamic_cast<CEPuckEntity &>(GetSpace().GetEntity("beacon0"));
         CEPuckBeacon &cController = dynamic_cast<CEPuckBeacon &>(cEntity.GetControllableEntity().GetController());
         m_unTbar = cController.getTBar();
         LOG << "Time=" << m_unTbar << std::endl;
@@ -109,7 +109,7 @@ void GiandujaBeaconStopLoopFunction::PlaceBeacon()
 {
     try
     {
-        CRVREntity &cEpuck = dynamic_cast<CRVREntity &>(GetSpace().GetEntity("beacon0"));
+        CEPuckEntity &cEpuck = dynamic_cast<CEPuckEntity &>(GetSpace().GetEntity("beacon0"));
         MoveEntity(cEpuck.GetEmbodiedEntity(),
                    CVector3(0, 0.5, 0),
                    CQuaternion().FromEulerAngles(CRadians::ZERO,
@@ -141,12 +141,12 @@ CVector3 GiandujaBeaconStopLoopFunction::GetRandomPosition()
 
 void GiandujaBeaconStopLoopFunction::PostStep()
 {
-    CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
+    CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("epuck");
     CVector2 cEpuckPosition(0, 0);
     UInt8 un_trigger = 0;
     for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
     {
-        CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
+        CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
         cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                            pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 

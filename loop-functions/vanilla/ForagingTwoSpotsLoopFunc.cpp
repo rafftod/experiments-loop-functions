@@ -148,11 +148,11 @@ void ForagingTwoSpotsLoopFunction::PostStep()
 {
   UInt32 score_temp = m_fObjectiveFunction;
 
-  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
+  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   CVector2 cEpuckPosition(0, 0);
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
   {
-    CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
+    CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
 
     std::string strRobotId = pcEpuck->GetId();
     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),

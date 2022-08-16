@@ -81,10 +81,10 @@ Real ExplorationLoopFunction::ComputeStepObjectiveValue()
 
 void ExplorationLoopFunction::RegisterPositions()
 {
-  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
+  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
   {
-    CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
+    CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
     unsigned int x = (unsigned int)((pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX() + sizeArena.GetX() / 2.0) * 100);
     unsigned int y = (unsigned int)((pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY() + sizeArena.GetY() / 2.0) * 100);
     grid[(unsigned int)(x * sizeArena.GetX() * 100 + y)] = true;

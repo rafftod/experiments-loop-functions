@@ -1,2 +1,2 @@
 add_library(rvr_pow_aggregation_loopfunc SHARED AggregationOneSpotLoopFunc.h AggregationOneSpotLoopFunc.cpp ${LOOP_HEADERS} ${LOOP_SOURCES})
-target_link_libraries(rvr_pow_aggregation_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_rvr)
+target_link_libraries(rvr_pow_aggregation_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_rvr argos3plugin_${ARGOS_BUILD_FOR}_epuck)

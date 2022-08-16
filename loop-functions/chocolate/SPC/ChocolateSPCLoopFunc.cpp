@@ -96,7 +96,7 @@ Real ChocolateSPCLoopFunction::ComputeObjectiveFunction()
 {
     CVector2 cRandomPoint;
     Real dA = 0, dP = 0;
-    CSpace::TMapPerType mEpucks = GetSpace().GetEntitiesByType("rvr");
+    CSpace::TMapPerType mEpucks = GetSpace().GetEntitiesByType("epuck");
     CVector2 cEpuckPosition(0, 0);
     Real fDistanceToRandomPoint = 0;
 
@@ -110,7 +110,7 @@ Real ChocolateSPCLoopFunction::ComputeObjectiveFunction()
 
         for (CSpace::TMapPerType::iterator it = mEpucks.begin(); it != mEpucks.end(); ++it)
         {
-            CRVREntity *pcEpuck = any_cast<CRVREntity *>((*it).second);
+            CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>((*it).second);
             cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                                pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
             if (IsOnSquareArea(cEpuckPosition))
@@ -136,7 +136,7 @@ Real ChocolateSPCLoopFunction::ComputeObjectiveFunction()
 
         for (CSpace::TMapPerType::iterator it = mEpucks.begin(); it != mEpucks.end(); ++it)
         {
-            CRVREntity *pcEpuck = any_cast<CRVREntity *>((*it).second);
+            CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>((*it).second);
             cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                                pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
             if (IsOnCirclePerimeter(cEpuckPosition))

@@ -110,11 +110,11 @@ CVector3 ColorAggregationLoopFunction::GetRandomPosition()
 void ColorAggregationLoopFunction::PostStep()
 {
     ArrestTrespassers();
-    CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
+    CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("epuck");
     CVector2 cEpuckPosition(0, 0);
     for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
     {
-        CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
+        CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
         cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                            pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
         // check if in a square
@@ -143,11 +143,11 @@ void ColorAggregationLoopFunction::PostStep()
 void ColorAggregationLoopFunction::PostExperiment()
 {
     ArrestTrespassers();
-    CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
+    CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("epuck");
     CVector2 cEpuckPosition(0, 0);
     for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
     {
-        CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
+        CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
         cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                            pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
         // check if in a square
@@ -179,13 +179,13 @@ Real ColorAggregationLoopFunction::GetObjectiveFunction()
 
 void ColorAggregationLoopFunction::ArrestTrespassers()
 {
-    CRVREntity *pcEpuck;
+    CEPuckEntity *pcEpuck;
     bool bPlaced = false;
     UInt32 unTrials;
-    CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
+    CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("epuck");
     for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
     {
-        pcEpuck = any_cast<CRVREntity *>(it->second);
+        pcEpuck = any_cast<CEPuckEntity *>(it->second);
         // Choose position at random
         Real posY = pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY();
         Real posX = pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX();

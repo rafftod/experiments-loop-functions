@@ -124,14 +124,14 @@ std::vector<MateSPD11LoopFunction::CAgent> MateSPD11LoopFunction::PickAgents()
 {
 
     std::vector<CAgent> agents;
-    CSpace::TMapPerType m_tEPuckEntityMap = GetSpace().GetEntitiesByType("rvr");
+    CSpace::TMapPerType m_tEPuckEntityMap = GetSpace().GetEntitiesByType("epuck");
 
     CVector2 cEpuckPosition;
 
     /* create a vector with the agents positions (using the objects CAgents) */
     for (CSpace::TMapPerType::iterator itEPuckEntity = m_tEPuckEntityMap.begin(); itEPuckEntity != m_tEPuckEntityMap.end(); itEPuckEntity++)
     {
-        CRVREntity *pcEpuck = any_cast<CRVREntity *>(itEPuckEntity->second);
+        CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(itEPuckEntity->second);
         cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                            pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 

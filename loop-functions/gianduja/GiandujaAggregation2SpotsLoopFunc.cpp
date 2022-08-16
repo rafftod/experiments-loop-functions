@@ -100,10 +100,10 @@ CVector3 GiandujaAggregationLoopFunction::GetRandomPosition()
 
 void GiandujaAggregationLoopFunction::PostStep()
 {
-  // CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("rvr");
+  // CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   // CVector2 cEpuckPosition(0,0);
   // for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
-  //     CRVREntity* pcEpuck = any_cast<CRVREntity*>(it->second);
+  //     CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
   //     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
   //                      pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
   //
@@ -121,13 +121,13 @@ void GiandujaAggregationLoopFunction::PostStep()
 
 void GiandujaAggregationLoopFunction::PostExperiment()
 {
-  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
+  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   CVector2 cEpuckPosition(0, 0);
   UInt32 unCostPostExp1(0);
   UInt32 unCostPostExp2(0);
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
   {
-    CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
+    CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                        pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 

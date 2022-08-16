@@ -62,10 +62,10 @@ Real AttractionLoopFunction::ComputeStepObjectiveValue()
   Real temp = 0;
   std::vector<CVector2 *> positions;
   positions.reserve(m_unNumberRobots);
-  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
+  CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
   {
-    CRVREntity *pcEpuck = any_cast<CRVREntity *>(it->second);
+    CEPuckEntity *pcEpuck = any_cast<CEPuckEntity *>(it->second);
     positions.push_back(new CVector2(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(), pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY()));
   }
   for (unsigned int i = 0; i < m_unNumberRobots - 1; i++)
