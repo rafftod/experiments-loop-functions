@@ -73,6 +73,7 @@ void AggregationOneSpotLoopFunc::Reset()
 void AggregationOneSpotLoopFunc::PostStep()
 {
   ArrestTrespassers();
+  m_unScoreSpot1 = 0;
   CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   CVector2 cEpuckPosition(0, 0);
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
@@ -82,11 +83,12 @@ void AggregationOneSpotLoopFunc::PostStep()
                        pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
     Real fDistanceSpot1 = (m_cCoordSpot1 - cEpuckPosition).Length();
-    if (fDistanceSpot1 > m_fRadius)
+    if (fDistanceSpot1 <= m_fRadius)
     {
-      // m_unScoreSpot1 += 1;
+      m_unScoreSpot1 += 1;
     }
   }
+  LOG << "Score: " << m_unScoreSpot1 << std::endl;
 }
 
 /****************************************/
@@ -157,9 +159,9 @@ void AggregationOneSpotLoopFunc::PositionRobots()
     std::ostringstream id;
     id << "epuck" << i;
     pcEpuck = new CEPuckEntity(id.str().c_str(),
-                             "automode",
-                             CVector3(0, 0, 0),
-                             CQuaternion().FromEulerAngles(CRadians::ZERO, CRadians::ZERO, CRadians::ZERO));
+                               "automode",
+                               CVector3(0, 0, 0),
+                               CQuaternion().FromEulerAngles(CRadians::ZERO, CRadians::ZERO, CRadians::ZERO));
     AddEntity(*pcEpuck);
     // Choose position at random
     unTrials = 0;

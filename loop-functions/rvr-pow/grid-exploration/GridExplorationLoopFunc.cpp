@@ -116,6 +116,7 @@ void GridExplorationLoopFunction::PostStep()
     }
 
     m_fObjectiveFunction += Real(total);
+    LOG << "Score: " << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/
