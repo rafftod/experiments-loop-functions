@@ -13,7 +13,7 @@
 
 ForagingTwoSpotsLoopFunction::ForagingTwoSpotsLoopFunction()
 {
-  m_fRadius = 0.15;
+  m_fRadius = 0.25;
   m_fNestLimit = -0.6;
   m_cCoordSpot1 = CVector2(0.75, 0);
   m_cCoordSpot2 = CVector2(-0.75, 0);

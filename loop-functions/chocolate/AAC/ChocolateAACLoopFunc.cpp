@@ -15,7 +15,7 @@
 
 ChocolateAACLoopFunction::ChocolateAACLoopFunction()
 {
-  m_fRadius = 0.3;
+  m_fRadius = 0.45;
   m_cCoordBlackSpot = CVector2(0, 0.6);
   m_cCoordWhiteSpot = CVector2(0, -0.6);
   m_fObjectiveFunction = 0;
