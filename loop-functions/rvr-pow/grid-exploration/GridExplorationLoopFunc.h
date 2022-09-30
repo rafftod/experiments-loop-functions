@@ -24,10 +24,7 @@ public:
   virtual CVector3 GetRandomPosition();
 
   Real GetObjectiveFunction();
-
-  void ArrestTrespassers();
-  CVector3 GetJailPosition();
-
+  
 private:
   std::vector<std::vector<int>> m_grid;
 

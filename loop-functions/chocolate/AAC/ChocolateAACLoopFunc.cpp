@@ -87,6 +87,7 @@ void ChocolateAACLoopFunction::PostStep()
   }
 }
 
+
 /****************************************/
 /****************************************/
 
@@ -114,6 +115,14 @@ CVector3 ChocolateAACLoopFunction::GetRandomPosition()
   Real fPosY = b * m_fDistributionRadius * sin(2 * CRadians::PI.GetValue() * (a / b));
 
   return CVector3(fPosX, fPosY, 0);
+}
+
+/****************************************/
+/****************************************/
+
+void ChocolateAACLoopFunction::PostExperiment()
+{
+    LOG << m_fObjectiveFunction << std::endl;
 }
 
 REGISTER_LOOP_FUNCTIONS(ChocolateAACLoopFunction, "chocolate_aac_loop_functions");

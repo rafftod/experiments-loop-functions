@@ -23,6 +23,7 @@ class ChocolateAACLoopFunction : public CoreLoopFunctions {
       virtual void Destroy();
       virtual void Reset();
       virtual void PostStep();
+      virtual void PostExperiment();
 
       Real GetObjectiveFunction();
 

@@ -87,7 +87,6 @@ CVector3 GridExplorationLoopFunction::GetRandomPosition()
 
 void GridExplorationLoopFunction::PostStep()
 {
-    ArrestTrespassers();
     CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
     CVector2 cEpuckPosition(0, 0);
 
@@ -130,50 +129,6 @@ void GridExplorationLoopFunction::PostExperiment()
 Real GridExplorationLoopFunction::GetObjectiveFunction()
 {
     return (m_fObjectiveFunction);
-}
-
-void GridExplorationLoopFunction::ArrestTrespassers()
-{
-    CRVREntity *pcEpuck;
-    bool bPlaced = false;
-    UInt32 unTrials;
-    CSpace::TMapPerType &tEpuckMap = GetSpace().GetEntitiesByType("rvr");
-    for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it)
-    {
-        pcEpuck = any_cast<CRVREntity *>(it->second);
-        // Choose position at random
-        Real posY = pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY();
-        Real posX = pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX();
-        if (pow(posY, 2.0) + pow(posX, 2.0) > pow(1.250, 2.0) && posY < 1.900)
-        {
-            unTrials = 0;
-            do
-            {
-                ++unTrials;
-                CVector3 cEpuckPosition = GetJailPosition();
-                bPlaced = MoveEntity(pcEpuck->GetEmbodiedEntity(),
-                                     cEpuckPosition,
-                                     CQuaternion().FromEulerAngles(m_pcRng->Uniform(CRange<CRadians>(CRadians::ZERO, CRadians::TWO_PI)),
-                                                                   CRadians::ZERO, CRadians::ZERO),
-                                     false);
-            } while (!bPlaced && unTrials < 100);
-            if (!bPlaced)
-            {
-                THROW_ARGOSEXCEPTION("Can't place robot");
-            }
-        }
-    }
-}
-
-CVector3 GridExplorationLoopFunction::GetJailPosition()
-{
-    Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-    Real b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-
-    Real fPosX = a * 2.5 - 1.250;
-    Real fPosY = b * 0.5 + 1.950;
-
-    return CVector3(fPosX, fPosY, 0);
 }
 
 REGISTER_LOOP_FUNCTIONS(GridExplorationLoopFunction, "grid_exploration_loop_functions");
